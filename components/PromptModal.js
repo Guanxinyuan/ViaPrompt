@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import ModalImage from '@/components/ModalImage';
-import { getClosestRatio } from '@/utils/calc';
+import { useState } from 'react';
+import dynamic from 'next/dynamic';
+const ModalImage = dynamic(() => import('@/components/ModalImage'), { ssr: false });
 
 export default function PromptModal({ images, onCloseModal }) {
 

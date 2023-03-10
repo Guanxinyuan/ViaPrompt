@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import discordImageLoader from '@/utils/frontend';
-import { useEffect, useState, useRef } from 'react';
+import { useState } from 'react';
 
 function cn(...classes) {
     return classes.filter(Boolean).join(' ');

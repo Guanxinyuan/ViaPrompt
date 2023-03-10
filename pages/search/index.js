@@ -2,7 +2,8 @@
 
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
-import BlurImage from '@/components/BlurImage';
+import dynamic from 'next/dynamic';
+const BlurImage = dynamic(() => import('@/components/BlurImage'), { ssr: false });
 
 export default function SearchResults() {
     const router = useRouter();
@@ -11,7 +12,6 @@ export default function SearchResults() {
 
     useEffect(() => {
         if (q) {
-            console.log(q)
             search();
         }
     }, [router.isReady, q]);
@@ -19,7 +19,6 @@ export default function SearchResults() {
     const search = async () => {
         const response = await fetch(`/api/search?q=${q}`);
         const data = await response.json();
-        console.log(data.data);
         setResults(data.data);
     }
 

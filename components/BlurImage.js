@@ -1,7 +1,7 @@
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import PromptModal from '@/components/PromptModal';
+const PromptModal = dynamic(() => import('@/components/PromptModal'), { ssr: false });
 import discordImageLoader from '@/utils/frontend';
-import { widthVariants, heightVariants } from '@/utils/calc';
 import { useEffect, useState, useRef } from 'react';
 
 function cn(...classes) {
@@ -15,7 +15,6 @@ export default function BlurImage({ image }) {
     const showModalRef = useRef(false);
 
     useEffect(() => {
-        // console.log(widthVariants[aspectWidth], heightVariants[aspectHeight])
     }, [])
 
     useEffect(() => { }, [showModal])

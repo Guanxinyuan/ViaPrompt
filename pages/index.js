@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { loadInitialData } from "@/utils/backend";
-import BlurImage from '@/components/BlurImage';
+import dynamic from "next/dynamic";
+const BlurImage = dynamic(() => import("@/components/BlurImage"));
 
 export default function Home(props) {
   const [images, setImages] = useState(props.images.data);

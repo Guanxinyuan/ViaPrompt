@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 
@@ -16,7 +16,6 @@ export default function Searchbar() {
     };
 
     const handleKeyDown = (e) => {
-        console.log('search triggered, query is ', query)
         if (e.keyCode === 13) {
             handleSearch();
         }
