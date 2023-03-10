@@ -3,8 +3,8 @@ import { Configuration, OpenAIApi } from "openai";
 import DocumentIcon from "@heroicons/react/24/outline/DocumentIcon";
 import { LightBulbIcon } from "@heroicons/react/24/outline";
 const configuration = new Configuration({
-    organization: process.env.NEXT_PUBLIC_OPENAI_ORGANIZATION,
-    apiKey: process.env.NEXT_PUBLIC_OPENAI_APIKEY
+    organization: 'org-2KPiB8QFCOXogw6TS7cO4TMz',
+    apiKey: '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'
 });
 const openai = new OpenAIApi(configuration);
 

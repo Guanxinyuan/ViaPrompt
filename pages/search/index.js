@@ -14,7 +14,7 @@ export default function SearchResults() {
             console.log(q)
             search();
         }
-    }, [router.isReady]);
+    }, [router.isReady, q]);
 
     const search = async () => {
         const response = await fetch(`/api/search?q=${q}`);
