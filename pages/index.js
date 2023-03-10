@@ -14,7 +14,7 @@ export default function Home(props) {
   const loadMore = async () => {
     if (loading || !hasMore) return;
     setLoading(true);
-    const response = await fetch(`http://localhost:3000/api/data?page=${page + 1}`);
+    const response = await fetch(`/api/data?page=${page + 1}`);
     const data = await response.json();
 
     if (data.data.length === 0) {
@@ -95,7 +95,7 @@ export default function Home(props) {
 }
 
 export async function getStaticProps() {
-  const response = await fetch(`${process.env.API_URL}/data?page=1`);
+  const response = await fetch(`${process.env.API_URL}/api/data?page=1`);
   const data = await response.json();
 
   return {
