@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { loadInitialData } from "@/utils/backend";
 import BlurImage from '@/components/BlurImage';
 
 export default function Home(props) {
@@ -94,9 +95,12 @@ export default function Home(props) {
   );
 }
 
+
+
 export async function getStaticProps() {
-  const response = await fetch(`${process.env.API_URL}/api/data?page=1`);
-  const data = await response.json();
+  // const response = await fetch(`${process.env.API_URL}/api/data?page=1`);
+  // const data = await response.json();
+  const data = await loadInitialData()
 
   return {
     props: {
