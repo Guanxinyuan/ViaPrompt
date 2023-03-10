@@ -116,7 +116,7 @@ export default function Account({ session }) {
         <div className="form-widget flex flex-col gap-5 pt-2 pb-10 text-sm">
             <div className='flex flex-col gap-1'>
                 <label className='font-bold' htmlFor="email">Email *</label>
-                <input className='text-gray-600 border border-gray-500 px-2 py-1 rounded-md' id="email" type="text" value={session.user.email} disabled />
+                <input readOnly className='text-gray-600 border border-gray-500 px-2 py-1 rounded-md' id="email" type="text" value={session.user.email} />
             </div>
             <div className='flex flex-col gap-1'>
                 <label className='font-bold text-sm' htmlFor="username">Username *</label>
@@ -135,6 +135,7 @@ export default function Account({ session }) {
                     className='text-gray-600 border border-gray-500 px-2 py-1 rounded-md'
                     id="password"
                     type="password"
+                    readOnly
                     value={"????????"}
                 />
             </div>

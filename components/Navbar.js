@@ -11,10 +11,13 @@ export default function Navbar({ supabase, session }) {
     const [username, setUsername] = useState('')
 
     useEffect(() => {
-        getProfile()
+        if (session) {
+            getProfile()
+        }
     }, [session])
 
     const getProfile = async () => {
+        console.log('session in navbar: ', session)
         try {
             const { data, error, status } = await supabase
                 .from('profiles')

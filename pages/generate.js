@@ -81,10 +81,12 @@ export default function PromptGenerator() {
             </div>
             <div className="w-full bg-white p-4 rounded-lg flex flex-col items-center space-y-4 relative">
                 <textarea
-                    className="w-full h-28 p-4 border border-gray-500 rounded-lg  mb-4 overflow-auto"
+                    className="w-full h-48 p-4 border border-gray-500 text-gray-500 rounded-lg  mb-4 overflow-auto"
                     ref={promptRef}
+                    readOnly
+                    placeholder={'Your prompt here...'}
                     // value={`/imagine prompt: ${promptIdea.trim().replace(/\n/g, ' ')}:: --v 4`}
-                    value={`/imagine prompt: ${promptIdea.trim().replace(/\n/g, ' ')}`}
+                    value={`${promptIdea.trim().replace(/\n/g, ' ')}`}
                 ></textarea>
                 <DocumentIcon
                     className="absolute bottom-10 right-6 w-6 h-6 text-gray-600 cursor-pointer"

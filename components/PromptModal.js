@@ -65,7 +65,7 @@ export default function PromptModal({ images, onCloseModal }) {
                     {/* Right column */}
                     <div className="w-1/2 p-6 overflow-y-auto">
                         <div className='mb-4'>
-                            <ModalImage image={images[currentImage]} />
+                            <ModalImage key={currentImage.content_id} image={images[currentImage]} />
                         </div>
                         {images.length > 1 &&
                             <div className={`grid grid-cols-5 gap-2`}>
@@ -73,7 +73,7 @@ export default function PromptModal({ images, onCloseModal }) {
                                     images.map((image, index) => {
                                         if (index === currentImage) {
                                             return <div className='cursor-pointer'>
-                                                <ModalImage image={image} current={true} />
+                                                <ModalImage key={image.content_id} image={image} current={true} />
                                             </div>
                                         }
                                         return <div className='cursor-pointer' onClick={() => setCurrentImage(index)} >
