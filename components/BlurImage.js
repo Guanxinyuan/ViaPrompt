@@ -13,6 +13,8 @@ export default function BlurImage({ image }) {
     const [showModal, setShowModal] = useState(false);
     const [siblingImages, setSiblingImages] = useState();
     const showModalRef = useRef(false);
+    const cdnUrl = "d1fnc2wv9zomi3.cloudfront.net"
+    // const cdnUrl = "viaprompt.b-cdn.net"
 
     useEffect(() => {
     }, [])
@@ -32,17 +34,17 @@ export default function BlurImage({ image }) {
 
     return (
         <div>
-
             <div className='relative group'>
-                {/* xl:aspect-w-7 xl:aspect-h-8  */}
                 <div className={cn(`w-full overflow-hidden rounded-lg bg-gray-200 rounded-lg cursor-pointer `)} onClick={handleClick}>
                     <Image
-                        alt=""
-                        src={image.gc_url}
-                        loader={discordImageLoader}
+                        src={image.gc_url.replace("media.discordapp.net", cdnUrl)}
+                        // loader={discordImageLoader}
+                        alt={image.prompt}
                         loading="lazy"
-                        width={image.gc_width}
-                        height={image.gc_height}
+                        width={image.gc_width * 0.5}
+                        height={image.gc_height * 0.5}
+                        responsive
+                        quality={30}
                         className={cn(
                             'object-cover object-center',
                             'duration-700 ease-in-out group-hover:opacity-75',
@@ -58,7 +60,6 @@ export default function BlurImage({ image }) {
                     onClick={handleClick}>
                     <p>{image.prompt}</p>
                 </div>
-                {/* <p className="mt-1 text-base font-medium text-gray-900 truncate text-ellipsis">{image.prompt}</p> */}
 
             </div>
             {showModal && siblingImages &&

@@ -1,4 +1,6 @@
-import Authenticate from "@/components/Authenticate";
+// import Authenticate from "@/components/Authenticate";
+import dynamic from "next/dynamic";
+const Authenticate = dynamic(() => import("@/components/Authenticate"));
 
 export default function AccountPage() {
     return (

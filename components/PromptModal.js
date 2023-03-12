@@ -95,3 +95,45 @@ export default function PromptModal({ images, onCloseModal }) {
         </div>
     );
 }
+
+
+// export default function Home() {
+//     const qualities = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+//     return (
+//       <div className="w-screen h-screen columns-5">
+//         {
+//           qualities.map((quality) => {
+//             return (
+//               <TestImage quality={quality} />
+//             )
+//           })
+//         }
+//       </div>
+//     )
+//   }
+  
+//   const TestImage = ({ quality }) => {
+//     const img_url = "https://media.discordapp.net/attachments/989268300473192561/1080611147075571732/luanafmagalhaes_Matthew_Daddario_with_big_blue_eyes_wearing_goa_039c0d48-f1f0-4488-be96-76e2bc0fd13d.png"
+  
+//     return (
+//       <div className="flex">
+//         <p>{quality}</p>
+//         <Image
+//           src={img_url}
+//           loader={discordImageLoader}
+//           loading="lazy"
+//           width={200}
+//           height={200}
+//           responsive
+//           quality={quality}
+//           className={cn(
+//             'object-cover object-center',
+//             'duration-700 ease-in-out group-hover:opacity-75',
+//             isLoading
+//               ? 'scale-110 blur-2xl grayscale'
+//               : 'scale-100 blur-0 grayscale-0'
+//           )}
+//           onLoadingComplete={() => setLoading(false)} />
+//       </div>
+//     )
+//   }
