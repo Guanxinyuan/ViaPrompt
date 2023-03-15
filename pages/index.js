@@ -1,111 +1,106 @@
-import { useEffect, useRef, useState } from "react";
-import { loadInitialData } from "@/utils/backend";
-import dynamic from "next/dynamic";
-const BlurImage = dynamic(() => import("@/components/BlurImage"));
+import Head from 'next/head';
+import Link from 'next/link';
 
-export default function Home(props) {
-  const [images, setImages] = useState(props.images.data);
-  const [columns, setColumns] = useState([]);
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
-  const loader = useRef(null);
-
-  const NUM_COLUMNS = 6;
-
-  const loadMore = async () => {
-    if (loading || !hasMore) return;
-    setLoading(true);
-    const response = await fetch(`/api/data?page=${page + 1}`);
-    const data = await response.json();
-
-    if (data.data.length === 0) {
-      setHasMore(false);
-    } else {
-      // Add new images to the column with fewest images
-      const newImages = data.data.reduce((acc, img) => {
-        const colIndex = columns.findIndex((col) => col.length < NUM_COLUMNS);
-        if (colIndex === -1) {
-          acc.push([img]);
-        } else {
-          const newColumn = [...columns[colIndex], img];
-          const newColumns = [...columns.slice(0, colIndex), newColumn, ...columns.slice(colIndex + 1)];
-          setColumns(newColumns);
-        }
-        return acc;
-      }, []);
-      setImages([...images, ...newImages.flat()]);
-      setPage(page + 1);
-    }
-    setLoading(false);
-  };
-
-
-  useEffect(() => {
-    // Split images into columns
-    const initialColumns = Array(NUM_COLUMNS).fill([]);
-    const newColumns = images.reduce((acc, img, i) => {
-      const colIndex = i % NUM_COLUMNS;
-      acc[colIndex] = [...acc[colIndex], img];
-      return acc;
-    }, initialColumns);
-    setColumns(newColumns);
-
-    const options = {
-      root: null,
-      rootMargin: "20px",
-      threshold: 1.0
-    };
-
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        loadMore();
-      }
-    }, options);
-
-    if (loader.current) {
-      observer.observe(loader.current);
-    }
-
-    return () => {
-      if (loader.current) {
-        observer.unobserve(loader.current);
-      }
-    };
-  }, [loader.current]);
-
-
+export default function Home() {
   return (
-    <div className="w-screen">
-      <div className="m-auto mx-10 py-4 columns-6 space-y-6 gap-6">
-        {columns.map((column, i) => (
-          <div key={i} className="flex flex-col gap-6">
-            {column.map((image) => (
-              <BlurImage key={image.content_id} image={image} />
-            ))}
+    <div>
+      <Head>
+        <title>My Website</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      {/* Hero section */}
+      <section className="pt-24 bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h2 className="text-7xl font-bold text-gray-900 leading-tight">Master Midjourney In A Few Clicks</h2>
+            <p className="mt-4 text-lg text-gray-500">
+              AI-Powered Mind & Rich Inspirations
+            </p>
+            <div className="mt-8">
+              <Link href="/generate" className="text-base font-medium text-white bg-indigo-500 hover:bg-indigo-600 py-3 px-6 rounded-lg">
+                Try Prompt Generator
+              </Link>
+            </div>
           </div>
-        ))}
-        {loading && <p>Loading...</p>}
-        {!loading && hasMore && (
-          <div ref={loader}>
-            <p>Loading...</p>
+        </div>
+      </section >
+
+      {/* Prompt generation section */}
+      < section className="py-24 bg-white" >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {/* Card 1 */}
+            <div className="bg-white overflow-hidden shadow rounded-lg">
+              <div className="p-5">
+                <h3 className="text-lg font-bold text-gray-900">
+                  Save Time
+                </h3>
+                <p className="mt-2 text-gray-500">
+                  Endless browsing for inspiration, the proper parameters, or the precise depiction of your idea? We'll serve you the answer in a spark.
+                </p>
+              </div>
+              <div className="bg-gray-50 px-5 py-3">
+                {/* <Link href="/generate" className="text-base font-medium text-indigo-600 hover:text-indigo-500">
+                  Generate Prompt
+                </Link> */}
+              </div>
+            </div>
+
+            {/* Card 2 */}
+            <div className="bg-white overflow-hidden shadow rounded-lg">
+              <div className="p-5">
+                <h3 className="text-lg font-bold text-gray-900">
+                  Save Money
+                </h3>
+                <p className="mt-2 text-gray-500">
+                  Every attempt costs you a penny until you get the great one. We'll strike your eyeballs as soon as your 1st or 2nd try.
+                </p>
+              </div>
+              <div className="bg-gray-50 px-5 py-3">
+                {/* <Link href="/completion" className="text-base font-medium text-indigo-600 hover:text-indigo-500">
+                  Get Started
+                </Link> */}
+              </div>
+            </div>
+
+            {/* Card 3 */}
+            <div className="bg-white overflow-hidden shadow rounded-lg">
+              <div className="p-5">
+                <h3 className="text-lg font-bold text-gray-900">
+                  Master AI Arts
+                </h3>
+                <p className="mt-2 text-gray-500">
+                  Great works can be randomly created, but no one masters them by chance. We'll help you develop consistent creativity in AI art.</p>
+              </div>
+              <div className="bg-gray-50 px-5 py-3">
+                {/* <Link href="/sentiment" className="text-base font-medium text-indigo-600 hover:text-indigo-500">
+                  Analyze Sentiment
+                </Link> */}
+              </div>
+            </div>
           </div>
-        )}
-      </div>
-    </div>
+        </div>
+      </section >
+
+      {/* Gallery section */}
+      {/* < section className="py-24 bg-gray-50" >
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold text-gray-900">See Our Gallery</h2>
+            <p className="mt-4 text-lg text-gray-500">
+              Check out some of the amazing projects created using our services.
+            </p>
+            <div className="mt-6">
+              <Link href="/gallery" className="text-base font-medium text-white bg-indigo-500 hover:bg-indigo-600 py-3 px-6 rounded-lg">
+                View Gallery
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section > */}
+      < footer className="bg-white" >
+      </footer >
+    </div >
   );
-}
-
-
-
-export async function getStaticProps() {
-  // const response = await fetch(`${process.env.API_URL}/api/data?page=1`);
-  // const data = await response.json();
-  const data = await loadInitialData()
-
-  return {
-    props: {
-      images: data
-    }
-  };
 }

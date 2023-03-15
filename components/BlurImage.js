@@ -1,7 +1,6 @@
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 const PromptModal = dynamic(() => import('@/components/PromptModal'), { ssr: false });
-import discordImageLoader from '@/utils/frontend';
 import { useEffect, useState, useRef } from 'react';
 
 function cn(...classes) {
@@ -12,7 +11,6 @@ export default function BlurImage({ image }) {
     const [isLoading, setLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
     const [siblingImages, setSiblingImages] = useState();
-    const showModalRef = useRef(false);
     const cdnUrl = "d1fnc2wv9zomi3.cloudfront.net"
     // const cdnUrl = "viaprompt.b-cdn.net"
 
@@ -63,7 +61,7 @@ export default function BlurImage({ image }) {
 
             </div>
             {showModal && siblingImages &&
-                <PromptModal images={siblingImages} onCloseModal={() => setShowModal(false)} showModalRef={showModalRef} />
+                <PromptModal images={siblingImages} onCloseModal={() => setShowModal(false)} />
             }
         </div>
     );

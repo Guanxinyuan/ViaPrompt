@@ -40,21 +40,21 @@ export default function Navbar({ supabase, session }) {
 
 
     return (
-        <div className='flex flex-row justify-items-baseline container mx-auto py-4 w-full'>
-            <div className='w-1/6 flex justify-center items-center'>
-                <p className='font-bold text-xl'>ViaPrompt</p>
+        <div className='flex flex-row justify-items-baseline container mx-auto py-4 w-full border-b-2 border-zinc-700'>
+            <div className='w-1/12 flex justify-center items-center'>
+                <p className='font-bold text-xl cursor-pointer' onClick={() => router.push('/')}>Palaxy</p>
             </div>
-            <div className="w-3/6 flex text-left">
-                <Searchbar />
+            <div className="w-4/6 flex text-left">
+                {/* <Searchbar /> */}
             </div>
 
             <div className="w-2/6 grid grid-cols-3 justify-center items-center text-center">
 
-                <div className='text-base flex justify-center items-center font-bold cursor-pointer'>
-                    <p className="w-fit" onClick={handleClick} router-text="">Database</p>
+                <div className='text-base flex justify-center items-center cursor-pointer'>
+                    {/* <p className="w-fit" onClick={handleClick} router-text="">Database</p> */}
                 </div>
-                <div className='text-base flex justify-center items-center font-bold cursor-pointer'>
-                    <p className="text-base font-bold cursor-pointer " onClick={handleClick} router-text="generate">Prompt Generator</p>
+                <div className='text-base flex justify-center items-center cursor-pointer'>
+                    <p className="text-base cursor-pointer " onClick={handleClick} router-text="generate">Prompt Generator</p>
                 </div>
                 <div>
                     {
@@ -62,7 +62,7 @@ export default function Navbar({ supabase, session }) {
                             <div className=''>
                                 <p className="text-base font-bold cursor-pointer" onClick={() => { router.push(`/account`) }}>{username[0].toUpperCase()}</p>
                             </div> :
-                            <p className="text-base font-bold cursor-pointer" onClick={handleClick} router-text="auth/login">Login</p>
+                            <p className="text-base cursor-pointer" onClick={handleClick} router-text="auth/login">Login</p>
 
                     }
                 </div>

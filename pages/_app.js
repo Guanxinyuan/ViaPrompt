@@ -21,7 +21,8 @@ function MyApp({ Component, pageProps }) {
   }
 
   return (
-    <div>
+    //  text-gray-800
+    <div className='bg-zinc-800 text-white'>
       <Navbar supabase={supabase} session={session} />
       <SessionContextProvider supabaseClient={supabase} initialSession={pageProps.initialSession}>
         <Component {...pageProps} />

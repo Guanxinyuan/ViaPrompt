@@ -116,12 +116,12 @@ export default function Account({ session }) {
         <div className="form-widget flex flex-col gap-5 pt-2 pb-10 text-sm">
             <div className='flex flex-col gap-1'>
                 <label className='font-bold' htmlFor="email">Email *</label>
-                <input readOnly className='text-gray-600 border border-gray-500 px-2 py-1 rounded-md' id="email" type="text" value={session.user.email} />
+                <input readOnly className='text-gray-600 border border-gray-500 px-2 py-3 rounded-md' id="email" type="text" value={session.user.email} />
             </div>
             <div className='flex flex-col gap-1'>
                 <label className='font-bold text-sm' htmlFor="username">Username *</label>
                 <input
-                    className='text-gray-600 border border-gray-500 px-2 py-1 rounded-md'
+                    className='text-gray-600 border border-gray-500 px-2 py-3 rounded-md'
                     id="username"
                     type="text"
                     value={username || ''}
@@ -132,7 +132,7 @@ export default function Account({ session }) {
             <div className='flex flex-col gap-1'>
                 <label className='font-bold' htmlFor="password">Password *</label>
                 <input
-                    className='text-gray-600 border border-gray-500 px-2 py-1 rounded-md'
+                    className='text-gray-600 border border-gray-500 px-2 py-3 rounded-md'
                     id="password"
                     type="password"
                     readOnly
@@ -143,7 +143,7 @@ export default function Account({ session }) {
             <div className='flex flex-col gap-1'>
                 <label className='font-bold' htmlFor="password">New Password</label>
                 <input
-                    className='text-gray-600 border border-gray-500 px-2 py-1 rounded-md'
+                    className='text-gray-600 border border-gray-500 px-2 py-3 rounded-md'
                     id="newPassword"
                     type="password"
                     value={newPassword || ''}
@@ -155,7 +155,7 @@ export default function Account({ session }) {
             <div className='flex flex-col gap-1'>
                 <label className='font-bold' htmlFor="password">Confirm Password</label>
                 <input
-                    className='text-gray-600 border border-gray-500 px-2 py-1 rounded-md'
+                    className='text-gray-600 border border-gray-500 px-2 py-3 rounded-md'
                     id="confirmPassword"
                     type="password"
                     value={confirmPassword || ''}
@@ -172,7 +172,7 @@ export default function Account({ session }) {
                         <p className='text-green-500 text-xs'>Success! Profile updated</p>
                     }
                     <button
-                        className="button font-bold block cursor-pointer px-2 py-2 rounded-md items-center justify-center bg-yellow-400 w-full hover:bg-yellow-500"
+                        className="button font-bold block cursor-pointer px-2 py-2 rounded-md items-center justify-center bg-yellow-500 w-full hover:bg-yellow-700"
                         onClick={onSubmitHandler}
                         disabled={loading}
                     >
@@ -182,7 +182,7 @@ export default function Account({ session }) {
 
                 <div>
                     <button
-                        className="button font-bold block cursor-pointer px-2 py-2 rounded-md items-center justify-center bg-gray-500 w-full hover:bg-gray-700 text-white"
+                        className="button font-bold block cursor-pointer px-2 py-2 rounded-md items-center justify-center bg-gray-500 w-full hover:bg-gray-400 text-white"
                         onClick={() => supabase.auth.signOut()}
                         disabled={loading}
                     >
