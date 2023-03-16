@@ -1,14 +1,17 @@
 // This api route is used to depict a prompt from user's input keywords
 import { Configuration, OpenAIApi } from "openai";
 const configuration = new Configuration({
-    organization: process.env.NEXT_OPENAI_ORGANIZATION,
-    apiKey: process.env.NEXT_OPENAI_APIKEY,
+    organization: "org-2KPiB8QFCOXogw6TS7cO4TMz",
+    apiKey: "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",
 });
 const openai = new OpenAIApi(configuration);
 
 export default async (req, res) => {
+
     const { input, num_results } = req.query;
     console.log(input, num_results)
+
+    console.log(configuration)
 
     try {
         const response = await openai.createCompletion({
@@ -26,3 +29,27 @@ export default async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 }
+
+// const axios = require('axios');
+
+// const openaiApiKey = process.env.NEXT_OPENAI_APIKEY; // Replace with your OpenAI API key
+// const prompt = 'Once upon a time...';
+
+// export default async (req, res) => {
+
+//     axios.post('https://api.openai.com/v1/engines/davinci-codex/completions', {
+//         prompt: prompt,
+//         max_tokens: 50,
+//     }, {
+//         headers: {
+//             'Authorization': `Bearer ${openaiApiKey}`,
+//             'Content-Type': 'application/json',
+//         },
+//     })
+//         .then((response) => {
+//             console.log(response.data.choices[0].text);
+//         })
+//         .catch((error) => {
+//             console.error('Error:', error.stack);
+//         });
+// }

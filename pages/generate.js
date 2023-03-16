@@ -61,7 +61,7 @@ export default function PromptGenerator() {
             console.log(idea)
             setPromptIdeaTemp(idea.trim().replace(/\n/g, ' '));
         } catch (ex) {
-            alert('inspiration error', ex.stack);
+            alert('inspiration error', ex);
         } finally {
             setInspireLoading(false)
         }
