@@ -55,13 +55,13 @@ export default function PromptGenerator() {
     const generatePromptIdea = async (num_results) => {
         setInspireLoading(true)
         try {
-            const response = await fetch(`/api/generate?input=${inputText}&num_results=${num_results}`);
+            const response = await fetch(`/api/generate?input=${inputText}`);
             const result = await response.json();
             const idea = result.data;
             console.log(idea)
             setPromptIdeaTemp(idea.trim().replace(/\n/g, ' '));
         } catch (ex) {
-            alert('inspiration error', ex);
+            alert('inspiration failed', ex);
         } finally {
             setInspireLoading(false)
         }

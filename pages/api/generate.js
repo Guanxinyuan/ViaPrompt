@@ -8,15 +8,13 @@ const openai = new OpenAIApi(configuration);
 
 export default async (req, res) => {
 
-    const { input, num_results } = req.query;
-    console.log(input, num_results, process.env.NEXT_OPENAI_ORGANIZATION)
-
+    const { input } = req.query;
     try {
         const response = await openai.createCompletion({
             model: "text-davinci-003",
             prompt: `Illustrate a view within 5 words using these words ${input}`,
             max_tokens: 500,
-            n: num_results,
+            n: 1,
             temperature: 0.5,
         });
         console.log(response)
