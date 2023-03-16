@@ -2,7 +2,7 @@
 import { Configuration, OpenAIApi } from "openai";
 const configuration = new Configuration({
     organization: "org-2KPiB8QFCOXogw6TS7cO4TMz",
-    apiKey: "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",
+    apiKey: "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",
 });
 const openai = new OpenAIApi(configuration);
 
