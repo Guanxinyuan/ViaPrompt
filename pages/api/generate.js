@@ -12,7 +12,7 @@ export default async (req, res) => {
     try {
         const response = await openai.createCompletion({
             model: "text-davinci-003",
-            prompt: `Illustrate a view within 5 words using these words ${input}`,
+            prompt: `Illustrate a view within 50 words using these words ${input}`,
             max_tokens: 500,
             n: 1,
             temperature: 0.5,
