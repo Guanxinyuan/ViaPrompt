@@ -1,15 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import { Configuration, OpenAIApi } from "openai";
 import DocumentIcon from "@heroicons/react/24/outline/DocumentIcon";
-import { LightBulbIcon } from "@heroicons/react/24/outline";
-const configuration = new Configuration({
-    organization: 'org-2KPiB8QFCOXogw6TS7cO4TMz',
-    apiKey: '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'
-});
-const openai = new OpenAIApi(configuration);
 import OptionDropdown from "@/components/paramDropdowns/OptionDropdown";
 import MeasureDropdown from "@/components/paramDropdowns/MeasureDropdown";
 import SizeDropdown from "@/components/paramDropdowns/SizeDropdown";
+import { LightBulbIcon } from "@heroicons/react/24/outline";
 import { makeParameterString } from "@/utils/frontend";
 
 export default function PromptGenerator() {
@@ -36,7 +31,7 @@ export default function PromptGenerator() {
     }, [version, quality, stylize, stop, seed, chaos, sizes]);
 
     useEffect(() => {
-        streamPrintPromptIdea(20)
+        streamPrintPromptIdea(15)
     }, [promptIdeaTemp]);
 
     useEffect(() => {
@@ -44,7 +39,7 @@ export default function PromptGenerator() {
     }, [promptIdea])
 
     const streamPrintPromptIdea = (ms) => {
-        let i = -1;
+        let i = -3;
         setPromptIdea("")
         const intervalId = setInterval(() => {
             if (i >= promptIdeaTemp.length) {
@@ -59,19 +54,17 @@ export default function PromptGenerator() {
 
     const generatePromptIdea = async (num_results) => {
         setInspireLoading(true)
-        const response = await openai.createCompletion({
-            model: "text-davinci-003",
-            prompt: `Illustrate a view within 50 words using these words ${inputText}`,
-            max_tokens: 500,
-            n: num_results,
-            temperature: 0.5,
-        });
-        console.log(response)
-
-        const idea = response.data.choices[0].text;
-        console.log(idea)
-        setPromptIdeaTemp(idea.trim().replace(/\n/g, ' '));
-        setInspireLoading(false)
+        try {
+            const response = await fetch(`/api/generate?input=${inputText}&num_results=${num_results}`);
+            const result = await response.json();
+            const idea = result.data;
+            console.log(idea)
+            setPromptIdeaTemp(idea.trim().replace(/\n/g, ' '));
+        } catch (ex) {
+            alert('inspiration error', ex.stack);
+        } finally {
+            setInspireLoading(false)
+        }
     }
 
     const handleCopy = () => {
