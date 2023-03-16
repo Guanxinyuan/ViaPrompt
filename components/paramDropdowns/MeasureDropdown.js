@@ -41,7 +41,7 @@ export default function MeasureDropdown({ width, height, paramName, minValue, ma
                 onClick={toggleDropdown}
             >
                 <ParamButton>
-                    {paramName} {value == defaultValue ? '' : <span className='rounded bg-gray-700 px-3 mx-1'>{value}</span>}
+                    {paramName} {value == defaultValue ? '' : <span className='param-span'>{value}</span>}
                 </ParamButton>
             </div>
             <div className="relative text-gray-800">

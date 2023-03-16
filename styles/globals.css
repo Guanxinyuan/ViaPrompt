@@ -1,3 +1,70 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .input-container {
+    @apply rounded-lg items-center relative;
+  }
+
+  .input-title {
+    @apply text-sm font-bold mr-auto;
+  }
+
+  .input-textarea {
+    @apply rounded-lg resize-none overflow-auto;
+    @apply text-white bg-zinc-700;
+  }
+
+  .output-textarea {
+    @apply rounded-lg overflow-auto;
+    @apply text-gray-500;
+  }
+
+  .param-button {
+    @apply bg-yellow-500 hover:bg-yellow-700 text-white text-base rounded-lg;
+  }
+
+  .param-span {
+    @apply rounded bg-gray-700 px-3 mx-1;
+  }
+
+  .option-dropdown-container {
+    @apply relative text-gray-800;
+  }
+
+  .option-dropdown {
+    @apply absolute mt-2 z-10 bg-white shadow rounded-lg;
+  }
+
+  .param-option {
+    @apply bg-white rounded-lg px-3 py-2 hover:bg-gray-300 cursor-pointer;
+  }
+
+  .account-setting-input-container {
+    @apply flex flex-col gap-1;
+  }
+
+  .account-setting-input-label {
+    @apply text-sm text-gray-400;
+  }
+
+  .account-setting-input {
+    @apply bg-zinc-700 border border-white hover:border-gray-400 focus:bg-white focus:text-black px-[15px] py-[10px] rounded;
+    @apply text-gray-400;
+  }
+
+  .account-setting-button-update {
+    @apply cursor-pointer px-2 py-2 rounded items-center justify-center bg-yellow-500 w-full hover:bg-yellow-700;
+    @apply text-sm text-white;
+  }
+
+  .account-setting-button-signout {
+    @apply cursor-pointer px-2 py-2 rounded items-center justify-center bg-gray-500 w-full hover:bg-gray-600;
+    @apply text-white;
+  }
+
+  .auth-container {
+    @apply container mx-auto mt-14 w-1/3 rounded-lg bg-zinc-700;
+  }
+}

@@ -8,15 +8,27 @@ export default function Authenticate() {
     const supabase = useSupabaseClient()
 
     return (
-        <div className='container mx-auto mt-14 w-1/3 h-screen rounded-lg bg-zinc-700'>
-            <div className="container px-10 pt-6 w-full">
-                {!session ? (
-                    <Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} theme="default" />
-                ) : (
-                    <div>
-                        <AccountSettings session={session} />
-                    </div>
-                )}
+        <div className='min-h-screen'>
+            <div className='auth-container'>
+                <div className="container px-10 pt-6 w-full">
+                    {!session ? (
+                        <Auth
+                            supabaseClient={supabase}
+                            appearance={{
+                                theme: ThemeSupa,
+                                style: {
+                                    input: { color: 'white' },
+                                    button: { fontSize: '14px' },
+                                }
+                            }}
+                            theme="default"
+                        />
+                    ) : (
+                        <div>
+                            <AccountSettings session={session} />
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     )

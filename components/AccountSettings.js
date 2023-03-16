@@ -114,14 +114,14 @@ export default function Account({ session }) {
 
     return (
         <div className="form-widget flex flex-col gap-5 pt-2 pb-10 text-sm">
-            <div className='flex flex-col gap-1'>
-                <label className='font-bold' htmlFor="email">Email *</label>
-                <input readOnly className='text-gray-600 border border-gray-500 px-2 py-3 rounded-md' id="email" type="text" value={session.user.email} />
+            <div className='account-setting-input-container'>
+                <label className='account-setting-input-label' htmlFor="email">Email *</label>
+                <input readOnly className='account-setting-input' id="email" type="text" value={session.user.email} />
             </div>
-            <div className='flex flex-col gap-1'>
-                <label className='font-bold text-sm' htmlFor="username">Username *</label>
+            <div className='account-setting-input-container'>
+                <label className='account-setting-input-label' htmlFor="username">Username *</label>
                 <input
-                    className='text-gray-600 border border-gray-500 px-2 py-3 rounded-md'
+                    className='account-setting-input'
                     id="username"
                     type="text"
                     value={username || ''}
@@ -129,10 +129,10 @@ export default function Account({ session }) {
                 />
             </div>
 
-            <div className='flex flex-col gap-1'>
-                <label className='font-bold' htmlFor="password">Password *</label>
+            <div className='account-setting-input-container'>
+                <label className='account-setting-input-label' htmlFor="password">Password *</label>
                 <input
-                    className='text-gray-600 border border-gray-500 px-2 py-3 rounded-md'
+                    className='account-setting-input'
                     id="password"
                     type="password"
                     readOnly
@@ -140,10 +140,10 @@ export default function Account({ session }) {
                 />
             </div>
 
-            <div className='flex flex-col gap-1'>
-                <label className='font-bold' htmlFor="password">New Password</label>
+            <div className='account-setting-input-container'>
+                <label className='account-setting-input-label' htmlFor="password">New Password</label>
                 <input
-                    className='text-gray-600 border border-gray-500 px-2 py-3 rounded-md'
+                    className='account-setting-input'
                     id="newPassword"
                     type="password"
                     value={newPassword || ''}
@@ -152,10 +152,10 @@ export default function Account({ session }) {
                 {passwordTooShort && <p className='text-red-500 text-xs'>Password too short</p>}
             </div>
 
-            <div className='flex flex-col gap-1'>
-                <label className='font-bold' htmlFor="password">Confirm Password</label>
+            <div className='account-setting-input-container'>
+                <label className='account-setting-input-label' htmlFor="password">Confirm Password</label>
                 <input
-                    className='text-gray-600 border border-gray-500 px-2 py-3 rounded-md'
+                    className='account-setting-input'
                     id="confirmPassword"
                     type="password"
                     value={confirmPassword || ''}
@@ -172,21 +172,21 @@ export default function Account({ session }) {
                         <p className='text-green-500 text-xs'>Success! Profile updated</p>
                     }
                     <button
-                        className="button font-bold block cursor-pointer px-2 py-2 rounded-md items-center justify-center bg-yellow-500 w-full hover:bg-yellow-700"
+                        className="account-setting-button-update"
                         onClick={onSubmitHandler}
                         disabled={loading}
                     >
-                        {loading ? 'LOADING ...' : 'UPDATE'}
+                        {loading ? 'Loading ...' : 'Update'}
                     </button>
                 </div>
 
                 <div>
                     <button
-                        className="button font-bold block cursor-pointer px-2 py-2 rounded-md items-center justify-center bg-gray-500 w-full hover:bg-gray-400 text-white"
+                        className="account-setting-button-signout"
                         onClick={() => supabase.auth.signOut()}
                         disabled={loading}
                     >
-                        SIGN OUT
+                        Sign out
                     </button>
                 </div>
             </div>

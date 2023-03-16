@@ -82,10 +82,10 @@ export default function PromptGenerator() {
         <div className="mt-10 min-h-screen w-4/5 container mx-auto flex flex-col items-center justify-center">
             <p className="w-full p-4 font-bold text-3xl mb-6">Midjourney Prompt Tool</p>
             <div className="flex flex-row items-center w-full justify-center">
-                <div className="w-1/2 p-4 rounded-lg flex flex-col items-center space-y-2 relative">
-                    <h1 className="text-sm font-bold mr-auto">Generate A Prompt Idea</h1>
+                <div className="input-container w-1/2 p-4 flex flex-col space-y-2">
+                    <h1 className="input-title">Generate A Prompt Idea</h1>
                     <textarea
-                        className={`w-full h-40 text-gray-800 p-4 rounded-lg resize-none mb-4 overflow-hidden`}
+                        className="input-textarea w-full h-40 p-4 mb-4"
                         value={inputText}
                         placeholder={'Keywords of your idea...'}
                         onChange={(e) => setInputText(e.target.value)}
@@ -95,20 +95,20 @@ export default function PromptGenerator() {
                         disabled={inspireLoading}>{inspireLoading ? 'Inspiring...' : 'Inspire'}
                         <LightBulbIcon className="w-5 h-5 stroke-2 cursor-pointer" /></button>
                 </div>
-                <div className="w-1/2 p-4 rounded-lg flex flex-col items-center space-y-2" >
-                    <h1 className="w-full text-sm font-bold mr-auto">... Or Input Your Idea</h1>
+                <div className="input-container w-1/2 p-4 flex flex-col space-y-2" >
+                    <h1 className="input-title">... Or Input Your Idea</h1>
                     <textarea
-                        className={`w-full h-40 p-4 text-gray-800 rounded-lg resize-none mb-4 overflow-hidden`}
+                        className="input-textarea w-full h-40 p-4 mb-4"
                         value={promptIdea}
                         placeholder={'Detailed ready-to-go idea...'}
                         onChange={(e) => { setPromptIdea(e.target.value) }}
                     />
                 </div>
             </div>
-            <div className="w-full px-4 py-2 rounded-lg flex flex-row gap-4 items-center mb-4">
-                <h1 className="w-1/2 text-sm text-left font-bold">Exclude certain terms or objects from your generation</h1>
+            <div className="input-container w-full px-4 py-2 flex flex-row gap-4">
+                <h1 className="input-title w-1/2">Exclude certain terms or objects from your generation</h1>
                 <textarea
-                    className={`w-full h-10 px-4 py-2 text-gray-800 rounded-lg resize-none overflow-hidden`}
+                    className={`input-textarea w-full h-10 px-4 py-2`}
                     value={noWords}
                     placeholder={'Avoid these terms...(e.g. people, flowers, etc.)'}
                     onChange={(e) => { setNoWords(e.target.value) }}
@@ -116,11 +116,10 @@ export default function PromptGenerator() {
             </div>
             <div className="w-full p-4 rounded-lg flex flex-col items-center relative">
                 <textarea
-                    className="w-full h-32 p-4 border border-gray-500 text-gray-500 rounded-lg mb-4 overflow-auto"
+                    className="output-textarea w-full h-32 p-4 mb-4"
                     ref={promptRef}
                     readOnly
                     placeholder={'Your final prompt here...'}
-                    // value={`/imagine prompt: ${promptIdea.trim().replace(/\n/g, ' ')}:: --v 4`}
                     value={`/imagine prompt: ${promptIdea.trim().replace(/\n/g, ' ')} ${noWords.length > 0 ? `--no ${noWords.trim()}` : ''} ${paramString}`}
                 ></textarea>
                 <DocumentIcon
@@ -168,11 +167,6 @@ export default function PromptGenerator() {
                     </div>
                 </div>
             </div>
-
-
-            {/* <div>
-                <button className="bg-blue-500 hover:bg-blue-700 text-white text-base rounded-lg p-2 px-6">Upload Inspiration Image</button>
-            </div> */}
 
         </div>
 

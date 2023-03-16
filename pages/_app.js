@@ -1,6 +1,7 @@
 import '../styles/globals.css'
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { SessionContextProvider } from '@supabase/auth-helpers-react'
+import { Analytics } from '@vercel/analytics/react';
 import { useState, useEffect } from 'react'
 import Navbar from "@/components/Navbar";
 
@@ -26,6 +27,7 @@ function MyApp({ Component, pageProps }) {
       <Navbar supabase={supabase} session={session} />
       <SessionContextProvider supabaseClient={supabase} initialSession={pageProps.initialSession}>
         <Component {...pageProps} />
+        <Analytics />
       </SessionContextProvider>
     </div>
   )

@@ -41,18 +41,18 @@ export default function Dropdown({ width, height, paramName, options, defaultVal
                 onClick={toggleDropdown}
             >
                 <ParamButton>
-                    {paramName} {selectedOption == defaultValue ? '' : <span className='rounded bg-gray-700 px-3 mx-1'>{selectedOption}</span>}
+                    {paramName} {selectedOption == defaultValue ? '' : <span className='param-span'>{selectedOption}</span>}
                 </ParamButton>
             </div>
             <div className="relative text-gray-800">
-                <div className={`absolute mt-2 z-50 bg-white shadow rounded-lg 
+                <div className={`option-dropdown
                     ${!width || width == 'default' ? 'w-full' : width}
                     ${!height || height == 'default' ? 'h-full' : height}
                     ${isOpen ? 'block' : 'hidden'} `}>
                     {options.map((option) => (
                         <div
                             key={option}
-                            className=" bg-white rounded-lg px-3 py-2 hover:bg-gray-300 cursor-pointer"
+                            className=" param-option"
                             onClick={() => selectOption(option)}
                         >
                             {option}
