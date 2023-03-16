@@ -9,7 +9,7 @@ const openai = new OpenAIApi(configuration);
 export default async (req, res) => {
 
     const { input, num_results } = req.query;
-    console.log(input, num_results)
+    console.log(input, num_results, process.env.NEXT_OPENAI_ORGANIZATION)
 
     try {
         const response = await openai.createCompletion({
