@@ -2,7 +2,7 @@
 import { Configuration, OpenAIApi } from "openai";
 const configuration = new Configuration({
     organization: "org-2KPiB8QFCOXogw6TS7cO4TMz",
-    apiKey: "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",
+    apiKey: process.env.NEXT_PUBLIC_OPENAI_APIKEY,
 });
 const openai = new OpenAIApi(configuration);
 
@@ -11,12 +11,10 @@ export default async (req, res) => {
     const { input, num_results } = req.query;
     console.log(input, num_results)
 
-    console.log(configuration)
-
     try {
         const response = await openai.createCompletion({
             model: "text-davinci-003",
-            prompt: `Illustrate a view within 50 words using these words ${input}`,
+            prompt: `Illustrate a view within 5 words using these words ${input}`,
             max_tokens: 500,
             n: num_results,
             temperature: 0.5,
