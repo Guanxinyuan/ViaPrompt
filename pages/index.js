@@ -7,7 +7,7 @@ export default function Home() {
       <Head>
         <title>Palaxy</title>
         <link rel="icon" href="/favicon.ico" />
-        <description>AI-Powered prompt generation tool with rich inspirations. Saves money & time, and evolves your skills</description>
+        <meta name="description" content="AI-Powered prompt generation tool with rich inspirations. Saves money & time, and evolves your skills" />
       </Head>
 
       {/* Hero section */}
