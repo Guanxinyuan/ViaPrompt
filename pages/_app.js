@@ -23,7 +23,8 @@ function MyApp({ Component, pageProps }) {
 
   return (
     //  text-gray-800
-    <div className='bg-zinc-800 text-white'>
+    // <div className='bg-zinc-800 text-white'>
+    <div className='bg-white text-white'>
       <Navbar supabase={supabase} session={session} />
       <SessionContextProvider supabaseClient={supabase} initialSession={pageProps.initialSession}>
         <Component {...pageProps} />
