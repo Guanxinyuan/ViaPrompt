@@ -44,7 +44,7 @@ export default function Home() {
     }
 
     return (
-        <div className="max-w-screen min-h-screen my-10 mx-10 m-auto flex flex-col gap-4">
+        <div className="max-w-screen min-h-screen py-10 mx-10 m-auto flex flex-col gap-4">
             <PromptSearchBar filterSetter={setFilter} querySetter={setQuery} />
             <div className="h-full gap-6 grid grid-cols-3">
                 <Card card={emptyCards} />

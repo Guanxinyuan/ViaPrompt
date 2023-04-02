@@ -33,7 +33,7 @@ export default function FilterDropdown({ width, height, options, defaultValue, p
     }, []);
 
     return (
-        <div className="relative border col-span-1" ref={dropdownRef}>
+        <div className="relative col-span-1" ref={dropdownRef}>
 
             <div className="h-auto rounded-lg cursor-pointer">
                 <button className={`
@@ -41,16 +41,14 @@ export default function FilterDropdown({ width, height, options, defaultValue, p
                     onClick={toggleDropdown}>
                     {selectedOption == defaultValue ?
                         <div className='flex flex-row gap-1 items-center py-1'>
-                            <FunnelIcon className='w-4 text-black' />
-                            <span className='text-black'>
-                                Filter
-                            </span>
+                            <FunnelIcon className='w-4' />
+                            <span>Filter</span>
                         </div>
                         :
                         <div className='flex w-fit gap-1.5 items-center'>
                             <div className='flex flex-row gap-1 items-center'>
-                                <FunnelIcon className='w-4 text-black' />
-                                <span className='text-black mr-1'>
+                                <FunnelIcon className='w-4' />
+                                <span className='mr-1'>
                                     Filter by
                                 </span>
                             </div>
@@ -77,7 +75,7 @@ export default function FilterDropdown({ width, height, options, defaultValue, p
                         </button>
                     ))}
                     <button
-                        className={`mode-button ${width} text-black bg-white`}
+                        className={`mode-button ${width} text-black bg-white dark:bg-zinc-900 dark:text-white`}
                         onClick={() => {
                             selectOption(defaultValue)
                             setIsOpen(false)

@@ -3,7 +3,7 @@ import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { SessionContextProvider } from '@supabase/auth-helpers-react'
 import { Analytics } from '@vercel/analytics/react';
 import { useState, useEffect } from 'react'
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/Header";
 
 function MyApp({ Component, pageProps }) {
   const [supabase] = useState(() => createBrowserSupabaseClient())
@@ -24,7 +24,7 @@ function MyApp({ Component, pageProps }) {
   return (
     //  text-gray-800
     // <div className='bg-zinc-800 text-white'>
-    <div className='bg-white text-white'>
+    <div className='global-container'>
       <Navbar supabase={supabase} session={session} />
       <SessionContextProvider supabaseClient={supabase} initialSession={pageProps.initialSession}>
         <Component {...pageProps} />

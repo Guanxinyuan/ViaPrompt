@@ -32,11 +32,10 @@ export default function ModeDropdown({ width, height, options, defaultValue, par
     }, []);
 
     return (
-        <div className="relative border col-span-1" ref={dropdownRef}>
+        <div className="relative col-span-1" ref={dropdownRef}>
 
             <div className="h-auto rounded-lg cursor-pointer">
                 <button className={`mode-button py-1
-                ${lockInput ? 'opacity-70' : ''}
                 ${!width || width == 'default' ? 'w-full' : width}
                 ${selectedOption == "Optimize" ? '' : selectedOption == "Decompose" ? 'bg-purple-500 active:bg-purple-700' : 'bg-gray-500 active:bg-gray-700'}`}
                     onClick={toggleDropdown}>

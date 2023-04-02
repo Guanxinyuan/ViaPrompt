@@ -76,11 +76,11 @@ export default function PromptTextarea({ contentDict, lockInput, mode, cardId, c
                                 Object.keys(content).map((key) => {
                                     return (
                                         <div key={key} className="flex mb-1 items-start ">
-                                            <div className="rounded-full bg-gray-200 h-4 flex items-center justify-center mr-1.5">
-                                                <span className="min-w-[80px] text-center bg-gray-400 text-white rounded px-1 mt-1 text-xs">{key}</span>
+                                            <div className="rounded-full bg-gray-500 h-4 flex items-center justify-center mr-1.5 mt-0.5">
+                                                <span className="decomposed-component-title">{key}</span>
                                             </div>
                                             <div className="flex-grow">
-                                                <div className="text-gray-500 py-0">{content[key]}</div>
+                                                <div className="decomposed-component-value">{content[key]}</div>
                                             </div>
                                         </div>
                                     );
@@ -101,15 +101,15 @@ export default function PromptTextarea({ contentDict, lockInput, mode, cardId, c
             <div class="prompt-card-body-content-word-count">
 
                 <TrashIcon
-                    className={`w-6 cursor-pointer text-red-500`}
+                    className={`prompt-card-footer-icon text-red-500 dark:text-red-500`}
                     onClick={onDeleteHandler} />
                 {
                     lockInput ?
                         <ArrowPathIcon
-                            className='w-6 transform rotate-45 cursor-pointer text-black'
+                            className='prompt-card-footer-icon'
                             onClick={onRedoHandler} /> :
                         <PaperAirplaneIcon
-                            className='w-6 transform -rotate-45 cursor-pointer text-black'
+                            className='prompt-card-footer-icon transform -rotate-45'
                             onClick={onSubmitHandler} />
                 }
 

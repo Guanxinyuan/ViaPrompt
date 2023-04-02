@@ -44,10 +44,10 @@ export default function ModelDropdown({ options, defaultValue, paramSetter, lock
     return (
         <div className="relative col-start-3 col-span-2" ref={dropdownRef}>
             <div
-                className="cursor-pointer flex flex-row items-center justify-end ml-auto gap-2 px-4 border border-gray-200"
+                className="model-button"
                 onClick={toggleDropdown}>
-                <img src={modelImageDict[selectedOption]} className='w-6 h-auto' />
-                <p className={`py-1 ${lockInput ? 'opacity-70' : ''}`}>{selectedOption}</p>
+                <img src={modelImageDict[selectedOption]} className='model-icon' />
+                <p className={`py-1`}>{selectedOption}</p>
             </div>
             {
                 !lockInput &&
@@ -57,7 +57,7 @@ export default function ModelDropdown({ options, defaultValue, paramSetter, lock
                             <span className='font-semibold'>Step 2: </span>Select an AI model for prompting.
                             <span className='cursor-pointer' onClick={() => alert('model example page')}> View examples ↗</span></p>
                         {options.map((option) => (
-                            <div className='cursor-pointer border-b border-gray-300 h-fit'
+                            <div className='model-option-item'
                                 onClick={() => {
                                     selectOption(option)
                                     setIsOpen(false)

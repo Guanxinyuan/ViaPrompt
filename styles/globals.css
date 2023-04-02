@@ -3,6 +3,81 @@
 @tailwind utilities;
 
 @layer components {
+  .global-container {
+    @apply text-black;
+    @apply dark:bg-zinc-900 text-white;
+  }
+
+  /* header component */
+  .header {
+    @apply text-black flex flex-row justify-items-end container mx-auto py-4 w-full border-b border-zinc-300;
+    @apply dark:text-white dark:border-zinc-700;
+  }
+
+  .sub-header {
+    @apply text-black;
+    @apply dark:text-white;
+  }
+
+  .search-input {
+    @apply w-full px-3 py-1.5 pl-12 text-gray-700 bg-gray-200 rounded-md focus:outline-none focus:bg-gray-200 focus:ring-1 focus:ring-blue-500 hover:bg-gray-300;
+    @apply dark:bg-zinc-700 dark:text-white;
+  }
+
+  .dark-mode-icon {
+    @apply absolute inset-0 w-5 h-5 transform rounded-full transition-transform duration-300 ease-in-out overflow-hidden border-2;
+  }
+
+  /* subscription page */
+
+  .subscription-header {
+    @apply flex flex-col gap-4 text-center;
+  }
+
+  .subscription-card-container {
+    @apply border border-gray-300 rounded-lg shadow-md overflow-hidden h-[60vh];
+    @apply dark:border-zinc-700;
+  }
+
+  .subscription-card {
+    @apply px-6 py-4 bg-white space-y-6 h-full;
+    @apply dark:bg-zinc-700;
+  }
+
+  .subscription-card-title {
+    @apply text-xl font-bold text-black font-medium text-gray-900;
+    @apply dark:text-white;
+  }
+
+  .subscription-card-description {
+    @apply text-gray-500 text-sm;
+    @apply dark:text-zinc-300;
+  }
+
+  .subscription-card-price-section {
+    @apply flex flex-row justify-between items-center text-black;
+    @apply dark:text-white;
+  }
+
+  .subscription-card-price {
+    @apply text-black font-bold text-5xl;
+    @apply dark:text-white;
+  }
+
+  .subscription-card-feature-title {
+    @apply text-gray-500 text-sm;
+    @apply dark:text-zinc-500;
+  }
+
+  .subscription-card-feature-section {
+    @apply list-disc list-inside text-black text-sm space-y-2;
+    @apply dark:text-white;
+  }
+
+  .subscription-card-button {
+    @apply bg-yellow-500 active:bg-yellow-600 text-white font-bold py-2 px-4 rounded my-6;
+  }
+
   .input-container {
     @apply rounded-lg items-center relative;
   }
@@ -34,7 +109,8 @@
   }
 
   .option-dropdown {
-    @apply absolute mt-2 z-10 bg-white shadow rounded-lg border border-gray-300  flex flex-col gap-2 p-2;
+    @apply absolute mt-2 z-10 bg-white shadow rounded-lg border border-gray-300 flex flex-col gap-2 p-2;
+    @apply dark:bg-zinc-900 dark:text-white dark:border-zinc-700;
   }
 
   .param-option {
@@ -76,9 +152,8 @@
   }
 
   .prompt-card {
-    @apply h-[50vh] border border-gray-300 rounded-lg text-sm flex flex-col gap-2;
-    /* @apply w-1/3; */
-    @apply w-full;
+    @apply w-full h-[50vh] border border-gray-300 rounded-lg text-sm flex flex-col gap-2;
+    @apply dark:bg-zinc-800 dark:border-zinc-800 dark:text-white;
   }
 
   .mode-button {
@@ -87,8 +162,21 @@
     /* @apply mx-4; */;
   }
 
+  .model-button {
+    @apply cursor-pointer flex flex-row items-center justify-end ml-auto gap-2 px-4;
+    @apply dark:text-white;
+  }
+
+  .model-icon {
+    @apply w-6 h-auto;
+  }
+
+  .model-option-item {
+    @apply cursor-pointer border-b border-gray-700 h-fit;
+  }
+
   .prompt-card-header {
-    @apply text-black grid grid-cols-4 py-2.5 px-4 border-b border-gray-300;
+    @apply text-black grid grid-cols-4 py-2.5 px-4 border-b border-gray-500;
   }
 
   .prompt-card-body {
@@ -111,6 +199,7 @@
 
   .prompt-card-body-content {
     @apply w-full h-full resize-none focus:outline-none text-black p-4 rounded-md border border-gray-300 overflow-y-auto inline-block;
+    @apply dark:bg-zinc-700 dark:text-white dark:border-zinc-700;
   }
 
   .prompt-card-body-content::before {
@@ -136,7 +225,17 @@
     @apply text-white bg-yellow-500;
   }
 
-  .component-title {
-    @apply border border-black rounded px-1 text-xs;
+  .prompt-card-footer-icon {
+    @apply w-6 cursor-pointer text-black;
+    @apply dark:text-white;
+  }
+
+  .decomposed-component-title {
+    @apply min-w-[80px] text-center text-white rounded px-1 text-xs;
+  }
+
+  .decomposed-component-value {
+    @apply text-black py-0;
+    @apply dark:text-white;
   }
 }

@@ -3,14 +3,20 @@
 import { pool } from '@/pages/api/db'
 import { dummyCards } from '../../../data/cards';
 import { generateSnowflake } from '@/utils/snowflake';
+import { operatePrompt } from '@/utils/openai';
 
-export default function handler(req, res) {
+
+export default async function handler(req, res) {
     console.log('req.method', req.method);
     if (req.method === 'POST') {
         try {
             const card_id = generateSnowflake();
             console.log(card_id)
             const { originalPrompt, mode } = JSON.parse(req.body);
+
+            // Operate ChatGPT API
+            const optimizedPrompt = await operatePrompt(originalPrompt, mode);
+
             console.log('originalPrompt', originalPrompt, 'mode', mode);
             res.status(200).json({ data: dummyCards });
             // res.status(201).json({ message: `Create card with ID ${card_id}` });

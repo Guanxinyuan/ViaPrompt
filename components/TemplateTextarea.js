@@ -84,16 +84,16 @@ export default function InputTextarea({ contentText, lockInput, mode, cardId, cl
 
                 }
                 <TrashIcon
-                    className={`w-6 cursor-pointer text-red-500 ${editActive ? 'hidden' : ''}`}
+                    className={`prompt-card-footer-icon text-red-500 dark:text-red-500 ${editActive ? 'hidden' : ''}`}
                     onClick={onDeleteHandler} />
                 {
                     lockInput ?
                         <PencilSquareIcon
-                            className={`w-6 cursor-pointer text-black ${editActive ? 'hidden' : ''}`}
+                            className={`prompt-card-footer-icon ${editActive ? 'hidden' : ''}`}
                             onClick={switchEdit} />
                         :
                         <PaperAirplaneIcon
-                            className="w-6 transform -rotate-45 cursor-pointer text-black"
+                            className="prompt-card-footer-icon transform -rotate-45"
                             onClick={onSubmitHandler} />
                 }
             </div>

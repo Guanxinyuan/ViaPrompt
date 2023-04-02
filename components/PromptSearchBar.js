@@ -20,12 +20,12 @@ export default function PromptSearchbar({ filterSetter, querySetter }) {
     };
 
     return (
-        <div className='w-full flex flex-row gap-4 items-center text-sm'>
+        <div className='sub-header w-full flex flex-row gap-4 items-center text-sm'>
             <div className='w-2/3 flex relative'>
                 <input
                     type="search"
                     placeholder="Search prompt (Press Enter)"
-                    className="w-full px-3 py-2 pl-12 text-gray-700 bg-gray-200 rounded-md focus:outline-none focus:bg-gray-200 focus:ring-1 focus:ring-blue-500 hover:bg-gray-300"
+                    className="search-input"
                     onKeyDown={handleKeyDown}
                     onChange={(e) => setQuery(e.target.value)}
                 />

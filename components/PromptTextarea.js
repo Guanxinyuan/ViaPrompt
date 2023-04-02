@@ -72,15 +72,15 @@ export default function PromptTextarea({ contentText, lockInput, mode, cardId, c
             <div class="prompt-card-body-content-word-count">
                 <p id="word-count" className='text-gray-500 text-xs'>{contentWordCount} words</p>
                 <TrashIcon
-                    className={`w-6 cursor-pointer text-red-500 ${!cardId ? 'hidden' : ''}`}
+                    className={`prompt-card-footer-icon text-red-500 dark:text-red-500 ${!cardId ? 'hidden' : ''}`}
                     onClick={onDeleteHandler} />
                 {
                     lockInput ?
                         <ArrowPathIcon
-                            className='w-6 transform rotate-45 cursor-pointer text-black'
+                            className='prompt-card-footer-icon'
                             onClick={onRedoHandler} /> :
                         <PaperAirplaneIcon
-                            className='w-6 transform -rotate-45 cursor-pointer text-black'
+                            className='prompt-card-footer-icon transform -rotate-45'
                             onClick={onSubmitHandler} />
                 }
 
