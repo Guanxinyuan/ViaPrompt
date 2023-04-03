@@ -1,34 +1,32 @@
 import { Auth } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
-import AccountSettings from '@/components/AccountSettings'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+import useColorMode from '@/hooks/useColorMode'
 
 export default function Authenticate() {
+    const router = useRouter()
     const session = useSession()
     const supabase = useSupabaseClient()
 
+    useEffect(() => {
+        if (session) router.push('/settings')
+    }, [session])
+
     return (
-        <div className='min-h-screen'>
+        <div className='min-h-screen '>
             <div className='auth-container'>
                 <div className="container px-10 pt-6 w-full">
-                    {!session ? (
-                        <Auth
-                            supabaseClient={supabase}
-                            appearance={{
-                                theme: ThemeSupa,
-                                style: {
-                                    input: { color: 'white' },
-                                    button: { fontSize: '14px' },
-                                }
-                            }}
-                            theme="default"
-                        />
-                    ) : (
-                        <div>
-                            <AccountSettings session={session} />
-                        </div>
-                    )}
+                    <Auth
+                        supabaseClient={supabase}
+                        appearance={{
+                            theme: ThemeSupa,
+                        }}
+                        theme="default"
+                    />
                 </div>
+
             </div>
         </div>
     )

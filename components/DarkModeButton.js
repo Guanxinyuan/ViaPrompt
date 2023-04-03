@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import useColorMode from '@/hooks/useColorMode';
 import { SunIcon, MoonIcon } from '@heroicons/react/24/outline';
 
-export default function DarkModeToggle() {
+export default function DarkModeToggle({ colorModeSetter }) {
   const [colorMode, setColorMode] = useColorMode()
   const [isInitialized, setIsInitialized] = useState(false);
 
@@ -10,10 +10,15 @@ export default function DarkModeToggle() {
     setIsInitialized(true);
   }, [])
 
+  const switchColorMode = () => {
+    setColorMode(colorMode == "light" ? "dark" : "light")
+    colorModeSetter(colorMode == "light" ? "dark" : "light")
+  }
+
   return (
     <div
       className="relative inline-block w-10 h-5 rounded-full bg-zinc-800 dark:bg-white flex flex-row"
-      onClick={() => setColorMode(colorMode == "light" ? "dark" : "light")}
+      onClick={switchColorMode}
     >
 
       {

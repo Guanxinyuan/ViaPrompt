@@ -10,7 +10,7 @@
 
   /* header component */
   .header {
-    @apply text-black flex flex-row justify-items-end container mx-auto py-4 w-full border-b border-zinc-300;
+    @apply text-black flex flex-row justify-items-end container mx-auto py-2 w-full border-b border-zinc-300 text-sm;
     @apply dark:text-white dark:border-zinc-700;
   }
 
@@ -28,6 +28,11 @@
     @apply absolute inset-0 w-5 h-5 transform rounded-full transition-transform duration-300 ease-in-out overflow-hidden border-2;
   }
 
+  .header-button {
+    @apply flex flex-row gap-0.5 justify-center items-center cursor-pointer text-gray-700 hover:text-black px-2;
+    @apply dark:text-white dark:hover:text-zinc-300;
+  }
+
   /* subscription page */
 
   .subscription-header {
@@ -36,12 +41,12 @@
 
   .subscription-card-container {
     @apply border border-gray-300 rounded-lg shadow-md overflow-hidden h-[60vh];
-    @apply dark:border-zinc-700;
+    @apply dark:border-zinc-800;
   }
 
   .subscription-card {
     @apply px-6 py-4 bg-white space-y-6 h-full;
-    @apply dark:bg-zinc-700;
+    @apply dark:bg-zinc-800;
   }
 
   .subscription-card-title {
@@ -76,6 +81,65 @@
 
   .subscription-card-button {
     @apply bg-yellow-500 active:bg-yellow-600 text-white font-bold py-2 px-4 rounded my-6;
+  }
+
+  /* settings page */
+
+  .settings-panel {
+    @apply w-full md:w-full mb-4 md:mb-0 h-fit;
+  }
+
+  .settings-title {
+    @apply text-2xl font-bold mb-4 text-black;
+    @apply dark:text-white;
+  }
+
+  .settings-panel-body {
+    @apply border border-gray-300 p-4 rounded-md flex flex-col space-y-2 bg-white h-full gap-6;
+    @apply dark:bg-zinc-800 dark:border-zinc-800;
+  }
+
+  .settings-panel-item {
+    @apply flex flex-col justify-between gap-1;
+  }
+
+  .settings-panel-label {
+    @apply text-black font-semibold text-sm;
+    @apply dark:text-white;
+  }
+
+  .settings-panel-value {
+    @apply text-zinc-500 text-sm;
+    @apply dark:text-zinc-300;
+  }
+
+  .settings-panel-text-button {
+    @apply cursor-pointer text-gray-700 hover:text-black text-sm font-medium;
+    @apply dark:text-gray-300 dark:hover:text-white;
+  }
+
+  .settings-panel-button {
+    @apply px-4 py-1 text-white bg-yellow-500 rounded active:bg-yellow-600 text-sm font-medium;
+  }
+
+  .settings-panel input {
+    @apply flex flex-col rounded-md border border-zinc-300 px-2 py-1 text-black placeholder-zinc-400;
+    @apply dark:border-zinc-600 dark:bg-zinc-600 dark:text-white dark:focus:bg-zinc-500 dark:placeholder-zinc-500;
+  }
+
+  .password-reset-panel {
+    @apply flex flex-col rounded-md px-2 py-4 border border-zinc-300;
+    @apply dark:bg-zinc-800 dark:border-zinc-700;
+  }
+
+  .password-reset-panel label {
+    @apply text-black text-xs font-medium;
+    @apply dark:text-white;
+  }
+
+  .password-reset-panel input {
+    @apply flex flex-col rounded-md border border-zinc-300 px-2 text-black;
+    @apply dark:border-zinc-700 dark:bg-zinc-700 dark:text-white dark:focus:bg-zinc-600;
   }
 
   .input-container {
@@ -141,7 +205,18 @@
   }
 
   .auth-container {
-    @apply container mx-auto mt-14 w-1/3 rounded-lg bg-zinc-700;
+    @apply container mx-auto mt-14 w-1/3 rounded-lg bg-white border border-zinc-300;
+    @apply dark:bg-zinc-800 dark:border-zinc-800;
+  }
+
+  .auth-container button {
+    @apply text-black bg-gray-300 border border-zinc-300 mt-1 py-2 hover:bg-gray-400 active:bg-gray-400 rounded-lg !important;
+    @apply dark:text-white dark:bg-zinc-700 dark:border-zinc-700 !important;
+  }
+
+  .auth-container input {
+    @apply text-black py-2 rounded-lg !important;
+    @apply dark:text-white dark:border-zinc-700 !important;
   }
 
   input[type="search"]::-webkit-search-decoration,
@@ -176,7 +251,7 @@
   }
 
   .prompt-card-header {
-    @apply text-black grid grid-cols-4 py-2.5 px-4 border-b border-gray-500;
+    @apply text-black grid grid-cols-4 py-2.5 px-4 border-b border-gray-300;
   }
 
   .prompt-card-body {
