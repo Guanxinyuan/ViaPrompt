@@ -1,9 +1,8 @@
-import Link from 'next/link'
 import Card from '@/components/Card'
 import { useEffect, useState } from 'react'
 import PromptSearchBar from '@/components/PromptSearchBar'
 
-export default function Home() {
+export default function Workspace() {
     const [allCards, setAllCards] = useState([])
     const [cards, setCards] = useState([])
     const [query, setQuery] = useState('')

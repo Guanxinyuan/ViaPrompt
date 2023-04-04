@@ -15,10 +15,10 @@ export default async function handler(req, res) {
             const { originalPrompt, mode } = JSON.parse(req.body);
 
             // Operate ChatGPT API
-            const optimizedPrompt = await operatePrompt(originalPrompt, mode);
+            const apiResult = await operatePrompt(originalPrompt, mode);
 
-            console.log('originalPrompt', originalPrompt, 'mode', mode);
-            res.status(200).json({ data: dummyCards });
+            console.log('apiResult', apiResult, 'mode', mode);
+            res.status(200).json({ data: apiResult });
             // res.status(201).json({ message: `Create card with ID ${card_id}` });
         } catch (ex) {
             console.error('error occurs', ex.stack);

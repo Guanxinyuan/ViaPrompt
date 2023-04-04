@@ -8,6 +8,42 @@
     @apply dark:bg-zinc-900 text-white;
   }
 
+  /* main page */
+  .hero-section {
+    @apply pt-24;
+    @apply dark:bg-zinc-900;
+  }
+
+  .hero-section h2 {
+    @apply text-7xl font-bold text-gray-900 leading-tight;
+    @apply dark:text-white;
+  }
+
+  .hero-section p {
+    @apply mt-4 text-lg text-gray-500;
+    @apply dark:text-zinc-400;
+  }
+
+  .selling-point-card-section {
+    @apply py-24 bg-white;
+    @apply dark:bg-zinc-900 dark:border-zinc-800;
+  }
+
+  .selling-point-card {
+    @apply bg-white overflow-hidden shadow rounded-lg;
+    @apply dark:bg-zinc-800;
+  }
+
+  .selling-point-card h3 {
+    @apply text-lg font-bold text-gray-900;
+    @apply dark:text-white;
+  }
+
+  .selling-point-card p {
+    @apply mt-2 text-gray-500;
+    @apply dark:text-zinc-400;
+  }
+
   /* header component */
   .header {
     @apply text-black flex flex-row justify-items-end container mx-auto py-2 w-full border-b border-zinc-300 text-sm;
@@ -40,12 +76,12 @@
   }
 
   .subscription-card-container {
-    @apply border border-gray-300 rounded-lg shadow-md overflow-hidden h-[60vh];
+    @apply border border-gray-300 rounded-lg shadow-md overflow-hidden h-fit;
     @apply dark:border-zinc-800;
   }
 
   .subscription-card {
-    @apply px-6 py-4 bg-white space-y-6 h-full;
+    @apply px-6 py-4 pb-10 bg-white space-y-6 h-full;
     @apply dark:bg-zinc-800;
   }
 
@@ -80,13 +116,30 @@
   }
 
   .subscription-card-button {
-    @apply bg-yellow-500 active:bg-yellow-600 text-white font-bold py-2 px-4 rounded my-6;
+    @apply bg-yellow-500 active:bg-yellow-600 text-white font-bold py-2 px-4 rounded mt-6;
+  }
+
+  /* payment board */
+  ul.checklist li::before {
+    @apply content-['✓'];
+    @apply inline-block mr-2 text-green-500 font-semibold;
+  }
+
+  .payment-modal {
+    @apply absolute z-50 bg-white rounded-lg overflow-hidden shadow-xl transform transition-all h-fit w-1/4 flex flex-row justify-center items-center;
+    @apply dark:bg-zinc-800;
+  }
+
+  .payment-board {
+    @apply bg-white rounded-lg flex flex-col w-full h-fit;
+    @apply p-4 gap-4;
+    @apply dark:bg-zinc-800;
   }
 
   /* settings page */
 
   .settings-panel {
-    @apply w-full md:w-full mb-4 md:mb-0 h-fit;
+    @apply w-full md:w-full mb-4 md:mb-0 flex flex-col;
   }
 
   .settings-title {
@@ -95,7 +148,7 @@
   }
 
   .settings-panel-body {
-    @apply border border-gray-300 p-4 rounded-md flex flex-col space-y-2 bg-white h-full gap-6;
+    @apply border border-gray-300 p-4 rounded-md flex flex-col space-y-2 bg-white gap-6;
     @apply dark:bg-zinc-800 dark:border-zinc-800;
   }
 
@@ -104,22 +157,22 @@
   }
 
   .settings-panel-label {
-    @apply text-black font-semibold text-sm;
-    @apply dark:text-white;
+    @apply text-gray-400 font-semibold text-sm;
+    @apply dark:text-gray-500;
   }
 
   .settings-panel-value {
-    @apply text-zinc-500 text-sm;
-    @apply dark:text-zinc-300;
+    @apply text-zinc-800 text-sm;
+    @apply dark:text-white;
   }
 
   .settings-panel-text-button {
-    @apply cursor-pointer text-gray-700 hover:text-black text-sm font-medium;
+    @apply cursor-pointer text-gray-700 hover:text-black text-base font-medium;
     @apply dark:text-gray-300 dark:hover:text-white;
   }
 
   .settings-panel-button {
-    @apply px-4 py-1 text-white bg-yellow-500 rounded active:bg-yellow-600 text-sm font-medium;
+    @apply px-4 py-1 text-white bg-yellow-500 rounded active:bg-yellow-600 text-sm font-semibold;
   }
 
   .settings-panel input {
@@ -226,6 +279,8 @@
     display: none;
   }
 
+  /* prompt card */
+
   .prompt-card {
     @apply w-full h-[50vh] border border-gray-300 rounded-lg text-sm flex flex-col gap-2;
     @apply dark:bg-zinc-800 dark:border-zinc-800 dark:text-white;
@@ -252,6 +307,7 @@
 
   .prompt-card-header {
     @apply text-black grid grid-cols-4 py-2.5 px-4 border-b border-gray-300;
+    @apply dark:border-zinc-700;
   }
 
   .prompt-card-body {

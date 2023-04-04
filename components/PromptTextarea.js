@@ -1,5 +1,5 @@
 import { PaperAirplaneIcon, ArrowPathIcon, TrashIcon } from "@heroicons/react/24/outline";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import ContentEditable from 'react-contenteditable'
 
 export default function PromptTextarea({ contentText, lockInput, mode, cardId, className }) {
@@ -8,7 +8,11 @@ export default function PromptTextarea({ contentText, lockInput, mode, cardId, c
     const [contentWordCount, setContentWordCount] = useState(contentText ? contentText.trim().split(' ').length : 0);
 
     const onChangeHandler = (e) => {
-        setContent(e.target.value)
+        const parser = new DOMParser();
+        const parsedContent = parser.parseFromString(e.target.value, 'text/html');
+        setContent(parsedContent.body.textContent);
+
+        // setContent(contentRef.current.textContent)
         if (e.target.value.trim() === '') {
             setContentWordCount(0);
         } else {
@@ -64,7 +68,7 @@ export default function PromptTextarea({ contentText, lockInput, mode, cardId, c
                     html={content}
                     disabled={lockInput}
                     tagName="div"
-                    className={`prompt-card-body-content ${content === null || content.trim() === '' ? 'before-visible' : 'before-hidden'}`}
+                    className={`prompt-card-body-content ${!content || content.trim() === '' ? 'before-visible' : 'before-hidden'}`}
                     onChange={onChangeHandler}
                 // onBlur={onInputHandler}
                 />

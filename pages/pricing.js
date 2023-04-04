@@ -1,7 +1,7 @@
 // pages/subscription.js
-
+import PaymentModal from '@/components/PaymentModal';
 import Head from 'next/head';
-import { Fragment } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 
 export default function Upgrade() {
     const subscriptionInfos = {
@@ -61,15 +61,18 @@ export default function Upgrade() {
     );
 };
 
+
+
 export function SubscriptionCard({ subscriptionInfo }) {
+
+
     const { title, description, featureTitle, features, price, isMostPopular } = subscriptionInfo;
+    const [checkout, setCheckout] = useState(false);
 
+    useEffect(() => { }, [checkout])
 
-    const onChoosePlanHandler = async () => {
-        alert('navigate to choose plan page')
-    }
     return (
-        <div className="subscription-card-container">
+        <div className="subscription-card-container" >
             <div className="subscription-card">
                 <div className="flex items-center justify-between">
                     <h2 className="subscription-card-title">{title}</h2>
@@ -93,9 +96,15 @@ export function SubscriptionCard({ subscriptionInfo }) {
                     </ul>
                     <button
                         className="subscription-card-button"
-                        onClick={onChoosePlanHandler}
+                        onClick={() => setCheckout(true)}
                     >Choose Plan</button>
                 </div>
+                {/* {
+                    checkout && <PaymentBoard />
+                } */}
+                {
+                    checkout && <PaymentModal subscriptionInfo={subscriptionInfo} onCloseModal={() => setCheckout(false)} />
+                }
             </div>
         </div>
     )

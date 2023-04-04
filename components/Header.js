@@ -63,7 +63,7 @@ export default function Navbar({ supabase, session }) {
                 </div>
                 <div className='header-button flex flex-row gap-0.5 justify-center items-center cursor-pointer'>
                     <RocketLaunchIcon className="w-5 h-5" />
-                    <p className="cursor-pointer " onClick={handleClick} router-text="test">Workspace</p>
+                    <p className="cursor-pointer " onClick={handleClick} router-text="workspace">Workspace</p>
                 </div>
                 <div className='header-button '>
                     <BoltIcon className="w-5 h-5" />
