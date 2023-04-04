@@ -30,6 +30,7 @@ export const promptOptimizer = async (originalPrompt) => {
                 { role: "user", content: `Generate a Midjourney prompt: ${originalPrompt}` }
             ],
         });
+        console.log(completion.data)
         return completion.data
     } catch (ex) {
         console.error('error occurs in promptOptimizer', ex.stack);
