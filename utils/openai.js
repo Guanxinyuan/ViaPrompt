@@ -2,7 +2,7 @@ import { pool } from '@/pages/api/db'
 const { Configuration, OpenAIApi } = require("openai");
 
 const configuration = new Configuration({
-    apiKey: process.env.OPENAI_APIKEY,
+    apiKey: process.env.NEXT_PUBLIC_OPENAI_APIKEY,
 });
 const openai = new OpenAIApi(configuration);
 
