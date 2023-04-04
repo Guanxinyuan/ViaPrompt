@@ -47,6 +47,7 @@ export default function PromptTextarea({ contentText, lockInput, mode, cardId, c
         const result = await response.json();
         const data = result.data;
         console.log('Data', data)
+
     }
 
     const onDeleteHandler = async (e) => {
