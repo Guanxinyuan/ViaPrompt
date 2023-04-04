@@ -1,4 +1,4 @@
-import { pool } from '@/pages/api/db'
+// import { pool } from '@/pages/api/db'
 const { Configuration, OpenAIApi } = require("openai");
 
 const configuration = new Configuration({
