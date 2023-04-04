@@ -21,7 +21,7 @@ export default async function handler(req, res) {
             const apiResult = await operatePrompt(originalPrompt, mode);
 
             console.log('apiResult', apiResult, 'mode', mode);
-            res.status(200).json({ data: apiResult });
+            res.status(200).json({ data: JSON.stringify(apiResult) });
             // res.status(201).json({ message: `Create card with ID ${card_id}` });
         } catch (ex) {
             console.error('error occurs', ex.stack);
