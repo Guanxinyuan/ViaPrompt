@@ -59,6 +59,7 @@ export const promptDecomposer = async (originalPrompt) => {
             { role: "user", content: `Decompose the Midjourney prompt: ${originalPrompt}` }
         ],
     });
+    console.log(completion.data)
     return completion.data
 }
 
