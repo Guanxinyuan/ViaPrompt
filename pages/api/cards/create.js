@@ -1,6 +1,5 @@
 // POST pages/api/cards/create.js
 
-import { pool } from '@/pages/api/db'
 import { dummyCards } from '../../../data/cards';
 import { generateSnowflake } from '@/utils/snowflake';
 import { operatePrompt } from '@/utils/openai';
