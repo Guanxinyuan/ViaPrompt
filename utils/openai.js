@@ -22,14 +22,19 @@ export const promptOptimizer = async (originalPrompt) => {
     
     Your response should include a json key-value pair for the above attributes, and the final prompt. Make the prompt also an attribute of the json. Do not include word "midjourney" in the final prompt.`
 
-    const completion = await openai.createChatCompletion({
-        model: "gpt-3.5-turbo",
-        messages: [
-            { role: "system", content: systemPrompt },
-            { role: "user", content: `Generate a Midjourney prompt: ${originalPrompt}` }
-        ],
-    });
-    return completion.data
+    try {
+        const completion = await openai.createChatCompletion({
+            model: "gpt-3.5-turbo",
+            messages: [
+                { role: "system", content: systemPrompt },
+                { role: "user", content: `Generate a Midjourney prompt: ${originalPrompt}` }
+            ],
+        });
+        return completion.data
+    } catch (ex) {
+        console.error('error occurs in promptOptimizer', ex.stack);
+        return ex.stack
+    }
 }
 
 export const promptDecomposer = async (originalPrompt) => {
