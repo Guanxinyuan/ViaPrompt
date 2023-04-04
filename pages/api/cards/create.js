@@ -13,6 +13,7 @@ export default async function handler(req, res) {
             const card_id = generateSnowflake();
             console.log(card_id)
             const { originalPrompt, mode } = JSON.parse(req.body);
+            console.log('in create originalPrompt', originalPrompt, 'mode', mode);
 
             // Operate ChatGPT API
             const apiResult = await operatePrompt(originalPrompt, mode);
