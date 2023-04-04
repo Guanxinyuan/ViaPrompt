@@ -5,6 +5,10 @@ import { dummyCards } from '../../../data/cards';
 import { generateSnowflake } from '@/utils/snowflake';
 import { operatePrompt } from '@/utils/openai';
 
+export const config = {
+    runtime: 'edge',
+};
+
 
 export default async function handler(req, res) {
     console.log('req.method', req.method);
