@@ -1,16 +1,29 @@
-// import { pool } from '@/pages/api/db'
-const { Configuration, OpenAIApi } = require("openai");
+import { NextResponse } from 'next/server'
 
-const configuration = new Configuration({
-    apiKey: process.env.NEXT_PUBLIC_OPENAI_APIKEY,
-});
-const openai = new OpenAIApi(configuration);
+const fetchOpenAI = async (systemMessage, userMessage) => {
+  const payload = {
+    model: 'gpt-3.5-turbo',
+    messages: [
+      { role: 'system', content: systemMessage },
+      { role: 'user', content: userMessage },
+    ],
+  }
 
+  const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + process.env.NEXT_PUBLIC_OPENAI_APIKEY,
+    },
+    body: JSON.stringify(payload),
+  })
 
-export const promptOptimizer = async (originalPrompt) => {
-    console.log('originalPrompt ' + originalPrompt);
+  const json = await response.json()
+  return json
+}
 
-    const systemPrompt = `You're a prompt engineer. You will help me write a prompt for an AI art generator called Midjourney.
+export const promptOptimizer = async (prompt) => {
+  const systemMessage = `You're a prompt engineer. You will help me write a prompt for an AI art generator called Midjourney.
 
     I will give you short content ideas and your job is to elaborate these into one full, explicit, coherent, and artistic prompt.
     
@@ -21,26 +34,18 @@ export const promptOptimizer = async (originalPrompt) => {
     when giving a prompt remove the brackets, speak in natural language and be more specific, use precise, concise and articulate language. 
     
     Your response should include a json key-value pair for the above attributes, and the final prompt. Make the prompt also an attribute of the json. Do not include word "midjourney" in the final prompt.`
-
-    try {
-        const completion = await openai.createChatCompletion({
-            model: "gpt-3.5-turbo",
-            messages: [
-                { role: "system", content: systemPrompt },
-                { role: "user", content: `Generate a Midjourney prompt: ${originalPrompt}` }
-            ],
-        });
-        console.log(completion.data)
-        return completion.data
-    } catch (ex) {
-        console.error('error occurs in promptOptimizer', ex.stack);
-        return ex.stack
-    }
+  const userMessage = `Generate a Midjourney prompt: ${prompt}`
+  try {
+    const json = await fetchOpenAI(systemMessage, userMessage)
+    return json
+  } catch (error) {
+    console.error('Error in promptOptimizer', error)
+    return NextResponse.json({ error: error.stack }, { status: 500 })
+  }
 }
 
-export const promptDecomposer = async (originalPrompt) => {
-    console.log('decomposePrompt ' + originalPrompt);
-    const systemPrompt = `You're a prompt engineer. You will help me decompose prompts to various categories for an ai art generator called Midjourney.
+export const promptDecomposer = async (prompt) => {
+  const systemMessage = `You're a prompt engineer. You will help me decompose prompts to various categories for an ai art generator called Midjourney.
 
     I will provide you with a Midjourney prompt and you will thoroughly, completely decompose it into the following attributes: 
     
@@ -57,27 +62,28 @@ export const promptDecomposer = async (originalPrompt) => {
     If an attribute is absent from the prompt, leave the value to be N/A. When giving the decomposed prompt, remove the brackets, and output with a json key: value pair.
     
     Remember, all components should directly quote the given prompt.`
-
-    const completion = await openai.createChatCompletion({
-        model: "gpt-3.5-turbo",
-        messages: [
-            { role: "system", content: systemPrompt },
-            { role: "user", content: `Decompose the Midjourney prompt: ${originalPrompt}` }
-        ],
-    });
-    console.log(completion.data)
-    return completion.data
+  const userMessage = `Decompose the Midjourney prompt: ${prompt}`
+  try {
+    const json = await fetchOpenAI(systemMessage, userMessage)
+    return json
+  } catch (error) {
+    console.error('Error in promptDecomposer', error)
+    return NextResponse.json({ error: error.stack }, { status: 500 })
+  }
 }
 
-export const promptTemplater = async (originalPrompt) => {
-    console.log('templatePrompt ' + originalPrompt);
-    return originalPrompt
+export const promptTemplater = async (prompt) => {
+  console.log('templatePrompt ' + prompt)
+  return prompt
 }
 
-export const operatePrompt = async (originalPrompt, mode) => {
-    switch (mode) {
-        case 'Optimize': return await promptOptimizer(originalPrompt); break;
-        case 'Decompose': return await promptDecomposer(originalPrompt); break;
-        case 'Template': return await promptTemplater(originalPrompt); break;
-    }
+export const operatePrompt = async (prompt, mode) => {
+  switch (mode) {
+    case 'Optimize':
+      return await promptOptimizer(prompt)
+    case 'Decompose':
+      return await promptDecomposer(prompt)
+    case 'Template':
+      return await promptTemplater(prompt)
+  }
 }

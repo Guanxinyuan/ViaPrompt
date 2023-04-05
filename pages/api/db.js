@@ -1,4 +1,4 @@
-import { Pool } from "pg";
+import { Pool } from 'pg'
 
 // Localhost postgresql database
 // export const pool = new Pool({
@@ -19,7 +19,6 @@ import { Pool } from "pg";
 //   query_timeout: 60000 // 60 seconds timeout
 // })
 
-
 // Supabase postgresql database
 export const pool = new Pool({
   user: process.env.SUPABASE_USER,
@@ -28,4 +27,3 @@ export const pool = new Pool({
   port: process.env.SUPABASE_PORT,
   database: process.env.SUPABASE_DATABASE,
 })
-
