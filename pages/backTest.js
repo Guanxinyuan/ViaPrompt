@@ -16,18 +16,18 @@ export default function TestAPI() {
       <div className='h-content gap-6 py-6 items-center flex flex-col'>
         <h1 className='text-2xl'>Supabase Test</h1>
         <div className='flex flex-row gap-6'>
-          <TestSupaCard mode={'Optimize'} />
-          <TestSupaCard mode={'Decompose'} />
-          <TestSupaCard mode={'Template'} />
+          <TestSupaCard model={'midjourney'} mode={'Optimize'} />
+          <TestSupaCard model={'midjourney'} mode={'Decompose'} />
+          <TestSupaCard model={'midjourney'} mode={'Template'} />
         </div>
       </div>
       <div className='flex flex-col gap-6 py-6 items-center'>
 
         <h1 className='text-2xl'>OpenAI Test</h1>
         <div className='flex flex-row gap-6'>
-          <OpenAICard mode={'Optimize'} />
-          <OpenAICard mode={'Decompose'} />
-          <OpenAICard mode={'Template'} />
+          <OpenAICard model={'midjourney'} mode={'optimize'} />
+          <OpenAICard model={'midjourney'} mode={'decompose'} />
+          <OpenAICard model={'test'} mode={'translate'} />
         </div>
       </div>
     </div>
@@ -35,7 +35,7 @@ export default function TestAPI() {
 }
 
 
-const TestSupaCard = ({ mode }) => {
+const TestSupaCard = ({ mode, model }) => {
   const [prompt, setPrompt] = useState('')
   const [answer, setAnswer] = useState('')
 
@@ -47,7 +47,7 @@ const TestSupaCard = ({ mode }) => {
       body: JSON.stringify({
         prompt: prompt.trim(),
         mode: mode,
-        model: 'midjourney'
+        model: model
       }),
     })
 
@@ -87,18 +87,19 @@ const TestSupaCard = ({ mode }) => {
   )
 }
 
-const OpenAICard = ({ mode }) => {
+const OpenAICard = ({ mode, model }) => {
   const [prompt, setPrompt] = useState('')
   const [answer, setAnswer] = useState('')
 
   const onSubmitHandler = async (e) => {
     e.preventDefault()
-    console.log('in submit ', content)
+    console.log('in submit ', prompt)
     const response = await fetch(`/api/test/testOpenAI`, {
       method: 'POST',
       body: JSON.stringify({
-        prompt: content.trim(),
+        prompt: prompt.trim(),
         mode: mode,
+        model: model
       }),
     })
 

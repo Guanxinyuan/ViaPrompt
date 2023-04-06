@@ -24,13 +24,14 @@ const fetchOpenAI = async (systemMessage, userMessage) => {
 }
 
 export const operatePrompt = async (prompt, mode, model) => {
+  console.log('in operatePrompt', prompt, 'mode', mode, 'model', model)
   const systemMessage = messages[model][mode].systemMessage
   const userMessage = messages[model][mode].userMessage + prompt
   try {
     const json = await fetchOpenAI(systemMessage, userMessage)
     return json
   } catch (error) {
-    console.error('Error in fetching OpenAI API', error.stack)
+    console.error('Error in fetching OpenAI API', error)
     throw error
   }
 }

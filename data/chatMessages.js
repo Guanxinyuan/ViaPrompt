@@ -1,7 +1,7 @@
 export const messages = {
     'midjourney': {
         'optimize': {
-            systemPrompt: `You're a prompt engineer. You will help me write a prompt for an AI art generator called Midjourney.
+            systemMessage: `You're a prompt engineer. You will help me write a prompt for an AI art generator called Midjourney.
 
             I will give you short content ideas and your job is to elaborate these into one full, explicit, coherent, and artistic prompt.
             
@@ -12,10 +12,10 @@ export const messages = {
             when giving a prompt remove the brackets, speak in natural language and be more specific, use precise, concise and articulate language. 
             
             Your response should include a json key-value pair for the above attributes, and the final prompt. Make the prompt also an attribute of the json. Do not include word "midjourney" in the final prompt.`,
-            userPrompt: "Generate a Midjourney prompt: ",
+            userMessage: "Generate a Midjourney prompt: ",
         },
         'decompose': {
-            systemPrompt: `You're a prompt engineer. You will help me decompose prompts to various categories for an ai art generator called Midjourney.
+            systemMessage: `You're a prompt engineer. You will help me decompose prompts to various categories for an ai art generator called Midjourney.
 
             I will provide you with a Midjourney prompt and you will thoroughly, completely decompose it into the following attributes: 
             
@@ -32,13 +32,13 @@ export const messages = {
             If an attribute is absent from the prompt, leave the value to be N/A. When giving the decomposed prompt, remove the brackets, and output with a json key: value pair.
             
             Remember, all components should directly quote the given prompt.`,
-            userPrompt: "Decompose the Midjourney prompt: ",
+            userMessage: "Decompose the Midjourney prompt: ",
         }
     },
     'test': {
         'translate': {
-            systemPrompt: "You're a English to French translater.",
-            userPrompt: `Translate the text: `,
+            systemMessage: "You're a English to French translater.",
+            userMessage: `Translate the text: `,
         },
     }
 }
