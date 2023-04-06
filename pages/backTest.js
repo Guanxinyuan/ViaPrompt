@@ -54,10 +54,9 @@ const TestSupaCard = ({ mode, model }) => {
     const cardData = await response.json()
     console.log('cardData', cardData)
     switch (mode) {
-      case 'optimize': setAnswer(cardData.optimized_prompt); break;
-      // case 'Decompose': setAnswer(JSON.parse(answer)); break;
-      case 'decompose': setAnswer(cardData.explanation); break;
-      case 'template': setAnswer(cardData.template_prompt); break;
+      case 'optimize': setAnswer(JSON.parse(cardData.answer).prompt); break;
+      case 'decompose': setAnswer(cardData.answer); break;
+      case 'template': setAnswer(cardData.answer); break;
     }
   }
 
@@ -101,9 +100,9 @@ const OpenAICard = ({ mode, model }) => {
 
     const cardData = await response.json()
     switch (mode) {
-      case 'optimize': setAnswer(cardData.optimized_prompt); break;
-      case 'decompose': setAnswer(cardData.explanation); break;
-      case 'translate': setAnswer(cardData.explanation); break;
+      case 'optimize': setAnswer(JSON.parse(cardData.answer).prompt); break;
+      case 'decompose': setAnswer(cardData.answer); break;
+      case 'translate': setAnswer(cardData.answer); break;
     }
   }
 

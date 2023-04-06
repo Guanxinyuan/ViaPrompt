@@ -13,20 +13,22 @@ export default async (req, res) => {
 
             // Operate ChatGPT API
             const response = await operatePrompt(prompt, mode, model)
-            console.log('json in testOpenAI ', json)
+            console.log('response in testOpenAI ', response)
 
             const message = response ? response.choices[0].message.content : null;
-            const messageObject = message ? JSON.parse(message) : {};
 
-            const cardData = {
+            let cardData = {
                 mode: mode,
                 model: model,
                 original_prompt: prompt,
-                optimized_prompt: messageObject ? JSON.stringify(messageObject.prompt) : null,
-                explanation: messageObject ? JSON.stringify(messageObject) : null,
-                template_prompt: prompt,
                 user_id: '62cb4f7b-a359-4cf2-a808-ac5edee77d81',
             };
+
+            switch (mode) {
+                case 'optimize': cardData = { ...cardData, answer: message }; break;
+                case 'decompose': cardData = { ...cardData, answer: message }; break;
+                case 'template': cardData = { ...cardData, answer: prompt }; break;
+            }
 
             return NextResponse.json(cardData, { status: 200 })
         } catch (error) {

@@ -18,19 +18,21 @@ export default async (req, res) => {
 
   const response = dummyResponses[mode];
   const message = response ? response.choices[0].message.content : null;
-  const messageObject = message ? JSON.parse(message) : {};
 
-  const cardData = {
+  let cardData = {
     mode: mode,
     model: model,
     original_prompt: prompt,
-    optimized_prompt: messageObject ? JSON.stringify(messageObject.prompt) : null,
-    explanation: messageObject ? JSON.stringify(messageObject) : null,
-    template_prompt: prompt,
     user_id: '62cb4f7b-a359-4cf2-a808-ac5edee77d81',
   };
 
-  const { data, error } = await supabaseClient.from('cards').insert(cardData);
+  switch (mode) {
+    case 'optimize': cardData = { ...cardData, answer: message }; break;
+    case 'decompose': cardData = { ...cardData, answer: message }; break;
+    case 'template': cardData = { ...cardData, answer: prompt }; break;
+  }
+
+  const { data, error } = await supabaseClient.from('tempCards').insert(cardData);
   if (error) {
     console.log('Error:', error.message);
     throw new Error(error.message);

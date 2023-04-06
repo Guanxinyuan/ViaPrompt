@@ -47,7 +47,7 @@ export const dummyCards = [
 ]
 
 export const dummyResponses = {
-    'Optimize': {
+    'optimize': {
         choices: [
             {
                 message: {
@@ -64,7 +64,7 @@ export const dummyResponses = {
             },
         ],
     },
-    'Decompose': {
+    'decompose': {
         choices: [
             {
                 message: {
