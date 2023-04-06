@@ -333,17 +333,11 @@
     @apply dark:bg-zinc-700 dark:text-white dark:border-zinc-700;
   }
 
-  .prompt-card-body-content::before {
-    content: "Original prompt, keywords, ideas";
-    @apply text-gray-400;
-  }
-
-  .before-visible.prompt-card-body-content:before {
+  [contenteditable="true"]:empty:before {
+    content: attr(placeholder);
     display: inline;
-  }
-
-  .before-hidden.prompt-card-body-content:before {
-    display: none;
+    @apply text-gray-400;
+    @apply dark:text-gray-500;
   }
 
   .prompt-card-body-content-word-count {

@@ -78,13 +78,12 @@ export default function PromptTextarea({
           html={content}
           disabled={lockInput}
           tagName="div"
-          className={`prompt-card-body-content ${
-            !content || content.trim() === ""
+          className={`prompt-card-body-content ${!content || content.trim() === ""
               ? "before-visible"
               : "before-hidden"
-          }`}
+            }`}
           onChange={onChangeHandler}
-          // onBlur={onInputHandler}
+        // onBlur={onInputHandler}
         />
       </div>
       <div className="prompt-card-body-content-word-count">
@@ -92,9 +91,8 @@ export default function PromptTextarea({
           {contentWordCount} words
         </p>
         <TrashIcon
-          className={`prompt-card-footer-icon text-red-500 dark:text-red-500 ${
-            !cardId ? "hidden" : ""
-          }`}
+          className={`prompt-card-footer-icon text-red-500 dark:text-red-500 ${!cardId ? "hidden" : ""
+            }`}
           onClick={onDeleteHandler}
         />
         {lockInput ? (

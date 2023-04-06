@@ -32,7 +32,7 @@ export default async (req, res) => {
 
             return NextResponse.json(cardData, { status: 200 })
         } catch (error) {
-            console.error('Error in operatePrompt', error)
+            console.error('Error in testOpenAI', error)
             return NextResponse.json({ error: error.stack }, { status: 500 })
         }
     }
