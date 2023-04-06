@@ -16,9 +16,9 @@ export default function TestAPI() {
       <div className='h-content gap-6 py-6 items-center flex flex-col'>
         <h1 className='text-2xl'>Supabase Test</h1>
         <div className='flex flex-row gap-6'>
-          <TestSupaCard model={'midjourney'} mode={'Optimize'} />
-          <TestSupaCard model={'midjourney'} mode={'Decompose'} />
-          <TestSupaCard model={'midjourney'} mode={'Template'} />
+          <TestSupaCard model={'midjourney'} mode={'optimize'} />
+          <TestSupaCard model={'midjourney'} mode={'decompose'} />
+          <TestSupaCard model={'midjourney'} mode={'template'} />
         </div>
       </div>
       <div className='flex flex-col gap-6 py-6 items-center'>
@@ -51,20 +51,16 @@ const TestSupaCard = ({ mode, model }) => {
       }),
     })
 
-    const result = await response.json()
-    console.log('result', result)
-    // const answer = result.choices[0].message.content
-    const answer = result
-    if (canParseJSON(answer)) {
-      console.log('answer', JSON.parse(answer))
-      switch (mode) {
-        case 'Optimize': setAnswer(JSON.parse(answer).prompt); break;
-        // case 'Decompose': setAnswer(JSON.parse(answer)); break;
-        case 'Decompose': setAnswer(answer); break;
-        case 'Template': setAnswer(JSON.parse(answer).prompt); break;
-      }
+    const cardData = await response.json()
+    console.log('cardData', cardData)
+    switch (mode) {
+      case 'optimize': setAnswer(cardData.optimized_prompt); break;
+      // case 'Decompose': setAnswer(JSON.parse(answer)); break;
+      case 'decompose': setAnswer(cardData.explanation); break;
+      case 'template': setAnswer(cardData.template_prompt); break;
     }
   }
+
 
   return (
     <div className='border border-red h-[30vh] w-[30vw] flex flex-col gap-6'>
@@ -103,11 +99,12 @@ const OpenAICard = ({ mode, model }) => {
       }),
     })
 
-    const result = await response.json()
-    console.log('result', result)
-    const answer = result.choices[0].message.content
-    console.log('answer', answer)
-    setAnswer(answer)
+    const cardData = await response.json()
+    switch (mode) {
+      case 'optimize': setAnswer(cardData.optimized_prompt); break;
+      case 'decompose': setAnswer(cardData.explanation); break;
+      case 'translate': setAnswer(cardData.explanation); break;
+    }
   }
 
   return (

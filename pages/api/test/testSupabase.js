@@ -1,40 +1,41 @@
-// POST pages/api/cards/test.js
-// import { OpenAIStream } from '@/utils/OpenAIStream'
-import { NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
-import { dummyResponses } from '@/data/cards'
+import { NextResponse } from 'next/server';
+import { createClient } from '@supabase/supabase-js';
+import { dummyResponses } from '@/data/cards';
+
+const supabaseClient = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
 
 export const config = {
-  runtime: 'edge',
-}
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-)
+  runtime: 'edge'
+};
 
 export default async (req, res) => {
-  const body = JSON.parse(await req.text())
-  const { prompt, mode, model } = body
-  console.log('in test', prompt)
+  const requestBody = JSON.parse(await req.text());
+  const { prompt, mode, model } = requestBody;
+  console.log('Prompt:', prompt);
 
-  const json = dummyResponses[mode]
-  const message = json ? json.choices[0].message.content : null
-  const json_object = message ? JSON.parse(message) : {}
+  const response = dummyResponses[mode];
+  const message = response ? response.choices[0].message.content : null;
+  const messageObject = message ? JSON.parse(message) : {};
 
-  const { data, error } = await supabase.from('cards').insert({
+  const cardData = {
     mode: mode,
     model: model,
     original_prompt: prompt,
-    optimized_prompt: json_object ? JSON.stringify(json_object.prompt) : null,
-    explanation: json_object ? JSON.stringify(json_object) : null,
+    optimized_prompt: messageObject ? JSON.stringify(messageObject.prompt) : null,
+    explanation: messageObject ? JSON.stringify(messageObject) : null,
     template_prompt: prompt,
     user_id: '62cb4f7b-a359-4cf2-a808-ac5edee77d81',
-  })
+  };
+
+  const { data, error } = await supabaseClient.from('cards').insert(cardData);
   if (error) {
-    console.log('error', error.message)
-    throw new Error(error.message)
+    console.log('Error:', error.message);
+    throw new Error(error.message);
   }
-  console.log('Insert success')
-  return message ? NextResponse.json(message) : NextResponse.json(JSON.stringify({ 'prompt': prompt }))
-}
+  console.log('Insertion success');
+
+  return NextResponse.json(cardData);
+};
