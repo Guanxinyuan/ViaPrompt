@@ -1,36 +1,33 @@
 
 import { useState, useRef } from "react";
+import ContentEditable, { ContnetEditable } from "react-contenteditable";
 
-const Card = ({ children }) => {
-    const [content, setContent] = useState(children);
-    const ref = useRef(null);
+const Card = ({ content }) => {
+    // const [content, setContent] = useState(children);
 
-    const handleInput = (e) => {
-        setContent(e.target.innerHTML);
-        // Auto-stretch the card vertically as the inner text grows
-        ref.current.style.height = "auto";
-        ref.current.style.height = ref.current.scrollHeight + "px";
-    };
+    const textRef = useRef(content || '');
+    const onChangeHandler = (e) => {
+        const lastChild = e.target.lastChild;
+        if (lastChild && lastChild.tagName === 'BR') {
+            lastChild.remove();
+        }
 
-    // Prevent the card from being scrollable
-    const handleScroll = (e) => {
-        e.preventDefault();
+        if (e.target.value.trim() === "<br>" && e.target.value === "<br>") {
+            console.log('e.target.value.trimmed()', e.target.value.trim())
+            e.target.value = '';
+        }
+        textRef.current = e.target.value
     };
 
     return (
-        <div
-            className="relative bg-white rounded-md shadow-md overflow-hidden border border-black"
-            onScroll={handleScroll}
-        >
-            <div
-                className="p-4 outline-none"
-                contentEditable
-                onInput={handleInput}
-                ref={ref}
-                suppressContentEditableWarning={true}
-            >
-                {content}
-            </div>
+        <div className="relative bg-white rounded-md shadow-md overflow-hidden border border-black flex-grow overflow-y-auto p-4">
+            <ContentEditable
+                html={textRef.current}
+                tagName="div"
+                className={`prompt-card-body-content`}
+                placeholder="Write your prompt here..."
+                onChange={onChangeHandler}
+            />
         </div>
     );
 };
@@ -75,23 +72,17 @@ const MasonryLayout = () => {
             {columns.map((column, i) => (
                 <div key={i}>
                     {column.map((card) => (
-                        //         <div key={card.id} className="bg-white p-4 rounded-lg shadow border border-black">
-                        //             <div
-                        //                 className="h-full overflow-auto
-                        // resize-y"
-                        //                 contentEditable="true"
-                        //                 dangerouslySetInnerHTML={{ __html: card.text }}
-                        //                 onInput={(event) => {
-                        //                     const newCards = [...cards];
-                        //                     const cardIndex = newCards.findIndex((c) => c.id === card.id);
-                        //                     newCards[cardIndex].text = event.target.innerHTML;
-                        //                     setCards(newCards);
-                        //                 }}
-                        //             ></div>
-                        //         </div>
-                        <Card>
-                            {card.text}
-                        </Card>
+                        <div className="flex flex-col border my-6">
+                            <div className="h-8 flex items-center justify-between bg-gray-200 px-4 py-2">
+                                <h2 className="text-lg font-bold">Card Title</h2>
+                            </div>
+                            {/* <div className="flex-grow overflow-y-auto p-4"> */}
+                            <Card content={card.text} />
+                            {/* </div> */}
+                            <div className="h-8 bg-gray-200 px-4 py-2 flex justify-end">
+                                <button className="text-red-600 font-bold">Delete</button>
+                            </div>
+                        </div>
                     ))}
                 </div>
             ))}
