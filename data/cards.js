@@ -45,3 +45,42 @@ export const dummyCards = [
         timestamp: "2022-03-27T00:00:00.000Z"
     },
 ]
+
+export const dummyResponses = {
+    'Optimize': {
+        choices: [
+            {
+                message: {
+                    content: JSON.stringify({
+                        'content': 'A landscape of rolling hills and rocky outcroppings in the Scottish Highlands',
+                        'medium': 'oil painting',
+                        'style': 'inspired by the Romanticism movement, with a touch of impressionism',
+                        'lighting': 'the warm glow of the setting sun casting long shadows across the hills',
+                        'colors': ' rich earthy tones with pops of vibrant greens and purples',
+                        'composition': 'A wide shot from a high angle, using a telephoto lens to compress the hills and create a sense of depth. The focal point is a small loch nestled among the hills, with a lone tree on its banks.',
+                        'prompt': 'Create an oil painting inspired by the Romanticism movement, with a touch of impressionism, depicting a landscape of rolling hills and rocky outcroppings in the Scottish Highlands at sunset. Use rich earthy tones with pops of vibrant greens and purples to emphasize the warm glow of the setting sun casting long shadows across the hills. The focal point of the painting should be a small loch nestled among the hills, with a lone tree on its banks. Take a wide shot from a high angle, using a telephoto lens to compress the hills and create a sense of depth.',
+                    }),
+                },
+            },
+        ],
+    },
+    'Decompose': {
+        choices: [
+            {
+                message: {
+                    content: JSON.stringify({
+                        "main_object": "goddess-like figure",
+                        "medium": ["digital painting"],
+                        "style": ["surreal", "mystical"],
+                        "artists": ["N/A"],
+                        "lighting": ["stardust effect"],
+                        "colors": ["blues", "purples", "pinks"],
+                        "camera": ["wide-angle lens"],
+                        "perspective": ["center of the nebula", "arms outstretched"],
+                        "scale": ["N/A"]
+                    }),
+                },
+            },
+        ],
+    },
+}

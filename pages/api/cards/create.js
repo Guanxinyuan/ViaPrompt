@@ -1,7 +1,5 @@
 // POST pages/api/cards/create.js
 
-import { dummyCards } from '../../../data/cards'
-import { generateSnowflake } from '@/utils/snowflake'
 import { operatePrompt } from '@/utils/openai'
 import { NextResponse } from 'next/server'
 
@@ -10,20 +8,20 @@ export const config = {
 }
 
 export default async function handler(req, res) {
-  console.log('req.method create', req.method)
   if (req.method === 'POST') {
-    // const card_id = generateSnowflake()
-    // console.log(card_id)
-    const body = JSON.parse(await req.text())
-    const { prompt, mode } = body
-    console.log('in create prompt', prompt, 'mode', mode)
+    try {
+      const body = JSON.parse(await req.text())
+      const { prompt, mode, model } = body
+      console.log('in create prompt', prompt, 'mode', mode, 'model', model)
 
-    // Operate ChatGPT API
-    const json = await operatePrompt(prompt, mode)
-    console.log('json in create ', json)
+      // Operate ChatGPT API
+      const json = await operatePrompt(prompt, mode, model)
+      console.log('json in create ', json)
 
-    return NextResponse.json(json, { status: 200 })
-  } else {
-    return NextResponse.json({ message: 'Method not allowed' }, { status: 405 })
+      return NextResponse.json(json, { status: 200 })
+    } catch (error) {
+      console.error('Error in operatePrompt', error.stack)
+      return NextResponse.json({ error: error.stack }, { status: 500 })
+    }
   }
 }

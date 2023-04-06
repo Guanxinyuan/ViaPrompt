@@ -1,7 +1,0 @@
-{/* <textarea
-                    type='text'
-                    placeholder='Original prompt or idea keywords'
-                    onChange={onChangeHandler}
-                    value={content.main_object}
-                    readOnly={lockInput}
-                    className='prompt-card-body-content' /> */}
