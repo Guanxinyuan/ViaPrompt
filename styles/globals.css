@@ -293,8 +293,12 @@
   }
 
   .model-button {
-    @apply cursor-pointer flex flex-row items-center justify-end ml-auto gap-2 px-4;
+    @apply cursor-pointer flex flex-row items-center justify-start ml-auto gap-2;
     @apply dark:text-white;
+  }
+
+  .card-header-option {
+    @apply h-5;
   }
 
   .model-icon {
@@ -336,7 +340,7 @@
   [contenteditable="true"]:empty:before {
     content: attr(placeholder);
     display: inline;
-    @apply text-gray-400;
+    @apply text-gray-400 absolute px-1 text-sm py-0.5;
     @apply dark:text-gray-500;
   }
 
@@ -346,12 +350,17 @@
   }
 
   .prompt-card-button {
-    @apply text-black rounded-md px-2 py-0.5;
-    @apply text-white bg-yellow-500;
+    @apply text-black rounded-md px-2 py-0.5 h-5 text-sm;
+    @apply text-white;
+  }
+
+  .prompt-card-footer-button {
+    @apply h-5 cursor-pointer text-black;
+    @apply dark:text-white;
   }
 
   .prompt-card-footer-icon {
-    @apply w-6 cursor-pointer text-black;
+    @apply h-5 cursor-pointer text-black;
     @apply dark:text-white;
   }
 
@@ -362,5 +371,11 @@
   .decomposed-component-value {
     @apply text-black py-0;
     @apply dark:text-white;
+  }
+
+  .masonry {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: masonry;
   }
 }
