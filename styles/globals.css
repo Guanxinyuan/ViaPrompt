@@ -12,9 +12,9 @@
 
 @layer components {
   .global-container {
-    @apply text-black;
+    @apply text-black tracking-normal;
     @apply dark:bg-zinc-900 text-white;
-    /* font-family: "Inter", sans-serif; */
+    font-family: "Inter", sans-serif;
   }
 
   /* main page */

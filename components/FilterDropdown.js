@@ -1,10 +1,24 @@
 import { useState, useRef, useEffect } from 'react';
 import { FunnelIcon } from '@heroicons/react/24/outline';
 
-export default function FilterDropdown({ width, height, options, defaultValue, paramSetter }) {
+export default function FilterDropdown({ width, height, defaultValue, paramSetter }) {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState(defaultValue);
     const dropdownRef = useRef(null);
+    const options = ['optimize', "explain", "template"];
+
+    const modeButtonColor = (option) => {
+        switch (option) {
+            case "optimize":
+                return "bg-yellow-500 active:bg-yellow-700";
+            case "decompose":
+                return "bg-purple-500 active:bg-purple-700";
+            case 'explain':
+                return "bg-purple-500 active:bg-purple-700";
+            case "template":
+                return "bg-gray-500 active:bg-gray-700";
+        }
+    }
 
     useEffect(() => {
 
@@ -42,46 +56,44 @@ export default function FilterDropdown({ width, height, options, defaultValue, p
                     {selectedOption == defaultValue ?
                         <div className='flex flex-row gap-1 items-center py-1'>
                             <FunnelIcon className='w-4' />
-                            <span>Filter</span>
+                            <span>Mode</span>
                         </div>
                         :
                         <div className='flex w-fit gap-1.5 items-center'>
                             <div className='flex flex-row gap-1 items-center'>
                                 <FunnelIcon className='w-4' />
                                 <span className='mr-1'>
-                                    Filter by
+                                    Mode
                                 </span>
                             </div>
-                            <span className={`mode-button ${width}
-                            ${selectedOption == "Optimize" ? '' : selectedOption == "Decompose" ? 'bg-purple-500 active:bg-purple-700' : 'bg-gray-500 active:bg-gray-700'}`}>{selectedOption}</span></div>}
+                            <span className={`mode-button ${width} ${modeButtonColor(selectedOption)}`}>{selectedOption}</span></div>}
                 </button>
             </div>
 
             <div className="option-dropdown-container">
-
-                <div className={`option-dropdown
-                    ${!width || width == 'default' ? 'w-fit' : 'w-26'}
-                    ${!height || height == 'default' ? 'h-fit' : height}
-                    ${isOpen ? '' : 'hidden'} `}>
-                    {options.map((option) => (
+                <div className={`option-dropdown w-32 h-fit pt-4 ${isOpen ? '' : 'hidden'} `}>
+                    <div className='flex flex-col gap-1 items-center'>
+                        {options.map((option) => (
+                            <div className='py-0.5'>
+                                <button
+                                    className={`text-sm font-semibold text-white rounded-md px-2 card-header-option w-24 ${modeButtonColor(option)}}`}
+                                    onClick={() => {
+                                        selectOption(option)
+                                        setIsOpen(false)
+                                    }}>
+                                    {option}
+                                </button>
+                            </div>
+                        ))}
                         <button
-                            className={`mode-button ${width} ${option == "Optimize" ? 'bg-yellow-500' :
-                                option == "Decompose" ? 'bg-purple-500' : 'bg-gray-500'}`}
+                            className={`text-sm font-semibold text-white rounded-md px-2 card-header-option w-24`}
                             onClick={() => {
-                                selectOption(option)
+                                selectOption(defaultValue)
                                 setIsOpen(false)
                             }}>
-                            {option}
+                            reset
                         </button>
-                    ))}
-                    <button
-                        className={`mode-button ${width} text-black bg-white dark:bg-zinc-900 dark:text-white`}
-                        onClick={() => {
-                            selectOption(defaultValue)
-                            setIsOpen(false)
-                        }}>
-                        Reset
-                    </button>
+                    </div>
                 </div>
             </div>
         </div>

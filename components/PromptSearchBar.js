@@ -25,13 +25,13 @@ export default function PromptSearchbar({ filterSetter, querySetter }) {
                 <input
                     type="search"
                     placeholder="Search prompt (Press Enter)"
-                    className="search-input"
+                    className="search-input placeholder-zinc-500 rounded-lg"
                     onKeyDown={handleKeyDown}
                     onChange={(e) => setQuery(e.target.value)}
                 />
-                <MagnifyingGlassIcon className="absolute top-1/2 left-4 w-5 h-5 stroke-1 transform -translate-y-1/2 text-gray-600" />
+                <MagnifyingGlassIcon className="absolute top-1/2 left-4 w-5 h-5 stroke-1 transform -translate-y-1/2 text-zinc-500" />
             </div>
-            <FilterDropdown width={'w-24'} height={"default"} options={['Optimize', "Decompose", "Template"]} defaultValue={''} paramSetter={filterSetter} />
+            <FilterDropdown width={'w-24'} height={"default"} defaultValue={''} paramSetter={filterSetter} />
         </div>
     )
 }

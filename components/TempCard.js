@@ -161,49 +161,6 @@ export default function TempCard({ cardData, setLoading, setCards, ...rest }) {
         return tempElement.textContent || tempElement.innerText || '';
     }
 
-    useEffect(() => {
-        if (mode == 'explain') {
-            const parsedJson = JSON.parse(dummyResponses[mode].choices[0].message.content)
-            console.log(`in parseExplain, parsedJson: ${parsedJson}`)
-            const parsedContentPairs = Object.keys(parsedJson).map((key) => {
-                if (parsedJson[key] !== null) {
-                    const newKey = key.split("_").map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(" ");
-                    const value = Array.isArray(parsedJson[key]) ? parsedJson[key].join(", ") : parsedJson[key];
-                    return [newKey, value];
-                }
-            })
-
-            const newContentDict = {};
-            for (let i = 0; i < parsedContentPairs.length; i++) {
-                if (parsedContentPairs[i]) {
-                    newContentDict[parsedContentPairs[i][0]] = parsedContentPairs[i][1];
-                }
-            }
-            const filteredContentDict = Object.fromEntries(
-                Object.entries(newContentDict).filter(([key, value]) => {
-                    const emptyList = [null, undefined, '', 'N/A', "null", "undefined"]
-                    return emptyList.includes(value) ? null : value
-                })
-            )
-            const newContent = renderToStaticMarkup(
-                <div className="flex flex-col gap-1">
-                    {
-                        Object.keys(filteredContentDict).map((key) => {
-                            return (
-                                <div key={key} className="flex mb-1 items-start gap-2">
-                                    <span className="inline-block px-2 py-0.5 text-xs font-medium text-white bg-zinc-700 rounded-md">{key}</span>
-                                    <span className="flex-grow">{newContentDict[key]}</span>
-                                </div>
-                            );
-                        })
-
-                    }
-                </div>
-            )
-            setContent(newContent)
-        }
-    }, []);
-
     return (
         <div
             className={`flex flex-col rounded-lg bg-zinc-800 w-full border-t-2 ${modeBorderColors[mode]} ${loadingBorder}`}
