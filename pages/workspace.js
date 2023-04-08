@@ -58,26 +58,5 @@ export default function Workspace() {
     )
 }
 
-// import { useRouter } from 'next/router';
-// import { useEffect } from 'react'
-// export async function getStaticProps() {
-
-//     // console.log(dummyCards)
-//     // const router = useRouter();
-//     // const { origin } = router;
-//     // console.log(origin)
-//     const response = await fetch(`/api/cards/getCards`, {
-//         method: "GET"
-//     })
-//     console.log(response)
-//     const result = await response.json()
-//     const dummyCards = result.data
-//     return {
-//         props: {
-//             cards: dummyCards
-//         }
-//     }
-// }
-
 
 

@@ -20,7 +20,7 @@ export default async (req, res) => {
             let cardData = {
                 mode: mode,
                 model: model,
-                original_prompt: prompt,
+                prompt: prompt,
                 user_id: '62cb4f7b-a359-4cf2-a808-ac5edee77d81',
             };
 

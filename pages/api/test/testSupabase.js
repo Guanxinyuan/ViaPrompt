@@ -22,7 +22,7 @@ export default async (req, res) => {
   let cardData = {
     mode: mode,
     model: model,
-    original_prompt: prompt,
+    prompt: prompt,
     user_id: '62cb4f7b-a359-4cf2-a808-ac5edee77d81',
   };
 
@@ -32,9 +32,11 @@ export default async (req, res) => {
     case 'template': cardData = { ...cardData, answer: prompt }; break;
   }
 
+  console.log(cardData)
   const { data, error } = await supabaseClient.from('tempCards').insert(cardData);
+  // const { data, error } = await supabaseClient.from('tempCards').select('prompt')
   if (error) {
-    console.log('Error:', error.message);
+    console.log('Error:', error);
     throw new Error(error.message);
   }
   console.log('Insertion success');
