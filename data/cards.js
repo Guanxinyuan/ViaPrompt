@@ -64,7 +64,7 @@ export const dummyResponses = {
             },
         ],
     },
-    'decompose': {
+    'explain': {
         choices: [
             {
                 message: {
@@ -79,6 +79,15 @@ export const dummyResponses = {
                         "perspective": ["center of the nebula", "arms outstretched"],
                         "scale": ["N/A"]
                     }),
+                },
+            },
+        ],
+    },
+    'template': {
+        choices: [
+            {
+                message: {
+                    content: "This is a test prompt"
                 },
             },
         ],

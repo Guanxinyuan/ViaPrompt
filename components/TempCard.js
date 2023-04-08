@@ -3,7 +3,9 @@ import ContentEditable from "react-contenteditable";
 import ModeDropdownTemp from '@/components/ModeDropdownTemp'
 import ModelDropdownTemp from '@/components/ModelDropdownTemp'
 import { PaperAirplaneIcon, ArrowPathIcon, TrashIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
-
+import { dummyResponses } from "@/data/cards";
+import { parseAnswer } from '@/utils/parseAnswer'
+import { renderToStaticMarkup } from "react-dom/server";
 
 export default function TempCard({ cardData, setLoading, setCards, ...rest }) {
     const { loadingText, loadingBorder } = rest
@@ -17,19 +19,16 @@ export default function TempCard({ cardData, setLoading, setCards, ...rest }) {
     const [answer, setAnswer] = useState(isMade ? cardData.answer : '');
 
     const [content, setContent] = useState(isMade ? cardData.answer : '');
-    const [wordCount, setWordCount] = useState(content.split(' ').length || 0);
 
+    const [wordCount, setWordCount] = useState(content.split(' ').length || 0);
 
     const modeSections = {
         'optimize': { inputSection: 'original', outputSection: 'optimized' },
         'explain': { inputSection: 'original', outputSection: 'explanation' },
         'template': { inputSection: '', outputSection: 'prompt' },
     }
-    const [activeSection, setActiveSection] = useState(isMade ? modeSections[mode].outputSection : '');
 
-    const switchEdit = () => {
-        setIsEditable(!isEditable)
-    }
+    const [activeSection, setActiveSection] = useState(isMade ? modeSections[mode].outputSection : '');
 
     const modeTextColors = {
         'optimize':
@@ -55,6 +54,16 @@ export default function TempCard({ cardData, setLoading, setCards, ...rest }) {
         dark:border-zinc-500 dark:active:border-zinc-400`,
     }
 
+    const modeBackgroundColors = {
+        'optimize': 'bg-yellow-500 dark',
+        'explain': 'bg-purple-500 dark',
+        'template': 'bg-zinc-500 dark',
+    }
+
+    const switchEdit = () => {
+        setIsEditable(!isEditable)
+    }
+
     const handleMouseEnter = () => {
         setIsHovered(true);
     };
@@ -63,8 +72,7 @@ export default function TempCard({ cardData, setLoading, setCards, ...rest }) {
         setIsHovered(false);
     };
 
-
-    function delay(ms) {
+    const delay = (ms) => {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
@@ -89,8 +97,7 @@ export default function TempCard({ cardData, setLoading, setCards, ...rest }) {
         //     }),
         // });
         // const cardData = await response.json();
-
-        const cardData = { id: 1, answer: content + ' new card: Lorem ipsum dolor sit amet, consectetur adipiscing elit.', mode: mode, model: model, prompt: 'Prompt new card: Lorem ipsum dolor sit amet, consectetur adipiscing elit.' }
+        const cardData = { id: 1, answer: parseAnswer(mode, dummyResponses[mode].choices[0].message.content), mode: mode, model: model, prompt: prompt }
         console.log(cardData)
 
         setCards((preCards) => [cardData, ...preCards.slice(1)]);
@@ -118,7 +125,7 @@ export default function TempCard({ cardData, setLoading, setCards, ...rest }) {
             e.target.value = '';
         }
         setContent(e.target.value);
-        updateWordCount(e.target.value)
+        updateWordCount(getTextContentFromHtmlString(e.target.value))
     };
 
     useEffect(() => {
@@ -153,6 +160,49 @@ export default function TempCard({ cardData, setLoading, setCards, ...rest }) {
         tempElement.innerHTML = htmlString;
         return tempElement.textContent || tempElement.innerText || '';
     }
+
+    useEffect(() => {
+        if (mode == 'explain') {
+            const parsedJson = JSON.parse(dummyResponses[mode].choices[0].message.content)
+            console.log(`in parseExplain, parsedJson: ${parsedJson}`)
+            const parsedContentPairs = Object.keys(parsedJson).map((key) => {
+                if (parsedJson[key] !== null) {
+                    const newKey = key.split("_").map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(" ");
+                    const value = Array.isArray(parsedJson[key]) ? parsedJson[key].join(", ") : parsedJson[key];
+                    return [newKey, value];
+                }
+            })
+
+            const newContentDict = {};
+            for (let i = 0; i < parsedContentPairs.length; i++) {
+                if (parsedContentPairs[i]) {
+                    newContentDict[parsedContentPairs[i][0]] = parsedContentPairs[i][1];
+                }
+            }
+            const filteredContentDict = Object.fromEntries(
+                Object.entries(newContentDict).filter(([key, value]) => {
+                    const emptyList = [null, undefined, '', 'N/A', "null", "undefined"]
+                    return emptyList.includes(value) ? null : value
+                })
+            )
+            const newContent = renderToStaticMarkup(
+                <div className="flex flex-col gap-1">
+                    {
+                        Object.keys(filteredContentDict).map((key) => {
+                            return (
+                                <div key={key} className="flex mb-1 items-start gap-2">
+                                    <span className="inline-block px-2 py-0.5 text-xs font-medium text-white bg-zinc-700 rounded-md">{key}</span>
+                                    <span className="flex-grow">{newContentDict[key]}</span>
+                                </div>
+                            );
+                        })
+
+                    }
+                </div>
+            )
+            setContent(newContent)
+        }
+    }, []);
 
     return (
         <div
@@ -202,12 +252,17 @@ export default function TempCard({ cardData, setLoading, setCards, ...rest }) {
                             ${loadingText}`}
                     placeholder="Write your prompt here..."
                     onChange={onChangeHandler}
-                // disabled={isMade && !isEditable}
+                    disabled={isMade && !isEditable}
                 />
 
                 {/* card footer */}
                 <div className="h-6 flex flex-row justify-between mt-4">
-                    <div className="flex items-center justify-start text-gray-400 text-xs">{wordCount} words</div>
+                    {
+                        mode != 'explain' ?
+                            <div className="flex items-center justify-start text-gray-400 text-xs">{wordCount} words</div>
+                            :
+                            <div className="flex items-center justify-start text-gray-400 text-xs"></div>
+                    }
                     {
                         isHovered || isEditable ?
                             <div className="flex items-center justify-end gap-3">
@@ -229,9 +284,10 @@ export default function TempCard({ cardData, setLoading, setCards, ...rest }) {
                                     </button>
                                 }
                                 {
-                                    (!isMade || isEditable) && <PaperAirplaneIcon
-                                        className={`h-5 text-black dark:text-white ${content.length > 0 ? 'cursor-pointer' : "hover-none"} ${modeTextColors[mode]}`}
-                                        onClick={onCreateHandler} />
+                                    (!isMade || isEditable) &&
+                                    <div className={` rounded-md w-12 flex justify-center ${modeBackgroundColors[mode]}`}><PaperAirplaneIcon
+                                        className={`h-5 text-black dark:text-white ${content.length > 0 ? 'cursor-pointer' : "hover-none"} `}
+                                        onClick={onCreateHandler} /></div>
                                 }
                             </div>
                             :

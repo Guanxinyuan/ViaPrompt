@@ -2,10 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/fonts/Inter-Regular.woff2") format("woff2"),
+    /* Modern Browsers */ url("/fonts/Inter-Regular.woff") format("woff"); /* Legacy Browsers */
+}
+
 @layer components {
   .global-container {
     @apply text-black;
     @apply dark:bg-zinc-900 text-white;
+    /* font-family: "Inter", sans-serif; */
   }
 
   /* main page */
@@ -298,7 +307,7 @@
   }
 
   .card-header-option {
-    @apply h-5;
+    @apply h-6;
   }
 
   .model-icon {
