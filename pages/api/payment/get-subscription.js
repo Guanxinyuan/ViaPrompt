@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     }
 
     try {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('subscriptions')
             .select('*')
             .eq('user_id', user_id)

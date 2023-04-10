@@ -27,12 +27,12 @@ function MyApp({ Component, pageProps }) {
     // <div className='bg-zinc-800 text-white'>
     <div className='global-container'>
       <Navbar supabase={supabase} session={session} />
-      <SubscriptionProvider>
-        <SessionContextProvider supabaseClient={supabase} initialSession={pageProps.initialSession}>
+      <SessionContextProvider supabaseClient={supabase} initialSession={pageProps.initialSession}>
+        <SubscriptionProvider>
           <Component {...pageProps} />
           <Analytics />
-        </SessionContextProvider>
-      </SubscriptionProvider>
+        </SubscriptionProvider>
+      </SessionContextProvider>
     </div>
   )
 }
