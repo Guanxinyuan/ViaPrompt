@@ -73,7 +73,7 @@ export function SubscriptionCard({ subscriptionInfo }) {
 
     return (
         <div className="subscription-card-container" >
-            <div className="subscription-card">
+            <div className="subscription-card rounded-2xl">
                 <div className="flex items-center justify-between">
                     <h2 className="subscription-card-title">{title}</h2>
                     {

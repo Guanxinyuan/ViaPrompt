@@ -176,7 +176,7 @@ export default function ProfilePanel() {
                         !edittingUsername &&
                         <div className='flex flex-row justify-between items-center'>
                             <p className='settings-panel-value'>{username}</p>
-                            <button className="settings-panel-text-button text-xs text-left"
+                            <button className="settings-panel-text-button text-sm text-left"
                                 onClick={switchEdittingUsername}>
                                 Edit
                             </button>
@@ -206,12 +206,12 @@ export default function ProfilePanel() {
                                 <div className='w-full flex justify-between'>
                                     <button
                                         type='submit'
-                                        className="settings-panel-button w-fit text-xs font-semibold"
+                                        className="settings-panel-button w-fit text-sm font-semibold rounded-lg"
                                         disabled={loading}>
                                         {loading ? 'Loading ...' : 'Save'}
                                     </button>
                                     <button
-                                        className={`settings-panel-text-button text-xs font-semibold text-red-500 dark:text-red-500 dark:hover:text-red-600`}
+                                        className={`settings-panel-text-button text-sm font-semibold text-red-500 dark:text-red-500 dark:hover:text-red-600`}
                                         onClick={switchEdittingUsername}>
                                         Cancel
                                     </button>
@@ -220,7 +220,7 @@ export default function ProfilePanel() {
                         </div>
                     </form>
                 }
-                <div className="settings-panel-item">
+                {/* <div className="settings-panel-item">
                     <label className="settings-panel-label">Password</label>
                     <div className='flex flex-row justify-between items-start'>
                         <p className='settings-panel-value'>********</p>
@@ -295,9 +295,9 @@ export default function ProfilePanel() {
                             </div>
                         </form>
                     }
-                </div>
+                </div> */}
                 <button
-                    className="settings-panel-text-button absolute bottom-4 w-fit text-red-500 dark:text-red-500"
+                    className="settings-panel-text-button absolute bottom-4 w-fit text-red-500 dark:text-red-500 dark:hover:text-red-600"
                     onClick={() => supabase.auth.signOut()}
                     disabled={loading}>
                     Sign out

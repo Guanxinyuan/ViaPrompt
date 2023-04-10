@@ -30,7 +30,7 @@ export default function PaymentModal({ subscriptionInfo, onCloseModal }) {
         <div className="flex items-center justify-center">
             <div className="fixed z-10 top-0 left-0 right-0 bottom-0 flex items-center justify-center">
                 <div
-                    className="payment-modal flex-col py-4"
+                    className="payment-modal flex-col py-4  rounded-2xl"
                     role="dialog"
                     aria-modal="true"
                     aria-labelledby="modal-headline"

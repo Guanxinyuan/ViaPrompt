@@ -75,12 +75,12 @@ export default function SubscriptionPanel() {
                         <div className="settings-panel-item">
                             <label className="settings-panel-label">Current Plan</label>
                             <div className='settings-panel-value flex flex-row justify-between items-center'>
-                                <p className=''><span className=' font-bold text-xl'>{currentPlan}</span> ({subscriptionInfos[currentPlan].price}/month)</p>
+                                <p className=''><span className=' font-bold text-xl'>{currentPlan}</span></p>
 
                                 {
                                     isSubscribed ?
                                         <button
-                                            className="settings-panel-button"
+                                            className="settings-panel-button rounded-lg"
                                             onClick={handlePlanChange}
                                         >
                                             Change Plan
@@ -98,10 +98,10 @@ export default function SubscriptionPanel() {
                         <div className="settings-panel-item">
                             <label className="settings-panel-label">Status</label>
                             {
-                                status == "Active" && <p className={`settings-panel-value w-fit px-2 text-white dark:text-white rounded-md bg-green-400 dark:bg-green-400`}>Active</p>
+                                status == "Active" && <p className={`settings-panel-value w-fit px-2 py-0.5 text-white dark:text-white rounded-lg bg-green-400 dark:bg-green-400`}>Active</p>
                             }
                             {
-                                status == "Inactive" && <p className={`settings-panel-value w-fit px-2 text-white dark:text-white rounded-md bg-purple-500 dark:bg-purple-500`}>Inactive</p>
+                                status == "Inactive" && <p className={`settings-panel-value w-fit px-2 py-0.5 text-white dark:text-white rounded-lg bg-purple-500 dark:bg-purple-500`}>Inactive</p>
                             }
                         </div>
                         <div className="settings-panel-item">
@@ -130,7 +130,7 @@ export default function SubscriptionPanel() {
                         {
                             isSubscribed &&
                             <button
-                                className="settings-panel-button w-fit bg-red-400 hover:bg-red-500"
+                                className="settings-panel-button w-fit bg-red-500 hover:bg-red-600 rounded-lg"
                                 onClick={cancelSubscription}
                             >
                                 Suspend Subscription

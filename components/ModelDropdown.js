@@ -1,17 +1,19 @@
 import { useState, useRef, useEffect } from 'react';
 // import MidjourneyIcon from '/logos/mj.png';
 
-export default function ModelDropdown({ options, defaultValue, paramSetter, lockInput }) {
+export default function ModelDropdown({ defaultValue, paramSetter, isEditable }) {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState(defaultValue);
-    const modelImageDict = {
-        'Midjourney V4': '/logos/mj.png',
-        'ChatGPT': 'logos/chatgpt.svg',
-        'GPT-4': 'logos/openai.svg',
-        'GPT-3': 'logos/openai-nobg.svg',
-        "Stable Diffusion": 'logos/sd.png',
-        "Lexica": 'logos/lexica.png',
-        "Dalle": 'logos/dalle.png',
+    const options = ["chatgpt", "gpt-4", "gpt-3", "midjourney", "stable diffusion", "dalle", "lexica"]
+
+    const modelInfoDict = {
+        'midjourney': { logo: '/logos/mj.png', name: 'Midjourney', description: '' },
+        'chatgpt': { logo: '/logos/chatgpt.svg', name: 'ChatGPT', description: '' },
+        'gpt-4': { logo: '/logos/openai.svg', name: 'GPT-4', description: '' },
+        'gpt-3': { logo: '/logos/openai-nobg.svg', name: 'GPT-3', description: '' },
+        'stable diffusion': { logo: '/logos/sd.png', name: 'Stable Diffusion', description: '' },
+        'lexica': { logo: '/logos/lexica.png', name: 'Lexica', description: '' },
+        'dalle': { logo: '/logos/dalle.png', name: 'Dalle', description: '' },
     }
     const dropdownRef = useRef(null);
 
@@ -42,38 +44,30 @@ export default function ModelDropdown({ options, defaultValue, paramSetter, lock
     }, []);
 
     return (
-        <div className="relative col-start-3 col-span-2" ref={dropdownRef}>
+        <div className="relative" ref={dropdownRef}>
             <div
                 className="model-button"
                 onClick={toggleDropdown}>
-                <img src={modelImageDict[selectedOption]} className='model-icon' />
-                <p className={`py-1`}>{selectedOption}</p>
+                <img src={modelInfoDict[selectedOption].logo} className='card-header-option' />
+                {/* <p className="text-xs">{modelInfoDict[selectedOption].name}</p> */}
             </div>
             {
-                !lockInput &&
+                isEditable &&
                 <div className="option-dropdown-container">
-                    <div className={`option-dropdown w-full ${isOpen ? 'block' : 'hidden'} `}>
-                        <p className='text-xs pb-2 px-2'>
-                            <span className='font-semibold'>Step 2: </span>Select an AI model for prompting.
-                            <span className='cursor-pointer' onClick={() => alert('model example page')}> View examples ↗</span></p>
+                    <div className={`option-dropdown  w-44 ${isOpen ? 'block' : 'hidden'} `}>
+                        <p className='text-xs pb-2 px-2'>Select an AI model your prompt will be used in.</p>
                         {options.map((option) => (
                             <div className='model-option-item'
                                 onClick={() => {
                                     selectOption(option)
                                     setIsOpen(false)
                                 }}>
-                                <div className="flex flex-row items-center ml-auto gap-2 px-2 pt-2">
-                                    <img src={modelImageDict[option]} className='w-6' />
-                                    <p className="">{option}</p>
+                                <div className="flex flex-row items-center ml-auto gap-2 px-2 pt-1.5 ">
+                                    <img src={modelInfoDict[option].logo} className='card-header-option' />
+                                    <p className="text-sm">{modelInfoDict[option].name}</p>
                                 </div>
-                                <p className='text-xs px-4 py-1'>
-                                    {option == 'ChatGPT' && ""}
-                                    {option == 'GPT 4' && ""}
-                                    {option == 'GPT 3' && ""}
-                                    {option == 'Midjourney V4' && ""}
-                                    {option == 'Stable Diffusion' && ""}
-                                    {option == 'Dalle' && ""}
-                                    {option == 'Lexica' && ""}
+                                <p className='text-sm px-4 py-1'>
+                                    {modelInfoDict[option].description}
                                 </p>
                             </div>
                         ))}

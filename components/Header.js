@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react';
 import DarkModeButton from '@/components/DarkModeButton';
 import useColorMode from '@/hooks/useColorMode'
-import { BoltIcon, RocketLaunchIcon } from '@heroicons/react/24/outline'
+import { BoltIcon, RocketLaunchIcon, BookOpenIcon } from '@heroicons/react/24/outline'
 
 // Make buttons board and click to navigate to the given page
 export default function Navbar({ supabase, session }) {
@@ -48,11 +48,11 @@ export default function Navbar({ supabase, session }) {
 
 
     return (
-        <div className='header px-8'>
+        <div className='header px-10'>
             <div className='w-1/12 flex justify-left items-center'>
                 <p className='font-bold text-xl cursor-pointer' onClick={() => router.push('/')}>Palaxy</p>
             </div>
-            <div className="w-6/12 flex text-left"></div>
+            <div className="flex text-left flex-grow"></div>
 
             <div className="flex-grow flex flex-row gap-8 justify-end items-center text-center">
                 <div className='header-button flex flex-row gap-2 items-center text-sm'>
@@ -69,10 +69,14 @@ export default function Navbar({ supabase, session }) {
                     <BoltIcon className="w-5 h-5" />
                     <p className="cursor-pointer " onClick={handleClick} router-text="pricing">Upgrade</p>
                 </div>
+                <div className='header-button '>
+                    <BookOpenIcon className="w-5 h-5" />
+                    <p className="cursor-pointer " onClick={handleClick} router-text="docs">Guide</p>
+                </div>
                 <div>
                     {
                         username ?
-                            <p className='header-button rounded-full hover:bg-gray-300 ' onClick={() => { router.push(`/settings`) }}>{username}</p>
+                            <p className='header-button rounded-lg hover:bg-zinc-300 dark:hover:bg-zinc-700 py-1 dark:hover:text-white' onClick={() => { router.push(`/settings`) }}>{username}</p>
                             :
                             <p className="header-button" onClick={handleClick} router-text="auth/login">Login</p>
 

@@ -1,49 +1,15 @@
-import Card from '@/components/Card'
 import { useEffect, useState } from 'react'
 import PromptSearchBar from '@/components/PromptSearchBar'
-import TempCard from '@/components/TempCard'
+import Card from '@/components/Card'
 import { parseAnswer } from '@/utils/parseAnswer'
 import { v4 as uuidv4 } from 'uuid';
 
 
 export default function Workspace() {
-    const [allCards, setAllCards] = useState([])
     const [query, setQuery] = useState('')
     const [filter, setFilter] = useState('')
-
-    // useEffect(() => {
-    //     fetchCards()
-    // }, [])
-
-    // useEffect(() => { }, [cards])
-
-    // useEffect(() => {
-    //     console.log(query + ' ' + filter)
-    //     const conditionedCards = allCards
-    //         .filter(card => card.timestamp && card.mode.includes(filter))
-    //         .filter(card => query.length == 0 || card.originalPrompt.toLowerCase().includes(query.toLowerCase()) || card.optimizedPrompt?.toLowerCase()?.includes(query.toLowerCase()) || card.templatePrompt?.toLowerCase()?.includes(query.toLowerCase()))
-    //     setCards(conditionedCards)
-    //     console.log(conditionedCards)
-    // }, [query, filter])
-
-    // const fetchCards = async () => {
-    //     const response = await fetch('/api/cards/getCards')
-    //     const result = await response.json()
-    //     const dummyCards = result.data
-    //     setAllCards(dummyCards)
-    //     setCards(dummyCards)
-    // }
-
-    // const emptyCards = {
-    //     cardId: null,
-    //     mode: 'Optimize',
-    //     model: "Midjourney V4",
-    //     originalPrompt: null,
-    //     optimizedPrompt: null,
-    //     explanation: null,
-    //     templatePrompt: null,
-    //     timestamp: null
-    // }
+    const [loading, setLoading] = useState(false);
+    const [columns, setColumns] = useState([]);
 
     const [cards, setCards] = useState([
         {
@@ -99,9 +65,6 @@ export default function Workspace() {
 
     const emptyCard = { id: 0, answer: '', mode: 'optimize', model: 'gpt-4', prompt: 'Prompt: Lorem ipsum dolor sit amet, consectetur adipiscing elit.' }
 
-    const [loading, setLoading] = useState(false);
-    const [columns, setColumns] = useState([]);
-
     const buildColumns = (arr, n) => {
         let subArrays = [];
         for (let i = 0; i < arr.length; i += n) {
@@ -125,9 +88,9 @@ export default function Workspace() {
                             <div>
                                 {
                                     loading && i == 1 && j == 0 ?
-                                        <TempCard key={uuidv4()} cardData={card} setLoading={setLoading} setCards={setCards} loadingText={'animate-pulse blur-text'} loadingBorder={'animate-pulse'} />
+                                        <Card key={uuidv4()} cardData={card} setLoading={setLoading} setCards={setCards} loadingText={'animate-pulse blur-text'} loadingBorder={'animate-pulse'} />
                                         :
-                                        <TempCard key={uuidv4()} cardData={card} setLoading={setLoading} setCards={setCards} />
+                                        <Card key={uuidv4()} cardData={card} setLoading={setLoading} setCards={setCards} />
                                 }
                             </div>
                         ))}

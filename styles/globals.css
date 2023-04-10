@@ -55,7 +55,7 @@
 
   /* header component */
   .header {
-    @apply text-black flex flex-row justify-items-end container mx-auto py-2 w-full border-b border-zinc-300 text-sm;
+    @apply text-black flex flex-row justify-items-end container mx-auto py-2 w-screen border-b border-zinc-300 text-sm;
     @apply dark:text-white dark:border-zinc-700;
   }
 
@@ -85,7 +85,7 @@
   }
 
   .subscription-card-container {
-    @apply border border-gray-300 rounded-lg shadow-md overflow-hidden h-fit;
+    @apply border border-gray-300 rounded-2xl shadow-md overflow-hidden h-fit;
     @apply dark:border-zinc-800;
   }
 
@@ -157,7 +157,7 @@
   }
 
   .settings-panel-body {
-    @apply border border-gray-300 p-4 rounded-md flex flex-col space-y-2 bg-white gap-6;
+    @apply border border-gray-300 p-4 rounded-2xl flex flex-col space-y-2 bg-white gap-6;
     @apply dark:bg-zinc-800 dark:border-zinc-800;
   }
 
@@ -172,6 +172,7 @@
 
   .settings-panel-value {
     @apply text-zinc-800 text-sm;
+    /* @apply rounded-lg w-full px-2 py-1 bg-zinc-700; */
     @apply dark:text-white;
   }
 
