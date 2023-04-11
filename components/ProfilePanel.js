@@ -162,6 +162,16 @@ export default function ProfilePanel() {
 
     }
 
+    const onSignOut = async () => {
+        try {
+            const { error } = await supabase.auth.signOut()
+            if (error) throw error
+            console.log('Signed out!')
+        } catch (error) {
+            console.log(error)
+            console.log('Error signing out')
+        }
+    }
     return (
         <div className="settings-panel w-2/5 ">
             <h2 className="settings-title">Profile</h2>
@@ -298,8 +308,8 @@ export default function ProfilePanel() {
                 </div> */}
                 <button
                     className="settings-panel-text-button absolute bottom-4 w-fit text-red-500 dark:text-red-500 dark:hover:text-red-600"
-                    onClick={() => supabase.auth.signOut()}
-                    disabled={loading}>
+                    onClick={onSignOut}
+                    disabled={false}>
                     Sign out
                 </button>
             </div>

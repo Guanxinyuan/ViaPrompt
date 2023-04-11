@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useUser, useSupabaseClient } from '@supabase/auth-helpers-react'
+import { useSubscription } from '@/context/SubscriptionContext'
 
 export default function Account({ session }) {
     const supabase = useSupabaseClient()
@@ -12,8 +13,16 @@ export default function Account({ session }) {
     const [passwordTooShort, setPasswordTooShort] = useState(false)
     const [updateSuccess, setUpdateSuccess] = useState(false)
 
+    const { subscription } = useSubscription();
+
     useEffect(() => {
-        getProfile()
+        alert(`subscription: ${JSON.stringify(subscription)}`)
+    }, [])
+
+    useEffect(() => {
+        if (user) {
+            getProfile()
+        }
     }, [session])
 
 

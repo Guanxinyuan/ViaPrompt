@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 import PromptSearchBar from '@/components/PromptSearchBar'
 import Card from '@/components/Card'
 import { parseAnswer } from '@/utils/parseAnswer'
 import { v4 as uuidv4 } from 'uuid';
+import { useSession } from '@supabase/auth-helpers-react';
 
 
 export default function Workspace() {
@@ -10,6 +12,14 @@ export default function Workspace() {
     const [filter, setFilter] = useState('')
     const [loading, setLoading] = useState(false);
     const [columns, setColumns] = useState([]);
+    const session = useSession();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (!session) {
+            router.push('/auth/login');
+        }
+    }, [session]);
 
     const [cards, setCards] = useState([
         {
@@ -79,24 +89,29 @@ export default function Workspace() {
     }, [cards, loading])
 
     return (
-        <div className="max-w-screen min-h-screen py-10 mx-10 m-auto flex flex-col gap-6">
-            <PromptSearchBar filterSetter={setFilter} querySetter={setQuery} />
-            <div className="masonry min-h-screen gap-6">
-                {columns.map((column, i) => (
-                    <div key={i} className="items-start space-y-6">
-                        {column.filter((item) => item !== undefined).map((card, j) => (
-                            <div>
-                                {
-                                    loading && i == 1 && j == 0 ?
-                                        <Card key={uuidv4()} cardData={card} setLoading={setLoading} setCards={setCards} loadingText={'animate-pulse blur-text'} loadingBorder={'animate-pulse'} />
-                                        :
-                                        <Card key={uuidv4()} cardData={card} setLoading={setLoading} setCards={setCards} />
-                                }
+        <div className='min-h-screen'>
+            {
+                session &&
+                <div className="max-w-screen min-h-screen py-10 mx-10 m-auto flex flex-col gap-6">
+                    <PromptSearchBar filterSetter={setFilter} querySetter={setQuery} />
+                    <div className="masonry min-h-screen gap-6">
+                        {columns.map((column, i) => (
+                            <div key={i} className="items-start space-y-6">
+                                {column.filter((item) => item !== undefined).map((card, j) => (
+                                    <div>
+                                        {
+                                            loading && i == 1 && j == 0 ?
+                                                <Card key={uuidv4()} cardData={card} setLoading={setLoading} setCards={setCards} loadingText={'animate-pulse blur-text'} loadingBorder={'animate-pulse'} />
+                                                :
+                                                <Card key={uuidv4()} cardData={card} setLoading={setLoading} setCards={setCards} />
+                                        }
+                                    </div>
+                                ))}
                             </div>
                         ))}
                     </div>
-                ))}
-            </div>
+                </div>
+            }
         </div>
 
     )

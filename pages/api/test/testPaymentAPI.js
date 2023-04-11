@@ -98,9 +98,3 @@ const main = async () => {
 }
 
 main()
-
-const curl = `
-curl -v https://api-m.sandbox.paypal.com/v1/oauth2/token \ -H "Accept: application/json" \ -H "Accept-Language: en_US" \ -u "AQC5GzVijzZ6PcNtiinAH1puxoVXrpFFvCyj4wrvEzVFjlMOuoI4dyXBYhg-PvizW154Kz30t83hW7yL:EDYgSxI4UKpc620EbnK647O1OLaqdcpbyvXJrvwBwiNqRHFev53wrbCC_JPnT1BWnq-2VGKcm7FtD99y" \ -d "grant_type=client_credentials"
-curl -v https://api-m.sandbox.paypal.com/v1/oauth2/token -H "Accept: application/json" -H "Accept-Language: en_US" -u "AQC5GzVijzZ6PcNtiinAH1puxoVXrpFFvCyj4wrvEzVFjlMOuoI4dyXBYhg-PvizW154Kz30t83hW7yL:EDYgSxI4UKpc620EbnK647O1OLaqdcpbyvXJrvwBwiNqRHFev53wrbCC_JPnT1BWnq-2VGKcm7FtD99y" -d "grant_type=client_credentials"
-
-`

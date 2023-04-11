@@ -2,25 +2,9 @@ import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import PayPalButton from '@/components/PayPalButton';
 
-export function PaymentBoard() {
-    return (
-        <div className='flex justify-center mt-4'>
-            <div className='payment-board'>
-                <div className='flex flex-col gap-1 justify-center items-center'>
-                    <PayPalButton fundingSource={'paypal'} color={'gold'} />
-                    {/* <PayPalButtonTemp fundingSource={'card'} color={'white'} /> */}
-                </div>
-                <p className='text-xs text-center text-gray-500'>
-                    By subscribing, you agree to our <a href='#' className='underline'>terms</a>.
-                </p>
-            </div>
-        </div>
-    )
-}
-
 export default function PaymentModal({ subscriptionInfo, onCloseModal }) {
 
-    const { title, features, price } = subscriptionInfo;
+    const { title, features, price, planCode } = subscriptionInfo;
 
     const closeModal = () => {
         onCloseModal()
@@ -30,7 +14,7 @@ export default function PaymentModal({ subscriptionInfo, onCloseModal }) {
         <div className="flex items-center justify-center">
             <div className="fixed z-10 top-0 left-0 right-0 bottom-0 flex items-center justify-center">
                 <div
-                    className="payment-modal flex-col py-4  rounded-2xl"
+                    className="payment-modal flex-col py-4 rounded-2xl"
                     role="dialog"
                     aria-modal="true"
                     aria-labelledby="modal-headline"
@@ -54,7 +38,20 @@ export default function PaymentModal({ subscriptionInfo, onCloseModal }) {
                             <p className='subscription-card-feature-title text-xs'>Cancel anytime</p>
                         </div>
                     </div>
-                    <PaymentBoard />
+
+                    {/* Payment Board directly implemented here */}
+                    <div className='flex justify-center mt-4'>
+                        <div className='payment-board'>
+                            <div className='flex flex-col gap-1 justify-center items-center'>
+                                <PayPalButton fundingSource={'paypal'} color={'gold'} planCode={planCode} />
+                                {/* <PayPalButtonTemp fundingSource={'card'} color={'white'} /> */}
+                            </div>
+                            <p className='text-xs text-center text-gray-500'>
+                                By subscribing, you agree to our <a href='#' className='underline'>terms</a>.
+                            </p>
+                        </div>
+                    </div>
+
                 </div>
 
                 {/* Background overlay */}

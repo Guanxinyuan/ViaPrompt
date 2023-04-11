@@ -1,10 +1,24 @@
 import { Fragment, useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import Head from 'next/head';
 import ProfilePanel from '@/components/ProfilePanel';
 import SubscriptionPanel from '@/components/SubscriptionPanel';
+import { useSubscription } from '@/context/SubscriptionContext';
+import { useSession } from '@supabase/auth-helpers-react';
 
 
 export default function SettingsPage() {
+    const { subscription } = useSubscription();
+    const session = useSession();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (!session) {
+            router.push('/auth/login');
+        }
+    }, [session]);
+
+
     return (
         <Fragment>
             <Head>

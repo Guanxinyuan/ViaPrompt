@@ -1,25 +1,61 @@
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import { useUser } from "@supabase/auth-helpers-react";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { useSubscription } from "@/context/SubscriptionContext";
+import { subscriptionInfos } from "@/config";
 
 export default function PayPalButton({ fundingSource, color, planCode, ...rest }) {
 
     const { status, updatedSubscription } = rest;
+    const router = useRouter();
     const clientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
-    const secret = process.env.NEXT_PUBLIC_PAYPAL_SECRET;
     const currency = 'USD'
+    const user = useUser();
+    const { subscription, setSubscription } = useSubscription();
+
+    // useEffect(() => {
+    //     console.log(subscription.plan_code, planCode, status, subscription.status)
+    //     subscription && planCode != subscription.plan_code && planCode != 'palaxy-000' && (subscription.status === 'ACTIVE' || subscription.status === 'SUSPENDED') ?
+    //         console.log(`revise subscription: ${subscription.plan_code} to plan: ${subscriptionInfos[planCode].planId}`) :
+    //         console.log(`create subscription: ${subscriptionInfos[planCode].planId}`)
+    // }, [])
 
     const createSubscription = async (data, actions) => {
-        if (updatedSubscription && status && (status === 'ACTIVE' || status === 'SUSPENDED')) {
-
-            // if subscription exists, revise it by chaning the plan id
-            return actions.subscription.revise(subscriptionId, {
-                "plan_id": "NEW_SUBSCRIPTION_PLAN_ID"
+        if (subscription && planCode != subscription.plan_code && planCode != 'palaxy-000' && (subscription.status === 'ACTIVE' || subscription.status === 'SUSPENDED')) {
+            console.log(`revise subscription: ${subscription.subscription_id} to plan: ${subscriptionInfos[planCode].planId}`)
+            // if subscription exists, revise it by changing the plan id
+            return actions.subscription.revise(subscription.subscription_id, {
+                plan_id: subscriptionInfos[planCode].planId,
             });
         } else {
             return actions.subscription.create({
-                plan_id: "P-79633757P1179854LMQVKV3A",
+                plan_id: subscriptionInfos[planCode].planId,
             });
         }
     }
+
+    const saveSubscriptionData = async (subscriptionData) => {
+        try {
+            const response = await fetch('/api/payment/save-subscription', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(subscriptionData),
+            });
+
+            const result = await response.json();
+            if (!result.success) {
+                throw new Error(result.error);
+            }
+            console.log('Subscription saved successfully:', result.data);
+            setSubscription(result.data)
+        } catch (error) {
+            console.error('Error saving subscription:', error.message);
+        }
+    }
+
 
     const onApprove = async (data, actions) => {
         const subscription = await actions.subscription.get();
@@ -27,28 +63,17 @@ export default function PayPalButton({ fundingSource, color, planCode, ...rest }
         const { id, plan_id, start_time, status, create_time, update_time } = subscription;
         const { next_billing_time } = subscription.billing_info;
 
-        const response = await fetch("/api/payment/cancel-subscription", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                id: id,
-                plan_id: plan_id,
-                start_time: start_time,
-                status: status,
-                create_time: create_time,
-                update_time: update_time,
-                next_billing_time: next_billing_time,
-                plan_code: planCode,
-            }),
+        await saveSubscriptionData({
+            subscription_id: id,
+            start_time: start_time,
+            next_billing_time: next_billing_time,
+            status: status,
+            update_time: update_time,
+            created_time: create_time,
+            plan_code: planCode,
+            user_id: user.id,
         });
 
-        if (!response.ok) {
-            throw new Error(`Error approving subscription: ${response.statusText}`);
-        }
-
-        const responseData = await response.json();
     };
 
     const style = {

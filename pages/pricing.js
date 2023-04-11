@@ -2,34 +2,10 @@
 import PaymentModal from '@/components/PaymentModal';
 import Head from 'next/head';
 import { Fragment, useState, useEffect } from 'react';
+import { subscriptionInfos } from '@/config';
+import { useSubscription } from '@/context/SubscriptionContext';
 
-export default function Upgrade() {
-    const subscriptionInfos = {
-        'Basic': {
-            title: 'Basic',
-            description: 'Ideal for smaller projects or personal websites.',
-            featureTitle: 'Get started',
-            features: ['2 GB Storage', '10,000 Monthly Visits', '24/7 Support'],
-            price: '$10',
-            isMostPopular: false
-        },
-        'Premium': {
-            title: 'Premium',
-            description: 'Ideal for larger projects or business websites.',
-            featureTitle: 'Everything in Basic, plus:',
-            features: ['10 GB Storage', '50,000 Monthly Visits', '24/7 Support'],
-            price: '$25',
-            isMostPopular: true
-        },
-        'Pro': {
-            title: 'Pro',
-            description: 'Designed for high-traffic websites or e-commerce sites.',
-            featureTitle: 'Everything in Premium, plus:',
-            features: ['20 GB Storage', '100,000 Monthly Visits', '24/7 Support'],
-            price: '$50',
-            isMostPopular: false
-        }
-    }
+export default function UpgradePage() {
 
     return (
         <Fragment>
@@ -65,11 +41,10 @@ export default function Upgrade() {
 
 export function SubscriptionCard({ subscriptionInfo }) {
 
-
-    const { title, description, featureTitle, features, price, isMostPopular } = subscriptionInfo;
+    const { title, planCode, description, featureTitle, features, price, isMostPopular } = subscriptionInfo;
     const [checkout, setCheckout] = useState(false);
-
-    useEffect(() => { }, [checkout])
+    const { subscription } = useSubscription();
+    const status = subscription?.status;
 
     return (
         <div className="subscription-card-container" >
@@ -77,7 +52,7 @@ export function SubscriptionCard({ subscriptionInfo }) {
                 <div className="flex items-center justify-between">
                     <h2 className="subscription-card-title">{title}</h2>
                     {
-                        isMostPopular && <span className="bg-yellow-100 text-yellow-800 text-xs font-semibold rounded-full px-2 py-1">Most Popular</span>
+                        isMostPopular && <span className="bg-yellow-600 text-white text-xs font-semibold rounded-full px-2 py-1">Most Popular</span>
                     }
                 </div>
                 <div className='subscription-card-price-section'>
@@ -94,14 +69,20 @@ export function SubscriptionCard({ subscriptionInfo }) {
                             })
                         }
                     </ul>
-                    <button
-                        className="subscription-card-button"
-                        onClick={() => setCheckout(true)}
-                    >Choose Plan</button>
+                    {
+                        subscription?.plan_code == planCode && status == 'ACTIVE' ?
+                            <button
+                                className="text-yellow-500 font-bold py-2 px-4 mt-6" disabled>Current Plan</button>
+                            :
+                            planCode != "palaxy-000" ?
+                                <button
+                                    className="subscription-card-button"
+                                    onClick={() => setCheckout(true)}>Choose Plan</button>
+                                :
+                                <button className="text-yellow-500 font-bold py-2 px-4 mt-6 opacity-0" disabled>Curent Plan</button>
+
+                    }
                 </div>
-                {/* {
-                    checkout && <PaymentBoard />
-                } */}
                 {
                     checkout && <PaymentModal subscriptionInfo={subscriptionInfo} onCloseModal={() => setCheckout(false)} />
                 }

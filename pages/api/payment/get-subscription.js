@@ -13,14 +13,18 @@ export default async function handler(req, res) {
             .from('subscriptions')
             .select('*')
             .eq('user_id', user_id)
+            .order('created_at', { ascending: false })
+            .limit(1)
             .single();
 
         if (error) {
             throw error;
         }
 
+        // console.log('Success in get-subscription: ', data[0])
         res.status(200).json({ success: true, data });
     } catch (err) {
+        console.log('Error in get-subscription: ', err.message)
         res.status(500).json({ success: false, message: err.message });
     }
 }
