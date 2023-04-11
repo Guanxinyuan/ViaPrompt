@@ -1,14 +1,7 @@
 // This page is used to test the API calls. There is a button that calls the API, and a text box that displays the result.
 import { useState } from 'react'
-
-const canParseJSON = (str) => {
-  try {
-    JSON.parse(str)
-    return true
-  } catch (e) {
-    return false
-  }
-}
+import { useUser } from '@supabase/auth-helpers-react'
+import { parseAnswer } from '@/utils/parseAnswer'
 
 export default function TestAPI() {
   return (
@@ -17,7 +10,7 @@ export default function TestAPI() {
         <h1 className='text-2xl'>Supabase Test</h1>
         <div className='flex flex-row gap-6'>
           <TestSupaCard model={'midjourney'} mode={'optimize'} />
-          <TestSupaCard model={'midjourney'} mode={'decompose'} />
+          <TestSupaCard model={'midjourney'} mode={'explain'} />
           <TestSupaCard model={'midjourney'} mode={'template'} />
         </div>
       </div>
@@ -26,7 +19,7 @@ export default function TestAPI() {
         <h1 className='text-2xl'>OpenAI Test</h1>
         <div className='flex flex-row gap-6'>
           <OpenAICard model={'midjourney'} mode={'optimize'} />
-          <OpenAICard model={'midjourney'} mode={'decompose'} />
+          <OpenAICard model={'midjourney'} mode={'explain'} />
           <OpenAICard model={'test'} mode={'translate'} />
         </div>
       </div>
@@ -38,26 +31,32 @@ export default function TestAPI() {
 const TestSupaCard = ({ mode, model }) => {
   const [prompt, setPrompt] = useState('')
   const [answer, setAnswer] = useState('')
+  const user = useUser()
 
   const onSubmitHandler = async (e) => {
     e.preventDefault()
     console.log('in submit ', prompt)
-    const response = await fetch(`/api/test/testSupabase`, {
+    // const response = await fetch(`/api/test/testSupabase`, {
+    const response = await fetch(`/api/cards/create`, {
       method: 'POST',
       body: JSON.stringify({
         prompt: prompt.trim(),
         mode: mode,
-        model: model
+        model: model,
+        user_id: user.id
       }),
     })
 
-    const cardData = await response.json()
-    console.log('cardData', cardData)
-    switch (mode) {
-      case 'optimize': setAnswer(JSON.parse(cardData.answer).prompt); break;
-      case 'decompose': setAnswer(cardData.answer); break;
-      case 'template': setAnswer(cardData.answer); break;
+    const result = await response.json()
+    if (!result.success) {
+      console.log('error', result.error)
+      return
     }
+    const cardData = result.data
+    console.log('cardData', cardData)
+
+    const parsedAnswer = parseAnswer(mode, cardData.answer)
+    setAnswer(parsedAnswer)
   }
 
 
