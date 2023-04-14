@@ -25,27 +25,3 @@ export default async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 }
-
-// const axios = require('axios');
-
-// const openaiApiKey = process.env.NEXT_OPENAI_APIKEY; // Replace with your OpenAI API key
-// const prompt = 'Once upon a time...';
-
-// export default async (req, res) => {
-
-//     axios.post('https://api.openai.com/v1/engines/davinci-codex/completions', {
-//         prompt: prompt,
-//         max_tokens: 50,
-//     }, {
-//         headers: {
-//             'Authorization': `Bearer ${openaiApiKey}`,
-//             'Content-Type': 'application/json',
-//         },
-//     })
-//         .then((response) => {
-//             console.log(response.data.choices[0].text);
-//         })
-//         .catch((error) => {
-//             console.error('Error:', error.stack);
-//         });
-// }

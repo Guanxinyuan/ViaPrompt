@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, memo } from "react";
 import ContentEditable from "react-contenteditable";
 import ModeDropdown from '@/components/ModeDropdown'
 import ModelDropdown from '@/components/ModelDropdown'
 import { PaperAirplaneIcon, ArrowPathIcon, TrashIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
-import { dummyResponses } from "@/data/cards";
-import { parseAnswer } from '@/utils/parseAnswer'
+import { useUser } from "@supabase/auth-helpers-react";
+import { formatISOString } from '@/utils/frontend'
 
-export default function TempCard({ cardData, setLoading, setCards, ...rest }) {
-    const { loadingText, loadingBorder } = rest
+
+const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
+    const { creating, creatingText, creatingBorder, className } = rest
+    const user = useUser()
     const [isMade, setIsMade] = useState(cardData && cardData.answer != '' ? true : false);
     const [isEditable, setIsEditable] = useState(!isMade);
     const [isHovered, setIsHovered] = useState(false);
@@ -20,6 +22,7 @@ export default function TempCard({ cardData, setLoading, setCards, ...rest }) {
     const [content, setContent] = useState(isMade ? cardData.answer : '');
 
     const [wordCount, setWordCount] = useState(content.split(' ').length || 0);
+    const [createdAt, setCreatedAt] = useState(cardData.created_at ? formatISOString(cardData.created_at, 1) : '');
 
     const modeSections = {
         'optimize': { inputSection: 'original', outputSection: 'optimized' },
@@ -60,7 +63,7 @@ export default function TempCard({ cardData, setLoading, setCards, ...rest }) {
     }
 
     const switchEdit = () => {
-        setIsEditable(!isEditable)
+        if (!creating) setIsEditable(!isEditable)
     }
 
     const handleMouseEnter = () => {
@@ -76,32 +79,49 @@ export default function TempCard({ cardData, setLoading, setCards, ...rest }) {
     }
 
     const onCreateHandler = async (e) => {
+        e.preventDefault();
+
+        if (creating) return;
+
         const prompt = getTextContentFromHtmlString(content)
         if (prompt.trim() === "") {
             // alert('Please enter a prompt');
             return;
         }
         switchEdit()
-        setLoading(true);
-        const emptyCard = { id: 1, answer: 'Loading...', mode: mode, model: model, prompt: 'Loading...' }
+        setCreating(true);
+        const emptyCard = { id: 1, answer: 'creating...', mode: mode, model: model, prompt: 'creating...' }
         setCards((preCards) => [emptyCard, ...preCards]);
-        await delay(3000);
+        await delay(10000);
 
-        // const response = await fetch(`/api/test/testSupabase`, {
-        //     method: "POST",
-        //     body: JSON.stringify({
-        //         prompt: prompt,
-        //         mode: mode || 'optimize',
-        //         model: model || 'chatgpt',
-        //     }),
-        // });
-        // const cardData = await response.json();
-        const cardData = { id: 1, answer: parseAnswer(mode, dummyResponses[mode].choices[0].message.content), mode: mode, model: model, prompt: prompt }
+        // const response = await fetch(`/api/cards/create`, {
+        const response = await fetch('/api/test/testCreate', {
+            method: 'POST',
+            body: JSON.stringify({
+                prompt: prompt.trim(),
+                mode: mode,
+                model: model,
+                required_credits: 1,
+                description: mode,
+                user_id: user.id
+            }),
+        })
+
+        const result = await response.json()
+        if (result.error) {
+            console.log(result.error)
+            setCards((preCards) => preCards.slice(1));
+            setCreating(false);
+            return
+        }
+
+        const cardData = { ...result.data.card, answer: result.data.card.answer }
+        // const cardData = { id: 1, answer: parseAnswer(mode, dummyResponses[mode].choices[0].message.content), mode: mode, model: model, prompt: prompt }
         console.log(cardData)
 
         setCards((preCards) => [cardData, ...preCards.slice(1)]);
         await delay(1000);
-        setLoading(false);
+        setCreating(false);
 
         setContent(activeSection === modeSections[mode].inputSection ? cardData.prompt : cardData.answer);
     }
@@ -162,7 +182,7 @@ export default function TempCard({ cardData, setLoading, setCards, ...rest }) {
 
     return (
         <div
-            className={`flex flex-col rounded-xl bg-zinc-800 w-full border-t-2 ${modeBorderColors[mode]} ${loadingBorder}`}
+            className={`flex flex-col rounded-xl bg-zinc-800 w-full border-t-2 ${modeBorderColors[mode]} ${creatingBorder} ${className}`}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}>
 
@@ -205,7 +225,7 @@ export default function TempCard({ cardData, setLoading, setCards, ...rest }) {
                     tagName=""
                     className={`prompt-card-body-content cursor-text dark:bg-zinc-800 p-0 dark:border-zinc-800 dark:text-white text-sm 
                             ${content?.trim() === '' ? 'empty' : ''}
-                            ${loadingText}`}
+                            ${creatingText}`}
                     placeholder="Write your prompt here..."
                     onChange={onChangeHandler}
                     disabled={isMade && !isEditable}
@@ -213,45 +233,55 @@ export default function TempCard({ cardData, setLoading, setCards, ...rest }) {
 
                 {/* card footer */}
                 <div className="h-6 flex flex-row justify-between mt-4">
-                    {
-                        mode != 'explain' ?
-                            <div className="flex items-center justify-start text-gray-400 text-xs">{wordCount} words</div>
-                            :
-                            <div className="flex items-center justify-start text-gray-400 text-xs"></div>
-                    }
+                    <div className="flex items-center justify-start text-gray-400 text-xs">{createdAt}</div>
                     {
                         isHovered || isEditable ?
                             <div className="flex items-center justify-end gap-3">
                                 {
+                                    // Redo button
                                     (isMade && !isEditable) && <ArrowPathIcon
-                                        className="prompt-card-footer-icon"
+                                        className={`prompt-card-footer-icon ${isEditable ? 'hidden' : ''} ${creating ? '' : 'cursor-pointer'}`}
                                         onClick={onCreateHandler} />
                                 }
                                 {
+                                    // Edit button
                                     (isMade && !isEditable) && <PencilSquareIcon
-                                        className={`prompt-card-footer-icon ${isEditable ? 'hidden' : ''}`}
+                                        className={`prompt-card-footer-icon ${isEditable ? 'hidden' : ''} ${creating ? '' : 'cursor-pointer'}`}
                                         onClick={switchEdit} />
                                 }
                                 {
+                                    // Cancel button
                                     (isMade && isEditable) &&
                                     <button
-                                        className="prompt-card-footer-button text-sm dark:text-zinc-400"
+                                        className={`prompt-card-footer-button text-sm dark:text-zinc-400`}
                                         onClick={switchEdit}>Cancel
                                     </button>
                                 }
                                 {
+                                    // Submit/create button
                                     (!isMade || isEditable) &&
                                     <div className={` rounded-md w-12 flex justify-center ${modeBackgroundColors[mode]}`}><PaperAirplaneIcon
-                                        className={`h-5 text-black dark:text-white ${content.length > 0 ? 'cursor-pointer' : "hover-none"} `}
+                                        className={`h-5 text-black dark:text-white ${!creating && content.length > 0 ? 'cursor-pointer' : "hover-none"} `}
                                         onClick={onCreateHandler} /></div>
                                 }
                             </div>
                             :
-                            <div className="px-4 flex items-center justify-end gap-3 "></div>
+                            <div className="flex items-center justify-end gap-3 ">
+                                {/* <div className="flex items-center justify-start text-gray-400 text-xs">{formatISOString(createdAt)}</div> */}
+
+                                {
+                                    mode != 'explain' ?
+                                        <div className="flex items-center justify-start text-gray-400 text-xs">{wordCount} words</div>
+                                        :
+                                        <div className="flex items-center justify-start text-gray-400 text-xs"></div>
+                                }
+                            </div>
                     }
                 </div>
 
             </div>
         </div>
     );
-};
+})
+
+export default Card;

@@ -14,13 +14,6 @@ export default function PayPalButton({ fundingSource, color, planCode, ...rest }
     const user = useUser();
     const { subscription, setSubscription } = useSubscription();
 
-    // useEffect(() => {
-    //     console.log(subscription.plan_code, planCode, status, subscription.status)
-    //     subscription && planCode != subscription.plan_code && planCode != 'palaxy-000' && (subscription.status === 'ACTIVE' || subscription.status === 'SUSPENDED') ?
-    //         console.log(`revise subscription: ${subscription.plan_code} to plan: ${subscriptionInfos[planCode].planId}`) :
-    //         console.log(`create subscription: ${subscriptionInfos[planCode].planId}`)
-    // }, [])
-
     const createSubscription = async (data, actions) => {
         if (subscription && planCode != subscription.plan_code && planCode != 'palaxy-000' && (subscription.status === 'ACTIVE' || subscription.status === 'SUSPENDED')) {
             console.log(`revise subscription: ${subscription.subscription_id} to plan: ${subscriptionInfos[planCode].planId}`)

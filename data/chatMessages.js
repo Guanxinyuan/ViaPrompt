@@ -1,4 +1,4 @@
-export const messages = {
+export const chatMessages = {
     'midjourney': {
         'optimize': {
             systemMessage: `You're a prompt engineer. You will help me write a prompt for an AI art generator called Midjourney.

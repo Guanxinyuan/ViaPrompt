@@ -365,12 +365,12 @@
   }
 
   .prompt-card-footer-button {
-    @apply h-5 cursor-pointer text-black;
+    @apply h-5 text-black;
     @apply dark:text-white;
   }
 
   .prompt-card-footer-icon {
-    @apply h-5 cursor-pointer text-black;
+    @apply h-5 text-black;
     @apply dark:text-white;
   }
 
@@ -385,7 +385,7 @@
 
   .masonry {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(var(--num-columns, 4), 1fr);
     grid-template-rows: masonry;
   }
 

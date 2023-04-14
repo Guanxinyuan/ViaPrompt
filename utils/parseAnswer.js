@@ -9,14 +9,27 @@ const isParsable = (text) => {
     }
 }
 
-const parseOptimize = (text) => {
-    if (!isParsable(text)) {
-        return text
-    } else {
-        console.log(`in parseOptimize, text: ${text}`)
-        const parsedAnswer = JSON.parse(text).prompt
-        return parsedAnswer
+const cleanText = (text) => {
+    const matches = text.match(/{/g);
+
+    if (matches > 1) {
+        return new Error('Optimize mode format is incorrect.')
     }
+
+    const regex = /{([^}]+)}/g;
+    let result = [];
+    let match;
+
+    while ((match = regex.exec(text)) !== null) {
+        result.push(match[1]);
+    }
+
+    return result.join(' ');
+}
+
+const parseOptimize = (text) => {
+    const parsedAnswer = cleanText(text)
+    return parsedAnswer
 }
 
 const parseExplain = (text) => {
@@ -24,7 +37,7 @@ const parseExplain = (text) => {
         return text
     } else {
         const parsedJson = JSON.parse(text)
-        console.log(`in parseExplain, parsedJson: ${parsedJson}`)
+        // console.log(`in parseExplain, parsedJson: ${parsedJson}`)
         const parsedContentPairs = Object.keys(parsedJson).map((key) => {
             if (parsedJson[key] !== null) {
                 const newKey = key.split("_").map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(" ");

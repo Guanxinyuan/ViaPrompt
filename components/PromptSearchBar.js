@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 import FilterDropdown from '@/components/FilterDropdown';
+import ColumnDropdown from '@/components/ColumnDropdown';
 
-export default function PromptSearchbar({ filterSetter, querySetter }) {
+export default function PromptSearchbar({ filterSetter, querySetter, columnsSetter }) {
     const [query, setQuery] = useState('');
     useEffect(() => { }, [query])
 
@@ -21,7 +22,7 @@ export default function PromptSearchbar({ filterSetter, querySetter }) {
 
     return (
         <div className='sub-header w-full flex flex-row gap-4 items-center text-sm'>
-            <div className='w-2/3 flex relative'>
+            <div className='w-2/3 flex flex-grow relative'>
                 <input
                     type="search"
                     placeholder="Search prompt (Press Enter)"
@@ -31,7 +32,8 @@ export default function PromptSearchbar({ filterSetter, querySetter }) {
                 />
                 <MagnifyingGlassIcon className="absolute top-1/2 left-4 w-5 h-5 stroke-1 transform -translate-y-1/2 text-zinc-500" />
             </div>
-            <FilterDropdown width={'w-24'} height={"default"} defaultValue={''} paramSetter={filterSetter} />
+            <FilterDropdown defaultValue={''} paramSetter={filterSetter} />
+            <ColumnDropdown defaultValue={1} paramSetter={columnsSetter} />
         </div>
     )
 }

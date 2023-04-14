@@ -37,7 +37,7 @@ export default function PromptGenerator() {
     streamPrintPromptIdea(15)
   }, [promptIdeaTemp])
 
-  useEffect(() => {}, [promptIdea])
+  useEffect(() => { }, [promptIdea])
 
   const streamPrintPromptIdea = (ms) => {
     let i = -3
@@ -87,9 +87,8 @@ export default function PromptGenerator() {
             onChange={(e) => setInputText(e.target.value)}
           />
           <button
-            className={`bg-yellow-500 hover:bg-yellow-700 text-white text-sm font-bold rounded-lg absolute bottom-6 right-6 px-3 py-2 flex flex-row gap-1 ${
-              inspireLoading ? 'animate-pulse' : ''
-            }`}
+            className={`bg-yellow-500 hover:bg-yellow-700 text-white text-sm font-bold rounded-lg absolute bottom-6 right-6 px-3 py-2 flex flex-row gap-1 ${inspireLoading ? 'animate-pulse' : ''
+              }`}
             onClick={() => generatePromptIdea(1)}
             disabled={inspireLoading}
           >
@@ -128,9 +127,8 @@ export default function PromptGenerator() {
           ref={promptRef}
           readOnly
           placeholder={'Your final prompt here...'}
-          value={`/imagine prompt: ${promptIdea.trim().replace(/\n/g, ' ')} ${
-            noWords.length > 0 ? `--no ${noWords.trim()}` : ''
-          } ${paramString}`}
+          value={`/imagine prompt: ${promptIdea.trim().replace(/\n/g, ' ')} ${noWords.length > 0 ? `--no ${noWords.trim()}` : ''
+            } ${paramString}`}
         ></textarea>
         <DocumentIcon
           className="absolute bottom-10 right-6 w-6 h-6 text-gray-600 cursor-pointer"
@@ -139,25 +137,10 @@ export default function PromptGenerator() {
       </div>
 
       <div className="w-full min-h-screen p-4 flex flex-col space-y-8">
-        {/* <div className="flex flex-col space-y-2">
-                    <p className="font-bold text-base">Artistic Settings</p>
-                    <div className="grid grid-rows-2 grid-cols-5 gap-2">
-                        <button className="bg-blue-500 hover:bg-blue-700 text-white text-base rounded-lg p-2">Artist</button>
-                        <button className="bg-blue-500 hover:bg-blue-700 text-white text-base rounded-lg p-2">Styles</button>
-                        <button className="bg-blue-500 hover:bg-blue-700 text-white text-base rounded-lg p-2">Lighting</button>
-                        <button className="bg-blue-500 hover:bg-blue-700 text-white text-base rounded-lg p-2">Camera</button>
-                        <button className="bg-blue-500 hover:bg-blue-700 text-white text-base rounded-lg p-2">Color</button>
-                        <button className="bg-blue-500 hover:bg-blue-700 text-white text-base rounded-lg p-2">Material</button>
-                        <button className="bg-blue-500 hover:bg-blue-700 text-white text-base rounded-lg p-2">Dimensionality</button>
-                        <button className="bg-blue-500 hover:bg-blue-700 text-white text-base rounded-lg p-2">Resolution</button>
-                    </div>
-                </div> */}
+
         <div className="flex flex-col space-y-2">
           <div className="grid grid-cols-2">
             <p className="font-bold text-base">Midjourney Parameters</p>
-            {/* <p
-                            className="text-sm text-right cursor-pointer"
-                            onClick={resetParams}>Reset All</p> */}
           </div>
           <div className="grid grid-rows-2 grid-cols-5 gap-2">
             {/* Can start from version 4 and niji */}

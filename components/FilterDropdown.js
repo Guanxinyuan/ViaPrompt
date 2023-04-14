@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { FunnelIcon } from '@heroicons/react/24/outline';
 
-export default function FilterDropdown({ width, height, defaultValue, paramSetter }) {
+export default function FilterDropdown({ defaultValue, paramSetter }) {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState(defaultValue);
     const dropdownRef = useRef(null);
@@ -47,11 +47,10 @@ export default function FilterDropdown({ width, height, defaultValue, paramSette
     }, []);
 
     return (
-        <div className="relative col-span-1" ref={dropdownRef}>
+        <div className="relative" ref={dropdownRef}>
 
             <div className="h-auto rounded-lg cursor-pointer">
-                <button className={`
-                ${!width || width == 'default' ? 'w-fit' : 'w-fit'}`}
+                <button className={`w-fit`}
                     onClick={toggleDropdown}>
                     {selectedOption == defaultValue ?
                         <div className='flex flex-row gap-1 items-center py-1'>
@@ -66,7 +65,7 @@ export default function FilterDropdown({ width, height, defaultValue, paramSette
                                     Mode
                                 </span>
                             </div>
-                            <span className={`mode-button ${width} ${modeButtonColor(selectedOption)}`}>{selectedOption}</span></div>}
+                            <span className={`mode-button w-24 ${modeButtonColor(selectedOption)}`}>{selectedOption}</span></div>}
                 </button>
             </div>
 
