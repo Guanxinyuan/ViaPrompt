@@ -366,7 +366,7 @@
     content: attr(placeholder);
     display: inline;
     @apply text-gray-400 absolute px-1 text-sm py-0.5;
-    @apply dark:text-gray-500;
+    @apply dark:text-gray-400;
   }
 
   .prompt-card-body-content-word-count {
@@ -424,16 +424,5 @@
     text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
     animation: pulse 2s ease-in-out infinite;
     backdrop-filter: blur(6px);
-  }
-
-  /* quill editor */
-  .ql-editor.ql-blank::before {
-    /* color: rgba(0, 0, 0, 0.6); */
-    content: attr(data-placeholder);
-    font-style: italic;
-    left: 15px;
-    pointer-events: none;
-    position: absolute;
-    right: 15px;
   }
 }

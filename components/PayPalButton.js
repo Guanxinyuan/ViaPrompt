@@ -3,7 +3,7 @@ import { useUser } from "@supabase/auth-helpers-react";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useSubscription } from "@/context/SubscriptionContext";
-import { subscriptionInfos } from "@/config";
+import { subscriptionInfos } from "@/config/subscriptionConfig";
 
 export default function PayPalButton({ fundingSource, color, planCode, ...rest }) {
 

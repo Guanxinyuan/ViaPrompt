@@ -2,9 +2,11 @@ import { Fragment, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { EllipsisHorizontalIcon } from '@heroicons/react/24/outline';
 import { useSubscription } from '@/context/SubscriptionContext';
-import { subscriptionInfos } from '@/config/index';
+import { subscriptionInfos } from '@/config/subscriptionConfig';
 import { convertISOToDate } from '@/utils/frontend';
 import { useUser } from '@supabase/auth-helpers-react';
+import CreditUsageBar from '@/components/CreditsUsageBar';
+import { supabaseClient } from '@/lib/supabase';
 
 export default function SubscriptionPanel() {
 
@@ -23,6 +25,14 @@ export default function SubscriptionPanel() {
     );
     const [invoices, setInvoices] = useState([]);
 
+    const [creditsInfo, setCreditsInfo] = useState({
+        totalFreeCredits: 0,
+        freeCreditsBalance: 0,
+        totalCredits: 0,
+        creditsBalance: 0,
+    });
+
+
     useEffect(() => {
         if (subscription && user.id) {
             const fetchPayPalHistory = async () => {
@@ -32,6 +42,33 @@ export default function SubscriptionPanel() {
             fetchPayPalHistory();
         }
     }, [subscription]);
+
+    useEffect(() => {
+        if (user) {
+            fetchCredits();
+        }
+    }, [user]);
+
+
+    const fetchCredits = async () => {
+        const { data, error } = await supabaseClient
+            .from('profiles')
+            .select('total_free_credits, free_credits_balance, total_credits, credits_balance')
+            .eq('id', user.id)
+            .single();
+
+        if (error) {
+            console.error('Error fetching credits:', error);
+        } else {
+            console.log('data:', data);
+            setCreditsInfo({
+                totalFreeCredits: data.total_free_credits,
+                freeCreditsBalance: data.free_credits_balance,
+                totalCredits: data.total_credits,
+                creditsBalance: data.credits_balance,
+            });
+        }
+    }
 
     const getPayPalHistory = async (subscriptionId) => {
         try {
@@ -90,11 +127,15 @@ export default function SubscriptionPanel() {
                 <h2 className="settings-title">Subscription</h2>
                 <div className='flex flex-col gap-6'>
 
-                    <div className="settings-panel-body col-span-2">
-                        <div className="settings-panel-item">
-                            <label className="settings-panel-label">Current Plan</label>
-                            <div className='settings-panel-value flex flex-row justify-between items-center'>
-                                <p className=''><span className=' font-bold text-base'>{currentPlan}</span></p>
+                    <div className="settings-panel-body col-span-2 px-8 py-8 gap-6">
+                        <div className='text-xl mb-6 flex flex-col justify-between gap-2'>
+                            <div className='flex justify-between'>
+                                <p className='flex items-center'>
+                                    <span>Current Plan: &nbsp;</span>
+                                    <span className="font-semibold">{currentPlan}</span>
+                                    <span className={`settings-panel-value w-fit px-2 py-0.5 text-white dark:text-white rounded-lg ml-2
+                            ${status == 'ACTIVE' ? "bg-green-500 dark:bg-green-500" : "bg-purple-500 dark:bg-purple-400"}`}>{status?.toLowerCase()}</span>
+                                </p>
 
                                 {
                                     status == 'ACTIVE' ?
@@ -113,25 +154,31 @@ export default function SubscriptionPanel() {
                                         </button>
                                 }
                             </div>
-                        </div>
-                        <div className="settings-panel-item">
-                            <label className="settings-panel-label">Status</label>
-                            <p className={`settings-panel-value w-fit px-2 py-0.5 text-white dark:text-white rounded-lg 
-                            ${status == 'ACTIVE' ? "bg-green-500 dark:bg-green-500" : "bg-purple-500 dark:bg-purple-400"}`}>{status}</p>
                             {
                                 status == 'CANCELLED' &&
                                 <span className='text-white text-xs italic'>Your plan will stay active until the end of the current cycle.</span>
                             }
+                        </div>
 
-                        </div>
                         <div className="settings-panel-item">
-                            <label className="settings-panel-label">Start At</label>
-                            <p className='settings-panel-value'>{startDate}</p>
+                            <label className="settings-panel-label">Usage</label>
+
+                            <CreditUsageBar
+                                creditsUsed={creditsInfo.totalFreeCredits - creditsInfo.freeCreditsBalance + creditsInfo.totalCredits - creditsInfo.creditsBalance}
+                                totalCredits={creditsInfo.totalFreeCredits + creditsInfo.totalCredits}
+                            />
                         </div>
-                        <div className="settings-panel-item">
-                            <label className="settings-panel-label">Renewal At</label>
-                            <p className='settings-panel-value'>{endDate}</p>
+                        <div className="settings-panel-item flex flex-row justify-between">
+                            <div>
+                                <label className="settings-panel-label">Start at</label>
+                                <p className='settings-panel-value'>{startDate}</p>
+                            </div>
+                            <div>
+                                <label className="settings-panel-label">Renewal at</label>
+                                <p className='settings-panel-value'>{endDate}</p>
+                            </div>
                         </div>
+
                         <div className="settings-panel-item">
                             <label className="settings-panel-label mb-1">Payment Method</label>
                             {
@@ -147,23 +194,27 @@ export default function SubscriptionPanel() {
                                 ))
                             }
                         </div>
-                        {
-                            subscription && status == 'ACTIVE' &&
-                            <button
-                                className="settings-panel-button w-fit bg-red-500 hover:bg-red-600 rounded-lg"
-                                onClick={cancelSubscription}
-                            >
-                                Cancel Subscription
-                            </button>
-                        }
+
+                        <div className='flex justify-end'>
+
+                            {
+                                subscription && status == 'ACTIVE' &&
+                                <button
+                                    className="w-fit text-red-500 hover:text-red-600 rounded-lg text-sm pt-6"
+                                    onClick={cancelSubscription}
+                                >
+                                    Cancel Subscription
+                                </button>
+                            }
+                        </div>
                     </div>
 
                     <div className="settings-panel-body col-span-3">
                         <div className="settings-panel-item">
                             <label className="settings-panel-label">Invoice History</label>
-                            <div className="settings-panel-value list-disc list-inside py-2">
+                            <div className="settings-panel-value list-disc list-inside py-2 flex flex-col gap-2">
                                 <li className='grid grid-cols-3 text-zinc-500 font-semibold mb-1'>
-                                    <span>Date</span>
+                                    <span>Billing Date</span>
                                     <span>Amount</span>
                                 </li>
                                 {invoices.map((invoice, index) => (

@@ -175,7 +175,8 @@ export default function ProfilePanel() {
     return (
         <div className="settings-panel w-2/5 ">
             <h2 className="settings-title">Profile</h2>
-            <div className="settings-panel-body flex-grow relative">
+            {/* <div className="settings-panel-body flex-grow relative"> */}
+            <div className="settings-panel-body relative">
                 <div className="settings-panel-item">
                     <label className="settings-panel-label">Email</label>
                     <p className='settings-panel-value'>{email}</p>
@@ -306,12 +307,16 @@ export default function ProfilePanel() {
                         </form>
                     }
                 </div> */}
-                <button
-                    className="settings-panel-text-button absolute bottom-4 w-fit text-red-500 dark:text-red-500 dark:hover:text-red-600"
-                    onClick={onSignOut}
-                    disabled={false}>
-                    Sign out
-                </button>
+                <div className='pt-14'>
+
+                    <button
+                        // className="settings-panel-text-button absolute bottom-4 w-fit text-black dark:text-white dark:hover:text-zinc-200"
+                        className="settings-panel-text-button w-fit text-sm text-zinc-500 dark:text-white dark:hover:text-zinc-200"
+                        onClick={onSignOut}
+                        disabled={false}>
+                        LOG OUT
+                    </button>
+                </div>
             </div>
         </div>
     )

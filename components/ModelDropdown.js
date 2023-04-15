@@ -78,10 +78,7 @@ export default function ModelDropdown({ defaultValue, paramSetter, isEditable, .
                 <img src={modelInfoDict[selectedOption].logo.url}
                     className={`card-header-icon ${modelInfoDict[selectedOption].logo.darkable && "dark:invert"} `} />
 
-                {numColumns <= 2 && (
-                    <p className="text-sm  font-semibold">{modelInfoDict[selectedOption].name} Prompt</p>
-                )}
-                {numColumns == 3 && (
+                {numColumns <= 3 && (
                     <p className="text-sm  font-semibold">{modelInfoDict[selectedOption].name}</p>
                 )}
             </div>
@@ -99,7 +96,7 @@ export default function ModelDropdown({ defaultValue, paramSetter, isEditable, .
                                 <div className="flex flex-row items-center ml-auto gap-2 px-2 pt-1.5 ">
                                     <img src={modelInfoDict[option].logo.url}
                                         className={`card-header-icon ${modelInfoDict[option].logo.darkable && "dark:invert"} `} />
-                                    <p className="text-sm">{modelInfoDict[option].name}</p>
+                                    <p className="text-sm font-medium">{modelInfoDict[option].name}</p>
                                 </div>
                                 <p className='text-sm px-4 py-1'>
                                     {modelInfoDict[option].description}
