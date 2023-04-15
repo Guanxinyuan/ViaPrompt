@@ -1,11 +1,15 @@
-import { useEffect, useState, memo } from "react";
-import ContentEditable from "react-contenteditable";
-import ModeDropdown from '@/components/ModeDropdown'
-import ModelDropdown from '@/components/ModelDropdown'
+import React, { useEffect, useState, memo } from "react";
+
+import dynamic from "next/dynamic";
+const ReactQuill = dynamic(import('react-quill'), { ssr: false })
+
+import 'react-quill/dist/quill.snow.css';
+import ModeDropdown from '@/components/ModeDropdown';
+import ModelDropdown from '@/components/ModelDropdown';
 import { PaperAirplaneIcon, ArrowPathIcon, TrashIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
 import { useUser } from "@supabase/auth-helpers-react";
-import { formatISOString } from '@/utils/frontend'
-
+import { formatISOString } from '@/utils/frontend';
+// import './QuillStyles.module.css'
 
 const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
     const { creating, creatingText, creatingBorder, className, numColumns } = rest
@@ -24,6 +28,15 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
 
     const [wordCount, setWordCount] = useState(content.split(' ').length || 0);
     const [createdAt, setCreatedAt] = useState(cardData.created_at ? formatISOString(cardData.created_at, 1) : '');
+
+
+    const [documentDefined, setDocumentDefined] = useState(false);
+
+    useEffect(() => {
+        if (typeof document !== 'undefined') {
+            setDocumentDefined(true);
+        }
+    }, []);
 
     const modeSections = {
         'optimize': { inputSection: 'original', outputSection: 'optimized' },
@@ -105,7 +118,7 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
         const loadingText = makeLoadingText();
         const emptyCard = { id: 1, answer: loadingText, mode: mode, model: model, prompt: 'creating...' }
         setCards((preCards) => [emptyCard, ...preCards]);
-        await delay(1000);
+        await delay(10000);
 
         // const response = await fetch(`/api/cards/create`, {
         const response = await fetch('/api/test/testCreate', {
@@ -147,23 +160,12 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
         }
     }
 
-    const onChangeHandler = (e) => {
-        // Handle rows with only spaces, <br>, or <div><br></div>
-        const cleanedValue = e.target.value.replace(/<br>|<div><br><\/div>/g, '').trim();
-
-        if (cleanedValue === '') {
-            e.target.value = '';
-        }
-
-        setContent(e.target.value);
-        updateWordCount(getTextContentFromHtmlString(e.target.value));
+    const onChangeHandler = (content) => {
+        const text = getTextContentFromHtmlString(content);
+        setContent(content);
+        updateWordCount(text);
     };
 
-    function getTextContentFromHtmlString(htmlString) {
-        const tempElement = document.createElement('div');
-        tempElement.innerHTML = htmlString;
-        return tempElement.textContent || tempElement.innerText || '';
-    }
 
     const onCancelEdit = (e) => {
         switchEdit()
@@ -183,21 +185,15 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
         selection.addRange(range);
     }
 
-    const onEmptyHandler = (text) => {
-        if (text.trim() === '') {
-            const contentEditableElement = document.querySelector('.prompt-card-body-content');
-            if (contentEditableElement) {
-                setCaretPosition(contentEditableElement);
-            }
-        }
-    }
-
     useEffect(() => {
-        onEmptyHandler(content)
         updateWordCount(content)
     }, [content]);
 
-
+    function getTextContentFromHtmlString(htmlString) {
+        const tempElement = document.createElement('div');
+        tempElement.innerHTML = htmlString;
+        return tempElement.textContent || tempElement.innerText || '';
+    }
 
     return (
         <div
@@ -239,16 +235,22 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
 
             {/* card content */}
             <div className="relative overflow-hidden flex-grow overflow-y-auto px-4 py-4">
-                <ContentEditable
-                    html={content}
-                    tagName=""
-                    className={`prompt-card-body-content cursor-text dark:bg-zinc-800 p-0 dark:border-zinc-800 dark:text-white text-sm whitespace-pre-wrap dark:border-zinc-500 p-4
-                            ${content?.trim() === '' ? 'empty' : ''}
-                            ${creatingText}`}
-                    placeholder="Write your prompt here..."
+                <ReactQuill
+                    value={content}
+                    theme="snow"
+                    formats={['bold', 'italic', 'underline']}
+                    className={` prompt-card-body-content cursor-text dark:bg-zinc-800 p-0  dark:text-white text-sm dark:border-zinc-800 dark:placeholder-zinc-400
+                ${content?.trim() === '' ? 'empty' : ''}
+                ${creatingText}`}
+                    placeholder="Enter your prompt here..."
+                    readOnly={isMade && !isEditable}
                     onChange={onChangeHandler}
-                    disabled={isMade && !isEditable}
+                    modules={{
+                        toolbar: false
+                    }}
                 />
+
+
                 {/* card footer */}
                 <div className="h-6 flex flex-row justify-between mt-4">
                     <div className="flex items-center justify-start text-gray-400 text-xs">{createdAt}</div>

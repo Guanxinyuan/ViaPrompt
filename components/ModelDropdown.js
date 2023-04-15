@@ -1,25 +1,52 @@
 import { useState, useRef, useEffect } from 'react';
-// import MidjourneyIcon from '/logos/mj.png';
+import useColorMode from '@/hooks/useColorMode';
 
-export default function ModelDropdown({ defaultValue, paramSetter, isEditable }) {
+export default function ModelDropdown({ defaultValue, paramSetter, isEditable, ...rest }) {
+    const { numColumns } = rest;
     const [isOpen, setIsOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState(defaultValue);
-    const options = ["chatgpt", "gpt-4", "gpt-3", "midjourney", "stable diffusion", "dalle", "lexica"]
+    const [colorMode] = useColorMode();
+    const options = ["chatgpt", "gpt-3", "gpt-4", "midjourney", "stable diffusion", "dalle"]
 
     const modelInfoDict = {
-        'midjourney': { logo: '/logos/mj.png', name: 'Midjourney', description: '' },
-        'chatgpt': { logo: '/logos/chatgpt.svg', name: 'ChatGPT', description: '' },
-        'gpt-4': { logo: '/logos/openai.svg', name: 'GPT-4', description: '' },
-        'gpt-3': { logo: '/logos/openai-nobg.svg', name: 'GPT-3', description: '' },
-        'stable diffusion': { logo: '/logos/sd.png', name: 'Stable Diffusion', description: '' },
-        'lexica': { logo: '/logos/lexica.png', name: 'Lexica', description: '' },
-        'dalle': { logo: '/logos/dalle.png', name: 'Dalle', description: '' },
+        'midjourney': {
+            name: 'Midjourney', description: '', logo: {
+                url: '/logos/mj.png',
+                darkable: true
+            }
+        },
+        'chatgpt': {
+            name: 'ChatGPT', description: '', logo: {
+                url: '/logos/chatgpt.svg',
+            }
+        },
+        'gpt-3': {
+            name: 'GPT-3', description: '', logo: {
+                url: '/logos/gpt-3.svg',
+            }
+        },
+        'gpt-4': {
+            name: 'GPT-4', description: '', logo: {
+                url: '/logos/gpt-4.svg',
+                darkable: true
+            }
+        },
+        'stable diffusion': {
+            name: 'Stable Diffusion', description: '', logo: {
+                url: '/logos/sd.png',
+            }
+        },
+        'dalle': {
+            name: 'Dalle', description: '', logo: {
+                url: '/logos/dalle.png',
+            }
+        },
     }
     const dropdownRef = useRef(null);
 
     useEffect(() => {
-
     }, [selectedOption]);
+
 
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
@@ -48,8 +75,15 @@ export default function ModelDropdown({ defaultValue, paramSetter, isEditable })
             <div
                 className="model-button"
                 onClick={toggleDropdown}>
-                <img src={modelInfoDict[selectedOption].logo} className='card-header-option' />
-                {/* <p className="text-xs">{modelInfoDict[selectedOption].name}</p> */}
+                <img src={modelInfoDict[selectedOption].logo.url}
+                    className={`card-header-icon ${modelInfoDict[selectedOption].logo.darkable && "dark:invert"} `} />
+
+                {numColumns <= 2 && (
+                    <p className="text-sm  font-semibold">{modelInfoDict[selectedOption].name} Prompt</p>
+                )}
+                {numColumns == 3 && (
+                    <p className="text-sm  font-semibold">{modelInfoDict[selectedOption].name}</p>
+                )}
             </div>
             {
                 isEditable &&
@@ -63,7 +97,8 @@ export default function ModelDropdown({ defaultValue, paramSetter, isEditable })
                                     setIsOpen(false)
                                 }}>
                                 <div className="flex flex-row items-center ml-auto gap-2 px-2 pt-1.5 ">
-                                    <img src={modelInfoDict[option].logo} className='card-header-option' />
+                                    <img src={modelInfoDict[option].logo.url}
+                                        className={`card-header-icon ${modelInfoDict[option].logo.darkable && "dark:invert"} `} />
                                     <p className="text-sm">{modelInfoDict[option].name}</p>
                                 </div>
                                 <p className='text-sm px-4 py-1'>

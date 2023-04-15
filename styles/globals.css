@@ -2,19 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
+.gpt-3-icon {
+  fill: black;
+}
+
+/* Dark mode color */
+@media (color-scheme: dark) {
+  .gpt-3-icon path {
+    fill: white; /* Replace with the desired color for dark mode */
+  }
+}
+
+/* @font-face {
   font-family: "Inter";
   font-style: normal;
   font-weight: 400;
-  src: url("/fonts/Inter-Regular.woff2") format("woff2"),
-    /* Modern Browsers */ url("/fonts/Inter-Regular.woff") format("woff"); /* Legacy Browsers */
-}
+  src: url("/fonts/Inter-Regular.woff2") format("woff2"), */
+/* Modern Browsers url("/fonts/Inter-Regular.woff") format("woff") */
+/* } */
 
 @layer components {
   .global-container {
     @apply text-black tracking-normal;
     @apply dark:bg-zinc-900 text-white;
-    font-family: "Inter", sans-serif;
+    /* font-family: "Inter", sans-serif; */
   }
 
   /* main page */
@@ -311,6 +322,10 @@
     @apply h-6;
   }
 
+  .card-header-icon {
+    @apply h-6;
+  }
+
   .model-icon {
     @apply w-6 h-auto;
   }
@@ -409,5 +424,16 @@
     text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
     animation: pulse 2s ease-in-out infinite;
     backdrop-filter: blur(6px);
+  }
+
+  /* quill editor */
+  .ql-editor.ql-blank::before {
+    /* color: rgba(0, 0, 0, 0.6); */
+    content: attr(data-placeholder);
+    font-style: italic;
+    left: 15px;
+    pointer-events: none;
+    position: absolute;
+    right: 15px;
   }
 }

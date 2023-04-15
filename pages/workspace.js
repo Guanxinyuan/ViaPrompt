@@ -4,7 +4,6 @@ import PromptSearchBar from '@/components/PromptSearchBar'
 import Card from '@/components/Card'
 import { v4 as uuidv4 } from 'uuid';
 import { useSession, useUser } from '@supabase/auth-helpers-react';
-import Generator from '@/components/Generator';
 
 export default function Workspace() {
     const [query, setQuery] = useState('')
@@ -17,6 +16,7 @@ export default function Workspace() {
     const router = useRouter();
 
     const [cards, setCards] = useState([]);
+    const [filteredCards, setFilteredCards] = useState([]);
 
     useEffect(() => {
         if (session) {
@@ -36,9 +36,8 @@ export default function Workspace() {
             }
             const data = result.data
             console.log('cards in fetchCards: ', data)
-            setCards(data.map((card) => {
-                return { ...card, answer: card.answer }
-            }))
+            setCards(data)
+            setFilteredCards(data)
         } catch (error) {
             console.error('Error fetching cards:', error.message);
         }
@@ -63,11 +62,18 @@ export default function Workspace() {
         }
     }
 
+    useEffect(() => {
+        console.log('query: ', query)
+        const filtered = cards.filter((card) => {
+            return card.answer.toLowerCase().includes(query.toLowerCase());
+        });
+        setFilteredCards(filtered);
+    }, [query, cards]);
 
     useEffect(() => {
-        const columns = buildColumns([emptyCard, ...cards], numColumns);
+        const columns = buildColumns([emptyCard, ...filteredCards], numColumns);
         setColumns(columns);
-    }, [cards, creating, numColumns]);
+    }, [filteredCards, creating, numColumns]);
 
     return (
         <div className='min-h-screen'>
@@ -77,9 +83,9 @@ export default function Workspace() {
                     <div className="flex items-center w-3/5">
                         <PromptSearchBar filterSetter={setFilter} querySetter={setQuery} columnsSetter={setNumColumns} />
                     </div>
-                    <div className={`masonry min-h-screen gap-6 ${numColumns == 1 ? "w-3/5" : numColumns == 2 ? "w-4/5" : 'w-full'}`}
+                    <div className={`masonry min-h-screen gap-6 ${numColumns == 1 || !filteredCards.length ? "w-3/5" : numColumns == 2 || filteredCards.length == 1 ? "w-4/5" : 'w-full'}`}
                         style={{
-                            '--num-columns': numColumns,
+                            '--num-columns': filteredCards.length >= numColumns ? numColumns : filteredCards.length + 1,
                         }}>
                         {columns.map((column, i) => (
                             <div key={i} className="items-start space-y-6">
@@ -87,9 +93,11 @@ export default function Workspace() {
                                     <div>
                                         {
                                             creating && locateCreatingCard(i, j) ?
+                                                // the creating card
                                                 <Card key={uuidv4()} cardData={card} setCreating={setCreating} setCards={setCards} creating={creating} creatingText={'animate-pulse blur-text'} creatingBorder={'animate-pulse'} />
                                                 :
-                                                <Card key={uuidv4()} cardData={card} setCreating={setCreating} setCards={setCards} creating={creating} />
+                                                // the created card
+                                                <Card key={uuidv4()} cardData={card} setCreating={setCreating} setCards={setCards} creating={creating} numColumns={numColumns} />
                                         }
                                     </div>
                                 ))}

@@ -29,7 +29,8 @@ export default async function handler(req, res) {
         // 2. Operate ChatGPT API
         // const props = { prompt, mode, model, maxTokens: 500 }
         // const result = await operatePromptByCompletion(props)
-        const result = 'Sample result'
+        const result =
+            `Sample result\n\nTest line breaks`
 
         const card = {
             created_at: new Date().toISOString(),
