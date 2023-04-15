@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import DarkModeButton from '@/components/DarkModeButton';
 import useColorMode from '@/hooks/useColorMode'
 import { BoltIcon, RocketLaunchIcon, BookOpenIcon } from '@heroicons/react/24/outline'
+import UserGuideDropdown from './UserGuideDropdown';
 
 // Make buttons board and click to navigate to the given page
 export default function Navbar({ supabase, session }) {
@@ -49,8 +50,9 @@ export default function Navbar({ supabase, session }) {
 
     return (
         <div className='header px-10'>
-            <div className='w-1/12 flex justify-left items-center'>
-                <p className='font-bold text-xl cursor-pointer' onClick={() => router.push('/')}>Palaxy</p>
+            <div className='w-1/6 flex justify-left grid grid-cols-2'>
+                <p className='font-bold text-lg cursor-pointer' onClick={() => router.push('/')}>Palaxy</p>
+                <UserGuideDropdown triggerButtonSize={"w-5 h-5"} />
             </div>
             <div className="flex text-left flex-grow"></div>
 
@@ -68,10 +70,6 @@ export default function Navbar({ supabase, session }) {
                 <div className='header-button '>
                     <BoltIcon className="w-5 h-5" />
                     <p className="cursor-pointer " onClick={handleClick} router-text="pricing">Upgrade</p>
-                </div>
-                <div className='header-button '>
-                    <BookOpenIcon className="w-5 h-5" />
-                    <p className="cursor-pointer " onClick={handleClick} router-text="docs">Guide</p>
                 </div>
                 <div>
                     {

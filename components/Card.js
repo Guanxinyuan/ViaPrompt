@@ -8,7 +8,7 @@ import { formatISOString } from '@/utils/frontend'
 
 
 const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
-    const { creating, creatingText, creatingBorder, className, numColumns } = rest
+    const { creating, creatingText, creatingBorder, className, numColumns, onCreditsUpdate } = rest
     const user = useUser()
     const [isMade, setIsMade] = useState(cardData && cardData.answer != '' ? true : false);
     const [isEditable, setIsEditable] = useState(!isMade);
@@ -128,6 +128,7 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
             return
         }
 
+        updateCredits(result.data.credits)
         const cardData = { ...result.data.card, answer: result.data.card.answer }
         // const cardData = { id: 1, answer: parseAnswer(mode, dummyResponses[mode].choices[0].message.content), mode: mode, model: model, prompt: prompt }
         console.log(cardData)
@@ -137,6 +138,15 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
         setCreating(false);
 
         setContent(activeSection === modeSections[mode].inputSection ? cardData.prompt : cardData.answer);
+    }
+
+    const updateCredits = (credits) => {
+        onCreditsUpdate({
+            totalFreeCredits: credits.total_free_credits,
+            freeCreditsBalance: credits.free_credits_balance,
+            totalCredits: credits.total_credits,
+            creditsBalance: credits.credits_balance,
+        });
     }
 
     const updateWordCount = (text) => {
@@ -196,7 +206,6 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
         onEmptyHandler(content)
         updateWordCount(content)
     }, [content]);
-
 
 
     return (

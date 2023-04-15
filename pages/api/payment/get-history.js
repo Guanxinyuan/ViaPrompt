@@ -7,7 +7,7 @@ export default async function handler(req, res) {
         return;
     }
 
-    const user_id = req.query.subscription_id;
+    const { user_id } = req.query;
     if (!user_id) {
         res.status(400).json({ error: 'Missing user_id parameter' });
         return;

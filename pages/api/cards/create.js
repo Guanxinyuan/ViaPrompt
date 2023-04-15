@@ -57,8 +57,12 @@ export default async function handler(req, res) {
       success: true,
       data: {
         card: card,
-        credits_balance: credits.credits_balance,
-        free_credits_balance: credits.free_credits_balance,
+        credits: {
+          credits_balance: credits.credits_balance,
+          total_credits: credits.total_credits,
+          free_credits_balance: credits.free_credits_balance,
+          total_free_credits: credits.total_free_credits,
+        }
       }
     });
 

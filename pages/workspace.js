@@ -4,6 +4,8 @@ import PromptSearchBar from '@/components/PromptSearchBar'
 import Card from '@/components/Card'
 import { v4 as uuidv4 } from 'uuid';
 import { useSession, useUser } from '@supabase/auth-helpers-react';
+import { useCredits } from '@/context/CreditsContext';
+
 
 export default function Workspace() {
     const [query, setQuery] = useState('')
@@ -17,6 +19,8 @@ export default function Workspace() {
 
     const [cards, setCards] = useState([]);
     const [filteredCards, setFilteredCards] = useState([]);
+
+    const { credits, setCredits } = useCredits();
 
     useEffect(() => {
         if (session) {
@@ -62,6 +66,10 @@ export default function Workspace() {
         }
     }
 
+    const handleCreditsUpdate = (newCredits) => {
+        setCredits(newCredits)
+    }
+
     useEffect(() => {
         console.log('query: ', query)
         const filtered = cards.filter((card) => {
@@ -70,13 +78,17 @@ export default function Workspace() {
         setFilteredCards(filtered);
     }, [query, cards]);
 
+
     useEffect(() => {
         const columns = buildColumns([emptyCard, ...filteredCards], numColumns);
         setColumns(columns);
     }, [filteredCards, creating, numColumns]);
 
     return (
-        <div className='min-h-screen'>
+        <div className='min-h-screen relative'>
+            {/* <div className='absolute'>
+                <UserGuideDropdown triggerButtonSize={"w-4"} />
+            </div> */}
             {
                 session &&
                 <div className="max-w-screen py-10 mx-10 m-auto flex flex-col gap-6 items-center">
@@ -97,7 +109,7 @@ export default function Workspace() {
                                                 <Card key={uuidv4()} cardData={card} setCreating={setCreating} setCards={setCards} creating={creating} creatingText={'animate-pulse blur-text'} creatingBorder={'animate-pulse'} />
                                                 :
                                                 // the created card
-                                                <Card key={uuidv4()} cardData={card} setCreating={setCreating} setCards={setCards} creating={creating} numColumns={numColumns} />
+                                                <Card key={uuidv4()} cardData={card} setCreating={setCreating} setCards={setCards} creating={creating} numColumns={numColumns} credits={credits} onCreditsUpdate={handleCreditsUpdate} />
                                         }
                                     </div>
                                 ))}

@@ -19,7 +19,7 @@ export const subscriptionInfos = {
         featureTitle: 'Get started',
         features: [
             '100 prompt optimizations & analyses',
-            'Unlimited prompt notes taking'
+            'Unlimited prompt memo taking'
         ],
         price: '$9.9',
         isMostPopular: false

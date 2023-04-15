@@ -45,7 +45,7 @@
   }
 
   .selling-point-card-section {
-    @apply py-24 bg-white;
+    @apply py-12 bg-white;
     @apply dark:bg-zinc-900 dark:border-zinc-800;
   }
 
@@ -54,9 +54,8 @@
     @apply dark:bg-zinc-800;
   }
 
-  .selling-point-card h3 {
-    @apply text-lg font-bold text-gray-900;
-    @apply dark:text-white;
+  .selling-point-card .title {
+    @apply text-lg font-bold;
   }
 
   .selling-point-card p {
@@ -331,7 +330,7 @@
   }
 
   .model-option-item {
-    @apply cursor-pointer border-b border-gray-700 h-fit;
+    @apply cursor-pointer h-fit;
   }
 
   .prompt-card-header {

@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export default function Home() {
   return (
-    <div>
+    <div className='min-h-screen'>
       <Head>
         <title>Palaxy</title>
         <link rel="icon" href="/favicon.ico" />
@@ -12,29 +12,30 @@ export default function Home() {
 
       {/* Hero section */}
       <section className="hero-section">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h2 className="text-7xl font-bold text-gray-900 leading-tight">Master AI Prompts In A Few Clicks</h2>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col justify-start items-start">
+            <h2 className="text-7xl font-bold text-gray-900 leading-tight">Create amazing AI prompts 10X faster with AI.</h2>
             <p>
-              AI-Powered Mind & Rich Inspirations
+              Palaxy is the AI-powered prompt assistant that boosts your prompt engineering efficiency 10x by seamless prompt optimization, analysis, and management.
             </p>
-            <div className="mt-8">
-              <Link href="/test" className="text-base font-medium text-white bg-indigo-500 hover:bg-indigo-600 py-3 px-6 rounded-lg">
-                Get Started
-              </Link>
-            </div>
+
           </div>
         </div>
       </section >
 
       {/* Selling point section */}
-      < section className="selling-point-card-section" >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      < section className="selling-point-card-section flex flex-col items-center" >
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-            <SellingPointCard title={"Optimize"} description={"Endless browsing for inspiration, the proper parameters, or the precise depiction of your idea? We'll serve you the answer in a spark."} />
-            <SellingPointCard title={"Analyze"} description={"Every attempt costs you a penny until you get the great one. We'll strike your eyeballs as soon as your 1st or 2nd try."} />
-            <SellingPointCard title={"Document"} description={"Great works can be randomly created, but no one masters them by chance. We'll help you develop consistent creativity in AI art."} />
+            <SellingPointCard title={"Optimize"} description={"Enhance your AI experience with prompt optimization, turning vague ideas into precise results effortlessly."} />
+            <SellingPointCard title={"Analyze"} description={"Unlock the potential of successful prompts by breaking them down, learning their secrets, and applying them to your own projects."} />
+            <SellingPointCard title={"Memo"} description={"Memo: Keep track of your brilliant prompts in one convenient place, allowing for easy access and continuous knowledge growth."} />
           </div>
+        </div>
+        <div className="mt-10 text-right">
+          <Link href="/workspace" className="text-base font-medium text-white bg-yellow-500 hover:bg-yellow-600 py-3 px-6 rounded-lg">
+            Get Started
+          </Link>
         </div>
       </section >
       < footer className="bg-white" >
@@ -44,13 +45,18 @@ export default function Home() {
 }
 
 
-export function SellingPointCard({ title, description }) {
+const SellingPointCard = ({ title, description }) => {
+  const modeColors = {
+    'optimize': 'text-yellow-500 dark:text-yellow-500',
+    'analyze': 'text-purple-500 dark:text-purple-500',
+    'memo': 'text-black dark:text-white'
+  }
   return (
     <div className="selling-point-card">
       <div className="p-5">
-        <h3>
+        <span className={`title ${modeColors[title.toLowerCase()]}`}>
           {title}
-        </h3>
+        </span>
         <p>
           {description}
         </p>

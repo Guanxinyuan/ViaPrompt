@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect } from 'react';
+import { Fragment, useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { EllipsisHorizontalIcon } from '@heroicons/react/24/outline';
 import { useSubscription } from '@/context/SubscriptionContext';
@@ -32,25 +32,15 @@ export default function SubscriptionPanel() {
         creditsBalance: 0,
     });
 
-
-    useEffect(() => {
-        if (subscription && user.id) {
-            const fetchPayPalHistory = async () => {
-                const invoices = await getPayPalHistory(user.id);
-                setInvoices(invoices);
-            };
-            fetchPayPalHistory();
-        }
-    }, [subscription]);
-
     useEffect(() => {
         if (user) {
             fetchCredits();
+            fetchPayPalHistory();
         }
     }, [user]);
 
 
-    const fetchCredits = async () => {
+    const fetchCredits = useCallback(async () => {
         const { data, error } = await supabaseClient
             .from('profiles')
             .select('total_free_credits, free_credits_balance, total_credits, credits_balance')
@@ -68,23 +58,25 @@ export default function SubscriptionPanel() {
                 creditsBalance: data.credits_balance,
             });
         }
-    }
+    }, [user]);
 
-    const getPayPalHistory = async (subscriptionId) => {
+    const fetchPayPalHistory = useCallback(async () => {
         try {
-            const response = await fetch(`/api/payment/get-history?subscription_id=${subscriptionId}`);
+            const response = await fetch(`/api/payment/get-history?user_id=${user.id}`);
             const data = await response.json();
+
+            // alert(`data: ${JSON.stringify(data)}`)
 
             if (!data.success) {
                 throw new Error(data.message);
             }
 
-            return data.data
+            setInvoices(data.data);
         } catch (err) {
             console.error('Error fetching invoices:', err);
             throw err;
         }
-    };
+    }, [user]);
 
 
     const handlePlanChange = () => {
