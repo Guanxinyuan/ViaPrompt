@@ -32,7 +32,7 @@ export default function PromptSearchbar({ filterSetter, querySetter, columnsSett
                     type="text"
                     ref={inputRef}
                     placeholder="Search prompt (Press Enter)"
-                    className="search-input placeholder-zinc-500 rounded-lg"
+                    className="search-input placeholder-zinc-400 rounded-xl"
                     onKeyDown={handleKeyDown}
                     onKeyUp={handleKeyUp}
                     onChange={(e) => setQuery(e.target.value)}
