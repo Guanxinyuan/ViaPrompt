@@ -22,7 +22,7 @@ export function CreditsProvider({ children }) {
 
     const fetchCredits = useCallback(async () => {
         try {
-            const { data, error } = await supabaseClient
+            const { data: credits, error } = await supabaseClient
                 .from('profiles')
                 .select('total_free_credits, free_credits_balance, total_credits, credits_balance')
                 .eq('id', user.id)
@@ -34,10 +34,10 @@ export function CreditsProvider({ children }) {
             }
 
             setCredits({
-                totalFreeCredits: data.total_free_credits,
-                freeCreditsBalance: data.free_credits_balance,
-                totalCredits: data.total_credits,
-                creditsBalance: data.credits_balance,
+                totalFreeCredits: credits.total_free_credits,
+                freeCreditsBalance: credits.free_credits_balance,
+                totalCredits: credits.total_credits,
+                creditsBalance: credits.credits_balance,
             });
         } catch (err) {
             console.error('Error fetching credits:', err);

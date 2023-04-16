@@ -5,6 +5,8 @@ import Card from '@/components/Card'
 import { v4 as uuidv4 } from 'uuid';
 import { useSession, useUser } from '@supabase/auth-helpers-react';
 import { useCredits } from '@/context/CreditsContext';
+import { useSubscription } from '@/context/SubscriptionContext';
+import CreditUsageBar from '@/components/CreditsUsageBar';
 
 
 export default function Workspace() {
@@ -20,6 +22,7 @@ export default function Workspace() {
     const [cards, setCards] = useState([]);
     const [filteredCards, setFilteredCards] = useState([]);
 
+    const { subscription } = useSubscription();
     const { credits, setCredits } = useCredits();
 
     useEffect(() => {
@@ -86,12 +89,20 @@ export default function Workspace() {
 
     return (
         <div className='min-h-screen relative'>
-            {/* <div className='absolute'>
-                <UserGuideDropdown triggerButtonSize={"w-4"} />
-            </div> */}
             {
                 session &&
                 <div className="max-w-screen py-10 mx-10 m-auto flex flex-col gap-6 items-center">
+                    {
+                        // check if user has/had a subscription
+                        !subscription?.subscription_id && credits &&
+                        < div className='flex gap-4 w-3/5 items-center justify-center'>
+                            <p className='min-w-max text-sm'>Free credits: </p>
+                            <CreditUsageBar
+                                creditsUsed={credits.totalFreeCredits - credits.freeCreditsBalance}
+                                totalCredits={credits.totalFreeCredits}
+                            />
+                        </div>
+                    }
                     <div className="flex items-center w-3/5">
                         <PromptSearchBar filterSetter={setFilter} querySetter={setQuery} columnsSetter={setNumColumns} />
                     </div>
@@ -118,7 +129,7 @@ export default function Workspace() {
                     </div>
                 </div>
             }
-        </div>
+        </div >
 
     )
 }

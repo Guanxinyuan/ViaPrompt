@@ -45,15 +45,19 @@ export default async function handler(req, res) {
         // await saveCardToSupabase(card)
 
         // 4. Update the credits balance and usage history within a transaction
-        // const credits = await updateCreditsAndUsage(user_id, required_credits, description);
+        const credits = await updateCreditsAndUsage(user_id, required_credits, description);
 
         // 5. Return card to client
         return NextResponse.json({
             success: true,
             data: {
                 card: card,
-                credits_balance: 0,
-                free_credits_balance: 10
+                credits: {
+                    credits_balance: credits.credits_balance,
+                    total_credits: credits.total_credits,
+                    free_credits_balance: credits.free_credits_balance,
+                    total_free_credits: credits.total_free_credits,
+                }
             }
         });
 
