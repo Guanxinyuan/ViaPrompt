@@ -7,7 +7,7 @@ function CreditUsageBar({ creditsUsed, totalCredits }) {
     return (
         <div className="w-full">
             <div className="flex justify-between items-center flex gap-4">
-                <div className="bg-zinc-700 rounded-md h-4 w-full ">
+                <div className="bg-zinc-100 dark:bg-zinc-700 rounded-md h-4 w-full ">
                     <div
                         className={`bg-green-500 h-4 rounded-md`}
                         style={{ width: `${percentage}%` }}

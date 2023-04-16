@@ -7,6 +7,7 @@ import { useSession, useUser } from '@supabase/auth-helpers-react';
 import { useCredits } from '@/context/CreditsContext';
 import { useSubscription } from '@/context/SubscriptionContext';
 import CreditUsageBar from '@/components/CreditsUsageBar';
+import { formatAnswer } from '@/utils/parseAnswer';
 
 
 export default function Workspace() {
@@ -41,10 +42,20 @@ export default function Workspace() {
             if (!result.success) {
                 throw new Error(result.error)
             }
-            const data = result.data
-            console.log('cards in fetchCards: ', data)
-            setCards(data)
-            setFilteredCards(data)
+            const cards = result.data
+            console.log('cards in fetchCards: ', cards)
+
+            const formattedCards = cards.map(card => {
+                return {
+                    ...card,
+                    answer: formatAnswer(card.answer)
+                }
+            })
+            console.log(formattedCards)
+            setCards(formattedCards)
+            setFilteredCards(formattedCards)
+            // setCards(cards)
+            // setFilteredCards(cards)
         } catch (error) {
             console.error('Error fetching cards:', error.message);
         }
@@ -77,7 +88,8 @@ export default function Workspace() {
         console.log('query: ', query)
         const filtered = cards.filter((card) => {
             return card.answer.toLowerCase().includes(query.toLowerCase());
-        });
+        })
+        console.log('filtered: ', filtered)
         setFilteredCards(filtered);
     }, [query, cards]);
 
@@ -96,7 +108,7 @@ export default function Workspace() {
                         // check if user has/had a subscription
                         subscription?.subscription_id && credits &&
                         < div className='flex gap-4 w-3/5 items-center justify-center'>
-                            <p className='min-w-max text-sm'>Free credits: </p>
+                            <p className='min-w-max text-sm text-black dark:text-white'>Free credits: </p>
                             <CreditUsageBar
                                 creditsUsed={credits.totalFreeCredits - credits.freeCreditsBalance}
                                 totalCredits={credits.totalFreeCredits}

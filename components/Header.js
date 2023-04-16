@@ -50,13 +50,13 @@ export default function Navbar({ supabase, session }) {
 
     return (
         <div className='header px-10'>
-            <div className='w-1/6 flex justify-left grid grid-cols-2'>
-                <p className='font-bold text-lg cursor-pointer' onClick={() => router.push('/')}>Palaxy</p>
+            <div className='flex flex-grow gap-8 justify-left items-center'>
+                <p className='font-bold text-base cursor-pointer' onClick={() => router.push('/')}>Palaxy</p>
                 <UserGuideDropdown triggerButtonSize={"w-5 h-5"} />
             </div>
             <div className="flex text-left flex-grow"></div>
 
-            <div className="flex-grow flex flex-row gap-8 justify-end items-center text-center">
+            <div className="flex-grow flex gap-8 justify-end items-center text-center">
                 <div className='header-button flex flex-row gap-2 items-center text-sm'>
                     <DarkModeButton colorModeSetter={setColorMode} />
                     {isInitialized && colorMode == 'light' && <p>Dark Mode</p>}

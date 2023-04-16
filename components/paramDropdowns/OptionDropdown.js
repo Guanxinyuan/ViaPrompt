@@ -44,7 +44,7 @@ export default function Dropdown({ width, height, paramName, options, defaultVal
                     {paramName} {selectedOption == defaultValue ? '' : <span className='param-span'>{selectedOption}</span>}
                 </ParamButton>
             </div>
-            <div className="relative text-gray-800">
+            <div className="relative text-zinc-800">
                 <div className={`option-dropdown
                     ${!width || width == 'default' ? 'w-full' : width}
                     ${!height || height == 'default' ? 'h-full' : height}

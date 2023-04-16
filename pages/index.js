@@ -14,7 +14,7 @@ export default function Home() {
       <section className="hero-section">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col justify-start items-start">
-            <h2 className="text-7xl font-bold text-gray-900 leading-tight">Create amazing AI prompts 10X faster with AI.</h2>
+            <h2 className="text-7xl font-bold text-zinc-900 leading-tight">Create amazing AI prompts 10X faster with AI.</h2>
             <p>
               Palaxy is the AI-powered prompt assistant that boosts your prompt engineering efficiency 10x by seamless prompt optimization, analysis, and management.
             </p>

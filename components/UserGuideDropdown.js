@@ -98,7 +98,7 @@ export default function UserGuideDropdown({ ...rest }) {
                             </div>
                         </div>
                         <div
-                            className="fixed inset-0 bg-gray-500 opacity-30"
+                            className="fixed inset-0 bg-zinc-500 opacity-30"
                             onClick={toggleDropdown}
                         />
                     </div>

@@ -20,31 +20,31 @@ const TestBoard = () => {
     };
 
     return (
-        <div className="p-4 bg-gray-100 shadow-md rounded-md h-1/2 text-black">
+        <div className="p-4 bg-zinc-100 shadow-md rounded-md h-1/2 text-black">
             <textarea
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
-                className="w-full p-2 mb-4 border border-gray-300 rounded-md"
+                className="w-full p-2 mb-4 border border-zinc-300 rounded-md"
                 placeholder="Prompt"
             ></textarea>
             <textarea
                 value={answer}
                 readOnly
-                className="w-full p-2 mb-4 border border-gray-300 rounded-md"
+                className="w-full p-2 mb-4 border border-zinc-300 rounded-md"
                 placeholder="Answer"
             ></textarea>
             <input
                 value={maxTokens}
                 onChange={(e) => setMaxTokens(e.target.value)}
                 type="number"
-                className="w-full p-2 mb-4 border border-gray-300 rounded-md"
+                className="w-full p-2 mb-4 border border-zinc-300 rounded-md"
                 placeholder="Max Tokens"
             />
             <input
                 value={model}
                 onChange={(e) => setModel(e.target.value)}
                 type="text"
-                className="w-full p-2 mb-4 border border-gray-300 rounded-md"
+                className="w-full p-2 mb-4 border border-zinc-300 rounded-md"
                 placeholder="Model"
             />
             <p className="mb-4 text-black">Execution Time: {executionTime}</p>

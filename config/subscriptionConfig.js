@@ -18,8 +18,8 @@ export const subscriptionInfos = {
         description: 'Economic option for individuals with occasional prompt enginering needs.',
         featureTitle: 'Get started',
         features: [
-            '100 prompt optimizations & analyses',
-            'Unlimited prompt memo taking'
+            '100 prompt task runs (optimizations & analyses)',
+            'Unlimited prompt memo takings'
         ],
         price: '$9.9',
         isMostPopular: false
@@ -32,7 +32,7 @@ export const subscriptionInfos = {
         description: 'Moderate option for individuals with regular prompt enginering needs.',
         featureTitle: 'Everything in Basic, plus:',
         features: [
-            '500 prompt optimizations & analyses'
+            '500 prompt task runs (optimizations & analyses)'
         ],
         price: '$19.9',
         isMostPopular: true
@@ -44,7 +44,7 @@ export const subscriptionInfos = {
         description: 'Ultimate option for individuals with frequent prompt enginering needs.',
         featureTitle: 'Everything in Pro, plus:',
         features: [
-            'Unlimited prompt optimizations & analyses'
+            'Unlimited prompt task runs (optimizations & analyses)'
         ],
         price: '$49.9',
         isMostPopular: false

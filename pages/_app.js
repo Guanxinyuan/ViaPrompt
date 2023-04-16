@@ -24,7 +24,7 @@ function MyApp({ Component, pageProps }) {
   }
 
   return (
-    //  text-gray-800
+    //  text-zinc-800
     // <div className='bg-zinc-800 text-white'>
     <div className='global-container'>
       <Navbar supabase={supabase} session={session} />

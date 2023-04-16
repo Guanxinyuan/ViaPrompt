@@ -44,16 +44,16 @@ export default function MeasureDropdown({ width, height, paramName, minValue, ma
                     {paramName} {value == defaultValue ? '' : <span className='param-span'>{value}</span>}
                 </ParamButton>
             </div>
-            <div className="relative text-gray-800">
+            <div className="relative text-zinc-800">
                 <div
-                    className={`absolute mt-2 z-10 bg-white shadow border border-gray-400 rounded-lg 
+                    className={`absolute mt-2 z-10 bg-white shadow border border-zinc-400 rounded-lg 
                     ${!width || width == 'default' ? 'w-full' : width}
                     ${!height || height == 'default' ? 'h-full' : height}
                     ${isOpen ? 'block' : 'hidden'} `}
                 >
                     {paramName != 'Seed' ?
                         <div className="flex flex-col items-center space-y-3 p-4 justify-center ">
-                            <label htmlFor="range" className="font-medium text-gray-700">
+                            <label htmlFor="range" className="font-medium text-zinc-700">
                                 <span className='font-bold'>{paramName}</span>: {value}
                             </label>
                             <input
@@ -67,7 +67,7 @@ export default function MeasureDropdown({ width, height, paramName, minValue, ma
                                 onChange={onChangeHandler}
                                 className="border border-black w-2/3 rounded focus:outline-none focus:ring-indigo-500"
                             />
-                            <div className="w-2/3 grid grid-cols-3 font-medium text-gray-700">
+                            <div className="w-2/3 grid grid-cols-3 font-medium text-zinc-700">
                                 <p className='text-left'>{minValue}</p>
                                 <p className='text-center'>{(minValue + maxValue) / 2}</p>
                                 <p className='text-right'>{maxValue}</p>
@@ -75,7 +75,7 @@ export default function MeasureDropdown({ width, height, paramName, minValue, ma
                         </div>
                         :
                         <div className="flex flex-col items-center space-y-3 p-4 justify-center ">
-                            <label htmlFor="range" className="font-medium text-gray-700">
+                            <label htmlFor="range" className="font-medium text-zinc-700">
                                 <span className='font-bold'>{paramName}</span>: {value}
                             </label>
                             <input

@@ -84,8 +84,8 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
         setCards((preCards) => [emptyCard, ...preCards]);
         await delay(1000);
 
-        // const response = await fetch(`/api/cards/create`, {
-        const response = await fetch('/api/test/testCreate', {
+        const response = await fetch(`/api/cards/create`, {
+            // const response = await fetch('/api/test/testCreate', {
             method: 'POST',
             body: JSON.stringify({
                 prompt: prompt.trim(),
@@ -183,16 +183,14 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
         updateWordCount(content)
     }, [content]);
 
-
     return (
         <div
-            className={`flex flex-col rounded-xl bg-zinc-800 w-full border-t-2 ${taskConfig[task].borderColor} ${creatingBorder} ${className}`}
+            className={`flex flex-col rounded-xl bg-white dark:bg-zinc-800 w-full border border-t-2 ${taskConfig[task].borderColor} ${creatingBorder} ${className} border-x-zinc-200 border-b-zinc-200 dark:border-x-zinc-800 dark:border-b-zinc-800`}
             onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}>
-
+            onMouseLeave={handleMouseLeave}
+        >
             {/* card header */}
             <div className="h-14 flex flex-row justify-between items-center">
-
                 <div className="flex items-center justify-start px-4 gap-2 ">
                     <TaskDropdown defaultValue={task} paramSetter={setTask} isEditable={isEditable} />
                     <ModelDropdown defaultValue={model} paramSetter={setModel} isEditable={isEditable} numColumns={numColumns} />
@@ -204,15 +202,15 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
                             taskConfig[task].sections.inputSection &&
                             <h2
                                 className={`text-sm font-semibold cursor-pointer
-                                ${activeSection == taskConfig[task].sections.inputSection ? `text-white ${taskConfig[task].textColor}` : 'text-zinc-400'} `}
+                ${activeSection == taskConfig[task].sections.inputSection ? `text-black dark:text-white ${taskConfig[task].textColor}` : 'text-zinc-500 dark:text-zinc-400'} `}
                                 onClick={() => {
                                     setActiveSection(taskConfig[task].sections.inputSection)
                                 }}
                             >{taskConfig[task].sections.inputSection}</h2>
                         }
                         <h2
-                            className={`text-sm font-semibold text-white cursor-pointer
-            ${activeSection == taskConfig[task].sections.outputSection ? `text-white ${taskConfig[task].textColor}` : 'text-zinc-400'}`}
+                            className={`text-sm font-semibold text-black dark:text-white cursor-pointer
+  ${activeSection == taskConfig[task].sections.outputSection ? `text-black dark:text-white ${taskConfig[task].textColor}` : 'text-zinc-500 dark:text-zinc-400'}`}
                             onClick={() => {
                                 setActiveSection(taskConfig[task].sections.outputSection)
                             }}
@@ -221,22 +219,21 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
                 }
             </div>
 
-
             {/* card content */}
-            <div className="relative overflow-hidden flex-grow overflow-y-auto px-4 py-4">
+            <div className="relative overflow-hidden flex-grow overflow-y-auto px-4 py-2">
                 <ContentEditable
                     html={content}
                     tagName=""
-                    className={`prompt-card-body-content cursor-text dark:bg-zinc-800 p-0 dark:border-zinc-800 dark:text-white text-sm whitespace-pre-wrap dark:border-zinc-500 p-4
-                            ${content?.trim() === '' ? 'empty' : ''}
-                            ${creatingText}`}
+                    className={`prompt-card-body-content cursor-text bg-white dark:bg-zinc-800 dark:border-zinc-800 dark:text-white text-sm whitespace-pre-wrap dark:border-zinc-500
+                          ${content?.trim() === '' ? 'empty' : ''}
+                          ${creatingText}`}
                     placeholder="Write your prompt here..."
                     onChange={onChangeHandler}
                     disabled={isMade && !isEditable}
                 />
                 {/* card footer */}
                 <div className="h-6 flex flex-row justify-between mt-4">
-                    <div className="flex items-center justify-start text-gray-400 text-xs">{createdAt}</div>
+                    <div className="flex items-center justify-start text-zinc-500 dark:text-zinc-400 text-xs">{createdAt}</div>
                     {
                         isHovered || isEditable ?
                             <div className="flex items-center justify-end gap-3">
@@ -256,14 +253,14 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
                                     // Cancel button
                                     (isMade && isEditable) &&
                                     <button
-                                        className={`prompt-card-footer-button text-sm dark:text-zinc-400`}
+                                        className={`prompt-card-footer-button text-sm text-zinc-500 dark:text-zinc-400`}
                                         onClick={onCancelEdit}>Cancel
                                     </button>
                                 }
                                 {
                                     // Submit/create button
                                     (!isMade || isEditable) &&
-                                    <div className={` rounded-md w-12 flex justify-center ${taskConfig[task].backgroundColor}`}><PaperAirplaneIcon
+                                    <div className={`rounded-md w-12 flex justify-center ${taskConfig[task].backgroundColor}`}><PaperAirplaneIcon
                                         className={`h-5 text-black dark:text-white ${!creating && content.length > 0 ? 'cursor-pointer' : "hover-none"} `}
                                         onClick={onCreateHandler} /></div>
                                 }
@@ -272,17 +269,20 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
                             <div className="flex items-center justify-end gap-3 ">
                                 {
                                     task != 'analyze' ?
-                                        <div className="flex items-center justify-start text-gray-400 text-xs">{wordCount} words</div>
+                                        <div className="flex items-center justify-start text-zinc-500 dark:text-zinc-400 text-xs">{wordCount} words</div>
                                         :
-                                        <div className="flex items-center justify-start text-gray-400 text-xs"></div>
+                                        <div className="flex items-center justify-start text-zinc-500 dark:text-zinc-400 text-xs"></div>
                                 }
                             </div>
                     }
                 </div>
 
             </div>
+
         </div>
     );
 })
+
+
 
 export default Card;

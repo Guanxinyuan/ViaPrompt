@@ -2,7 +2,7 @@
 
 import { saveCardToSupabase } from '@/lib/cardHelpers'
 // import { operatePromptByCompletion } from '@/utils/openai'
-import { executeMode } from '@/utils/openai'
+import { executeTask } from '@/utils/openai'
 import { NextResponse } from 'next/server'
 import { hasEnoughCredits, updateCreditsAndUsage } from '@/lib/creditHelpers'
 
@@ -27,9 +27,7 @@ export default async function handler(req, res) {
     }
 
     // 2. Operate ChatGPT API
-    // const props = { prompt, task, model, maxTokens: 500 }
-    // const result = await operatePromptByCompletion(props)
-    const result = await executeMode({
+    const result = await executeTask({
       model, task,
       userInput: prompt,
       maxTokens: 500,

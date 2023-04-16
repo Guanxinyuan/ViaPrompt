@@ -131,7 +131,7 @@ export default function PromptGenerator() {
             } ${paramString}`}
         ></textarea>
         <DocumentIcon
-          className="absolute bottom-10 right-6 w-6 h-6 text-gray-600 cursor-pointer"
+          className="absolute bottom-10 right-6 w-6 h-6 text-zinc-600 cursor-pointer"
           onClick={handleCopy}
         />
       </div>

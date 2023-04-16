@@ -15,7 +15,7 @@ export default function UpgradePage() {
             </Head>
 
             <div className="w-full min-h-screen mx-auto py-12 px-4 sm:px-6 lg:px-8">
-                <div className='w-4/5 mx-auto'>
+                <div className='w-3/4 mx-auto'>
 
                     {/* page header */}
                     <div className='subscription-header'>

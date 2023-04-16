@@ -43,7 +43,7 @@ export default function ModelDropdown({ defaultValue, paramSetter, isEditable, .
                     className={`card-header-icon ${aiModelConfig[selectedOption].logo.darkable && "dark:invert"} `} />
 
                 {numColumns <= 3 && (
-                    <p className="text-sm  font-semibold">{aiModelConfig[selectedOption].name}</p>
+                    <p className="text-sm font-semibold text-zinc-600 dark:text-white">{aiModelConfig[selectedOption].name}</p>
                 )}
             </div>
             {

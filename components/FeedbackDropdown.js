@@ -58,7 +58,7 @@ export default function FeedbackDropdown() {
                     onSubmit={handleSubmit}>
                     <label
                         htmlFor="feedback"
-                        className="block text-sm font-semibold italic text-gray-700 dark:text-white">
+                        className="block text-sm font-semibold italic text-zinc-700 dark:text-white">
                         Your voice is important to us!
                     </label>
                     <textarea

@@ -253,7 +253,7 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
 
                 {/* card footer */}
                 <div className="h-6 flex flex-row justify-between mt-4">
-                    <div className="flex items-center justify-start text-gray-400 text-xs">{createdAt}</div>
+                    <div className="flex items-center justify-start text-zinc-400 text-xs">{createdAt}</div>
                     {
                         isHovered || isEditable ?
                             <div className="flex items-center justify-end gap-3">
@@ -287,13 +287,13 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
                             </div>
                             :
                             <div className="flex items-center justify-end gap-3 ">
-                                {/* <div className="flex items-center justify-start text-gray-400 text-xs">{formatISOString(createdAt)}</div> */}
+                                {/* <div className="flex items-center justify-start text-zinc-400 text-xs">{formatISOString(createdAt)}</div> */}
 
                                 {
                                     task != 'explain' ?
-                                        <div className="flex items-center justify-start text-gray-400 text-xs">{wordCount} words</div>
+                                        <div className="flex items-center justify-start text-zinc-400 text-xs">{wordCount} words</div>
                                         :
-                                        <div className="flex items-center justify-start text-gray-400 text-xs"></div>
+                                        <div className="flex items-center justify-start text-zinc-400 text-xs"></div>
                                 }
                             </div>
                     }

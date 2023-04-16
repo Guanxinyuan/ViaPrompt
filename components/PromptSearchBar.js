@@ -27,7 +27,7 @@ export default function PromptSearchbar({ filterSetter, querySetter, columnsSett
 
     return (
         <div className='sub-header w-full flex flex-row gap-4 items-center text-sm'>
-            <div className=' flex flex-grow relative'>
+            <div className='flex flex-grow relative'>
                 <input
                     type="text"
                     ref={inputRef}

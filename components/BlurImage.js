@@ -33,7 +33,7 @@ export default function BlurImage({ image }) {
     return (
         <div>
             <div className='relative group'>
-                <div className={cn(`w-full overflow-hidden rounded-lg bg-gray-200 rounded-lg cursor-pointer `)} onClick={handleClick}>
+                <div className={cn(`w-full overflow-hidden rounded-lg bg-zinc-200 rounded-lg cursor-pointer `)} onClick={handleClick}>
                     <Image
                         src={image.gc_url.replace("media.discordapp.net", cdnUrl)}
                         // loader={discordImageLoader}

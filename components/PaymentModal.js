@@ -46,7 +46,7 @@ export default function PaymentModal({ subscriptionInfo, onCloseModal }) {
                                 <PayPalButton fundingSource={'paypal'} color={'gold'} planCode={planCode} />
                                 {/* <PayPalButtonTemp fundingSource={'card'} color={'white'} /> */}
                             </div>
-                            <p className='text-xs text-center text-gray-500'>
+                            <p className='text-xs text-center text-zinc-500'>
                                 By subscribing, you agree to our <a href='#' className='underline'>terms</a>.
                             </p>
                         </div>
@@ -56,7 +56,7 @@ export default function PaymentModal({ subscriptionInfo, onCloseModal }) {
 
                 {/* Background overlay */}
                 <div
-                    className="fixed inset-0 bg-gray-500 opacity-75"
+                    className="fixed inset-0 bg-zinc-500 opacity-75"
                     onClick={closeModal}
                 />
             </div>

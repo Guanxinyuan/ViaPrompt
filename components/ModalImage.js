@@ -12,7 +12,7 @@ export default function ModalImage({ image, current }) {
 
     return (
         <div>
-            <div className={cn('w-full overflow--hidden rounded-lg bg-gray-200',
+            <div className={cn('w-full overflow--hidden rounded-lg bg-zinc-200',
                 current ? 'border-2 border-yellow-500' : '')}>
                 <Image
                     alt=""

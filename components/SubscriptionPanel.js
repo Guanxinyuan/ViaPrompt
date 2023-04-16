@@ -123,7 +123,7 @@ export default function SubscriptionPanel() {
                         <div className='text-xl mb-6 flex flex-col justify-between gap-2'>
                             <div className='flex justify-between'>
                                 <p className='flex items-center'>
-                                    <span>Current Plan: &nbsp;</span>
+                                    <span className='text-black dark:text-white'>Current Plan: &nbsp;</span>
                                     <span className="font-semibold">{currentPlan}</span>
                                     <span className={`settings-panel-value w-fit px-2 py-0.5 text-white dark:text-white rounded-lg ml-2
                             ${status == 'ACTIVE' ? "bg-green-500 dark:bg-green-500" : "bg-purple-500 dark:bg-purple-400"}`}>{status?.toLowerCase()}</span>

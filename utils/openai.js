@@ -55,7 +55,7 @@ const callAPI = async ({ prompt, maxTokens, type }) => {
   }
 };
 
-export const executeMode = async ({ model, task, userInput, maxTokens, type }) => {
+export const executeTask = async ({ model, task, userInput, maxTokens, type }) => {
   try {
 
     // Get the task information and prompt generation function
@@ -75,8 +75,8 @@ export const executeMode = async ({ model, task, userInput, maxTokens, type }) =
 
     return cleanedResult;
   } catch (error) {
-    console.error('In executeMode: ', error);
-    throw new Error('In executeMode: ', error);
+    console.error('In executeTask: ', error);
+    throw new Error('In executeTask: ', error);
   }
 };
 

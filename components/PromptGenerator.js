@@ -61,7 +61,7 @@ export default function PromptGenerator() {
                 <div className="w-1/2 bg-white p-4 rounded-lg flex flex-col items-center space-y-4 relative">
                     <h1 className="text-lg font-bold mr-auto">Generate A Prompt Idea</h1>
                     <textarea
-                        className={`w-full h-40 p-4 border border-gray-500 rounded-lg resize-none mb-4 overflow-hidden`}
+                        className={`w-full h-40 p-4 border border-zinc-500 rounded-lg resize-none mb-4 overflow-hidden`}
                         value={inputText}
                         placeholder={'Keywords of your idea...'}
                         onChange={(e) => setInputText(e.target.value)}
@@ -73,7 +73,7 @@ export default function PromptGenerator() {
                 <div className="w-1/2 bg-white p-4 rounded-lg flex flex-col items-center space-y-4">
                     <h1 className="text-lg font-bold mr-auto">... Or Input Your Idea</h1>
                     <textarea
-                        className={`w-full h-40 p-4 border border-gray-500 rounded-lg resize-none mb-4 overflow-hidden`}
+                        className={`w-full h-40 p-4 border border-zinc-500 rounded-lg resize-none mb-4 overflow-hidden`}
                         value={promptIdea.trim()}
                         placeholder={'Detailed ready-to-go idea...'}
                         onChange={(e) => { setPromptIdea(e.target.value) }}
@@ -82,13 +82,13 @@ export default function PromptGenerator() {
             </div>
             <div className="w-full bg-white p-4 rounded-lg flex flex-col items-center space-y-4 relative">
                 <textarea
-                    className="w-full h-28 p-4 border border-gray-500 rounded-lg  mb-4 overflow-auto"
+                    className="w-full h-28 p-4 border border-zinc-500 rounded-lg  mb-4 overflow-auto"
                     ref={promptRef}
                     // value={`/imagine prompt: ${promptIdea.trim().replace(/\n/g, ' ')}:: --v 4`}
                     value={`/imagine prompt: ${promptIdea.trim().replace(/\n/g, ' ')}`}
                 ></textarea>
                 <DocumentIcon
-                    className="absolute bottom-10 right-6 w-6 h-6 text-gray-600 cursor-pointer"
+                    className="absolute bottom-10 right-6 w-6 h-6 text-zinc-600 cursor-pointer"
                     onClick={handleCopy} />
 
                 {/* <button

@@ -22,12 +22,12 @@ export default function PromptModal({ images, onCloseModal }) {
                     {/* Left column */}
                     <div className="w-1/2 p-6 flex flex-col">
                         <div className='w-full h-1/2'>
-                            <h3 className="text-base font-bold leading-6 text-gray-900" id="modal-headline">
+                            <h3 className="text-base font-bold leading-6 text-zinc-900" id="modal-headline">
                                 Prompt
                             </h3>
                             <div className="mt-2 relative h-3/5">
                                 <textarea
-                                    className="w-full h-full p-3 border border-black text-gray-500 text-sm rounded-lg resize-none mb-4 overflow-auto"
+                                    className="w-full h-full p-3 border border-black text-zinc-500 text-sm rounded-lg resize-none mb-4 overflow-auto"
                                     value={images[currentImage].prompt}
                                     readOnly
                                 ></textarea>
@@ -37,27 +37,27 @@ export default function PromptModal({ images, onCloseModal }) {
                             </div>
                         </div>
                         <div className='w-full h-1/4'>
-                            <h3 className="text-base font-bold leading-6 text-gray-900" id="modal-headline">
+                            <h3 className="text-base font-bold leading-6 text-zinc-900" id="modal-headline">
                                 Model
                             </h3>
                             <div className="mt-2 relative h-1/5">
-                                <p className='text-sm text-gray-500'>{images[currentImage].model}</p>
+                                <p className='text-sm text-zinc-500'>{images[currentImage].model}</p>
                             </div>
                         </div>
                         <div className='w-full h-1/4'>
-                            <h3 className="text-base font-bold leading-6 text-gray-900" id="modal-headline">
+                            <h3 className="text-base font-bold leading-6 text-zinc-900" id="modal-headline">
                                 Dimensions
                             </h3>
                             <div className="mt-2 relative h-1/5">
-                                <p className='text-sm text-gray-500'>{images[currentImage].gc_width} x {images[currentImage].gc_height}</p>
+                                <p className='text-sm text-zinc-500'>{images[currentImage].gc_width} x {images[currentImage].gc_height}</p>
                             </div>
                         </div>
                         <div className='w-full h-1/4'>
-                            <h3 className="text-base font-bold leading-6 text-gray-900" id="modal-headline">
+                            <h3 className="text-base font-bold leading-6 text-zinc-900" id="modal-headline">
                                 Creation Type
                             </h3>
                             <div className="mt-2 relative h-1/5">
-                                <p className='text-sm text-gray-500'>{images[currentImage].type}</p>
+                                <p className='text-sm text-zinc-500'>{images[currentImage].type}</p>
                             </div>
                         </div>
                     </div>
@@ -88,7 +88,7 @@ export default function PromptModal({ images, onCloseModal }) {
 
                 {/* Background overlay */}
                 <div
-                    className="fixed inset-0 bg-gray-500 opacity-75"
+                    className="fixed inset-0 bg-zinc-500 opacity-75"
                     onClick={closeModal}
                 />
             </div>

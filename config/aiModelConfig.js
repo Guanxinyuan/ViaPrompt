@@ -30,7 +30,7 @@ export const aiModelConfig = {
             darkable: true
         }
     },
-    'stable diffusion': {
+    'stable-diffusion': {
         name: 'Stable Diffusion',
         description: 'The AI model that brings images to life - and does it with stability.',
         logo: {

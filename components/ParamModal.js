@@ -23,7 +23,7 @@ export default function Parameters({ onCloseModal }) {
 
                 {/* Background overlay */}
                 <div
-                    className="fixed inset-0 bg-gray-500 opacity-75"
+                    className="fixed inset-0 bg-zinc-500 opacity-75"
                     onClick={closeModal}
                 />
             </div>

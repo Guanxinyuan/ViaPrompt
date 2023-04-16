@@ -99,7 +99,7 @@ export default function PromptTextarea({
                 />
             </div>
             <div className="prompt-card-body-content-word-count">
-                <p id="word-count" className="text-gray-500 text-xs">
+                <p id="word-count" className="text-zinc-500 text-xs">
                     {contentWordCount} words
                 </p>
                 <TrashIcon
