@@ -9,7 +9,7 @@ import ContentEditable from "react-contenteditable";
 export default function PromptTextarea({
     contentText,
     lockInput,
-    mode,
+    task,
     cardId,
     className,
 }) {
@@ -24,7 +24,7 @@ export default function PromptTextarea({
             body: JSON.stringify({
                 cardId: cardId,
                 editedPrompt: content,
-                mode: mode,
+                task: task,
             }),
         });
         const result = await response.json();
@@ -37,7 +37,7 @@ export default function PromptTextarea({
             method: "POST",
             body: JSON.stringify({
                 originalPrompt: content,
-                mode: mode,
+                task: task,
             }),
         });
 

@@ -51,7 +51,7 @@ export default function Workspace() {
     }, [user])
 
 
-    const emptyCard = { id: 0, answer: '', mode: 'optimize', model: 'gpt-4', prompt: 'Prompt: Lorem ipsum dolor sit amet, consectetur adipiscing elit.', created_at: '' }
+    const emptyCard = { id: 0, answer: '', task: 'optimize', model: 'gpt-4', prompt: 'Prompt: Lorem ipsum dolor sit amet, consectetur adipiscing elit.', created_at: '' }
 
     const buildColumns = (arr, n) => {
         let subArrays = [];
@@ -94,7 +94,7 @@ export default function Workspace() {
                 <div className="max-w-screen py-10 mx-10 m-auto flex flex-col gap-6 items-center">
                     {
                         // check if user has/had a subscription
-                        !subscription?.subscription_id && credits &&
+                        subscription?.subscription_id && credits &&
                         < div className='flex gap-4 w-3/5 items-center justify-center'>
                             <p className='min-w-max text-sm'>Free credits: </p>
                             <CreditUsageBar

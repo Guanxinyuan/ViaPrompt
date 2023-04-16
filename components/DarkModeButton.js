@@ -23,11 +23,11 @@ export default function DarkModeToggle({ colorModeSetter }) {
 
       {
         isInitialized && colorMode == 'light' &&
-        <SunIcon className={`dark-mode-icon bg-white border-zinc-800 translate-x-full`} />
+        <SunIcon className={`dark-task-icon bg-white border-zinc-800 translate-x-full`} />
       }
       {
         isInitialized && colorMode == 'dark' &&
-        <MoonIcon className={`dark-mode-icon bg-zinc-800 border-white `} />
+        <MoonIcon className={`dark-task-icon bg-zinc-800 border-white `} />
       }
     </div>
   );

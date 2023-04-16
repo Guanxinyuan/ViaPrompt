@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 const ReactQuill = dynamic(import('react-quill'), { ssr: false })
 
 import 'react-quill/dist/quill.snow.css';
-import ModeDropdown from '@/components/ModeDropdown';
+import ModeDropdown from '@/components/TaskDropdown';
 import ModelDropdown from '@/components/ModelDropdown';
 import { PaperAirplaneIcon, ArrowPathIcon, TrashIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
 import { useUser } from "@supabase/auth-helpers-react";
@@ -17,7 +17,7 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
     const [isMade, setIsMade] = useState(cardData && cardData.answer != '' ? true : false);
     const [isEditable, setIsEditable] = useState(!isMade);
     const [isHovered, setIsHovered] = useState(false);
-    const [mode, setMode] = useState(isMade ? cardData.mode : 'optimize');
+    const [task, setTask] = useState(isMade ? cardData.task : 'optimize');
     const [model, setModel] = useState(isMade ? cardData.model : 'chatgpt');
 
     const [prompt, setPrompt] = useState(isMade ? cardData.prompt : '');
@@ -44,7 +44,7 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
         'template': { inputSection: '', outputSection: 'prompt' },
     }
 
-    const [activeSection, setActiveSection] = useState(isMade ? modeSections[mode].outputSection : '');
+    const [activeSection, setActiveSection] = useState(isMade ? modeSections[task].outputSection : '');
 
     const modeTextColors = {
         'optimize':
@@ -95,7 +95,7 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
 
     const makeLoadingText = () => {
         const baseText = ' your prompt...';
-        switch (mode) {
+        switch (task) {
             case 'optimize': return 'Optimizing' + baseText;
             case 'explain': return 'Explaining' + baseText;
             case 'template': return 'Saving' + baseText;
@@ -116,7 +116,7 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
         setCreating(true);
 
         const loadingText = makeLoadingText();
-        const emptyCard = { id: 1, answer: loadingText, mode: mode, model: model, prompt: 'creating...' }
+        const emptyCard = { id: 1, answer: loadingText, task: task, model: model, prompt: 'creating...' }
         setCards((preCards) => [emptyCard, ...preCards]);
         await delay(10000);
 
@@ -125,10 +125,10 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
             method: 'POST',
             body: JSON.stringify({
                 prompt: prompt.trim(),
-                mode: mode,
+                task: task,
                 model: model,
                 required_credits: 1,
-                description: mode,
+                description: task,
                 user_id: user.id
             }),
         })
@@ -142,14 +142,14 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
         }
 
         const cardData = { ...result.data.card, answer: result.data.card.answer }
-        // const cardData = { id: 1, answer: parseAnswer(mode, dummyResponses[mode].choices[0].message.content), mode: mode, model: model, prompt: prompt }
+        // const cardData = { id: 1, answer: parseAnswer(task, dummyResponses[task].choices[0].message.content), task: task, model: model, prompt: prompt }
         console.log(cardData)
 
         setCards((preCards) => [cardData, ...preCards.slice(1)]);
         await delay(1000);
         setCreating(false);
 
-        setContent(activeSection === modeSections[mode].inputSection ? cardData.prompt : cardData.answer);
+        setContent(activeSection === modeSections[task].inputSection ? cardData.prompt : cardData.answer);
     }
 
     const updateWordCount = (text) => {
@@ -173,7 +173,7 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
     }
 
     useEffect(() => {
-        setContent(activeSection === modeSections[mode].inputSection ? prompt : answer);
+        setContent(activeSection === modeSections[task].inputSection ? prompt : answer);
     }, [activeSection]);
 
     function setCaretPosition(element) {
@@ -197,7 +197,7 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
 
     return (
         <div
-            className={`flex flex-col rounded-xl bg-zinc-800 w-full border-t-2 ${modeBorderColors[mode]} ${creatingBorder} ${className}`}
+            className={`flex flex-col rounded-xl bg-zinc-800 w-full border-t-2 ${modeBorderColors[task]} ${creatingBorder} ${className}`}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}>
 
@@ -205,29 +205,29 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
             <div className="h-14 flex flex-row justify-between items-center">
 
                 <div className="flex items-center justify-start px-4 gap-2 ">
-                    <ModeDropdown defaultValue={mode} paramSetter={setMode} isEditable={isEditable} />
+                    <ModeDropdown defaultValue={task} paramSetter={setTask} isEditable={isEditable} />
                     <ModelDropdown defaultValue={model} paramSetter={setModel} isEditable={isEditable} numColumns={numColumns} />
                 </div>
                 {
                     !isEditable && content &&
                     <div className="flex items-center justify-end px-4 py-2 gap-2">
                         {
-                            modeSections[mode].inputSection &&
+                            modeSections[task].inputSection &&
                             <h2
                                 className={`text-sm font-semibold cursor-pointer 
-                ${activeSection == modeSections[mode].inputSection ? `text-white ${modeTextColors[mode]}` : 'text-zinc-400'} `}
+                ${activeSection == modeSections[task].inputSection ? `text-white ${modeTextColors[task]}` : 'text-zinc-400'} `}
                                 onClick={() => {
-                                    setActiveSection(modeSections[mode].inputSection)
+                                    setActiveSection(modeSections[task].inputSection)
                                 }}
-                            >{modeSections[mode].inputSection}</h2>
+                            >{modeSections[task].inputSection}</h2>
                         }
                         <h2
                             className={`text-sm font-semibold text-white cursor-pointer
-            ${activeSection == modeSections[mode].outputSection ? `text-white ${modeTextColors[mode]}` : 'text-zinc-400'}`}
+            ${activeSection == modeSections[task].outputSection ? `text-white ${modeTextColors[task]}` : 'text-zinc-400'}`}
                             onClick={() => {
-                                setActiveSection(modeSections[mode].outputSection)
+                                setActiveSection(modeSections[task].outputSection)
                             }}
-                        >{modeSections[mode].outputSection}</h2>
+                        >{modeSections[task].outputSection}</h2>
                     </div>
                 }
             </div>
@@ -265,7 +265,7 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
                                 }
                                 {
                                     // Edit button
-                                    (isMade && !isEditable && activeSection == modeSections[mode].inputSection) && <PencilSquareIcon
+                                    (isMade && !isEditable && activeSection == modeSections[task].inputSection) && <PencilSquareIcon
                                         className={`prompt-card-footer-icon ${isEditable ? 'hidden' : ''} ${creating ? '' : 'cursor-pointer'}`}
                                         onClick={switchEdit} />
                                 }
@@ -280,7 +280,7 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
                                 {
                                     // Submit/create button
                                     (!isMade || isEditable) &&
-                                    <div className={` rounded-md w-12 flex justify-center ${modeBackgroundColors[mode]}`}><PaperAirplaneIcon
+                                    <div className={` rounded-md w-12 flex justify-center ${modeBackgroundColors[task]}`}><PaperAirplaneIcon
                                         className={`h-5 text-black dark:text-white ${!creating && content.length > 0 ? 'cursor-pointer' : "hover-none"} `}
                                         onClick={onCreateHandler} /></div>
                                 }
@@ -290,7 +290,7 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
                                 {/* <div className="flex items-center justify-start text-gray-400 text-xs">{formatISOString(createdAt)}</div> */}
 
                                 {
-                                    mode != 'explain' ?
+                                    task != 'explain' ?
                                         <div className="flex items-center justify-start text-gray-400 text-xs">{wordCount} words</div>
                                         :
                                         <div className="flex items-center justify-start text-gray-400 text-xs"></div>

@@ -9,23 +9,23 @@ export default function TestAPI() {
       <div className='h-content gap-6 py-6 items-center flex flex-col'>
         <h1 className='text-2xl'>Credits Test</h1>
         <div className='flex flex-row gap-6'>
-          <CreditCard mode={'analyze'} requiredCredits={1} />
+          <CreditCard task={'analyze'} requiredCredits={1} />
         </div>
       </div>
       <div className='h-content gap-6 py-6 items-center flex flex-col'>
         <h1 className='text-2xl'>Supabase Test</h1>
         <div className='flex flex-row gap-6'>
-          <TestSupaCard model={'midjourney'} mode={'optimize'} />
-          <TestSupaCard model={'midjourney'} mode={'explain'} />
-          <TestSupaCard model={'midjourney'} mode={'template'} />
+          <TestSupaCard model={'midjourney'} task={'optimize'} />
+          <TestSupaCard model={'midjourney'} task={'explain'} />
+          <TestSupaCard model={'midjourney'} task={'template'} />
         </div>
       </div>
       <div className='flex flex-col gap-6 py-6 items-center'>
         <h1 className='text-2xl'>OpenAI Test</h1>
         <div className='flex flex-row gap-6'>
-          <OpenAICard model={'midjourney'} mode={'optimize'} />
-          <OpenAICard model={'midjourney'} mode={'explain'} />
-          <OpenAICard model={'test'} mode={'translate'} />
+          <OpenAICard model={'midjourney'} task={'optimize'} />
+          <OpenAICard model={'midjourney'} task={'explain'} />
+          <OpenAICard model={'test'} task={'translate'} />
         </div>
       </div>
     </div>
@@ -33,7 +33,7 @@ export default function TestAPI() {
 }
 
 
-const TestSupaCard = ({ mode, model }) => {
+const TestSupaCard = ({ task, model }) => {
   const [prompt, setPrompt] = useState('')
   const [answer, setAnswer] = useState('')
   const user = useUser()
@@ -46,7 +46,7 @@ const TestSupaCard = ({ mode, model }) => {
       method: 'POST',
       body: JSON.stringify({
         prompt: prompt.trim(),
-        mode: mode,
+        task: task,
         model: model,
         user_id: user.id
       }),
@@ -60,7 +60,7 @@ const TestSupaCard = ({ mode, model }) => {
     const cardData = result.data
     console.log('cardData', cardData)
 
-    const parsedAnswer = parseAnswer(mode, cardData.answer)
+    const parsedAnswer = parseAnswer(task, cardData.answer)
     setAnswer(parsedAnswer)
   }
 
@@ -71,13 +71,13 @@ const TestSupaCard = ({ mode, model }) => {
       <form
         className='flex flex-col gap-2 justify-center items-center h-full w-full'
         onSubmit={onSubmitHandler}>
-        <label htmlFor="content">{mode}</label>
+        <label htmlFor="content">{task}</label>
         <textarea
           className="text-black h-5/6 w-full"
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
         />
-        <button type="submit">Supa{mode}</button>
+        <button type="submit">Supa{task}</button>
       </form>
       <div className='border border-red'>
         <p className='whitespace-pre-line'>{answer}</p>
@@ -86,7 +86,7 @@ const TestSupaCard = ({ mode, model }) => {
   )
 }
 
-const OpenAICard = ({ mode, model }) => {
+const OpenAICard = ({ task, model }) => {
   const [prompt, setPrompt] = useState('')
   const [answer, setAnswer] = useState('')
   const user = useUser()
@@ -99,7 +99,7 @@ const OpenAICard = ({ mode, model }) => {
       method: 'POST',
       body: JSON.stringify({
         prompt: prompt.trim(),
-        mode: mode,
+        task: task,
         model: model,
         required_credits: 1,
         description: 'test',
@@ -108,7 +108,7 @@ const OpenAICard = ({ mode, model }) => {
     })
 
     const cardData = await response.json()
-    switch (mode) {
+    switch (task) {
       case 'optimize': setAnswer(JSON.parse(cardData.answer).prompt); break;
       case 'decompose': setAnswer(cardData.answer); break;
       case 'translate': setAnswer(cardData.answer); break;
@@ -121,13 +121,13 @@ const OpenAICard = ({ mode, model }) => {
       <form
         className='flex flex-col gap-2 justify-center items-center h-full w-full'
         onSubmit={onSubmitHandler}>
-        <label htmlFor="content">{mode}</label>
+        <label htmlFor="content">{task}</label>
         <textarea
           className="text-black h-5/6 w-full"
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
         />
-        <button type="submit">Open{mode}</button>
+        <button type="submit">Open{task}</button>
       </form>
       <div className='border border-red'>
         <p className='whitespace-pre-line'>{answer}</p>
@@ -137,7 +137,7 @@ const OpenAICard = ({ mode, model }) => {
 }
 
 import { supabaseClient } from '@/lib/supabase'
-const CreditCard = ({ mode, requiredCredits }) => {
+const CreditCard = ({ task, requiredCredits }) => {
   const user = useUser()
   const [credits, setCredits] = useState(0)
   const [freeCredits, setFreeCredits] = useState(0)
@@ -156,7 +156,7 @@ const CreditCard = ({ mode, requiredCredits }) => {
       body: JSON.stringify({
         user_id: user.id,
         required_credits: requiredCredits,
-        description: mode
+        description: task
       }),
     })
 
@@ -175,7 +175,7 @@ const CreditCard = ({ mode, requiredCredits }) => {
   //   const { data, error } = await supabaseClient.rpc('perform_credit_operations', {
   //     p_user_id: user.id,
   //     p_credits_used: requiredCredits,
-  //     p_description: mode,
+  //     p_description: task,
   //   });
   //   const { new_credits_balance, new_free_credits_balance } = data[0]
 

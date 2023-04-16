@@ -1,6 +1,6 @@
 import { useEffect, useState, memo } from "react";
 import ContentEditable from "react-contenteditable";
-import ModeDropdown from '@/components/ModeDropdown'
+import TaskDropdown from '@/components/TaskDropdown'
 import ModelDropdown from '@/components/ModelDropdown'
 import { PaperAirplaneIcon, ArrowPathIcon, TrashIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
 import { useUser } from "@supabase/auth-helpers-react";
@@ -9,12 +9,13 @@ import { taskConfig } from "@/config/taskConfig";
 
 
 const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
-    const { creating, creatingText, creatingBorder, className, numColumns, onCreditsUpdate } = rest
+    const { creating, creatingText, creatingBorder, className, numColumns, credits, onCreditsUpdate } = rest
     const user = useUser()
+    const requiredCredits = 1
     const [isMade, setIsMade] = useState(cardData && cardData.answer != '' ? true : false);
     const [isEditable, setIsEditable] = useState(!isMade);
     const [isHovered, setIsHovered] = useState(false);
-    const [mode, setMode] = useState(isMade ? cardData.mode : 'optimize');
+    const [task, setTask] = useState(isMade ? cardData.task : 'optimize');
     const [model, setModel] = useState(isMade ? cardData.model : 'midjourney');
 
     const [prompt, setPrompt] = useState(isMade ? cardData.prompt : '');
@@ -25,7 +26,7 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
 
     const [wordCount, setWordCount] = useState(content.split(' ').length || 0);
     const [createdAt, setCreatedAt] = useState(cardData.created_at ? formatISOString(cardData.created_at, 1) : '');
-    const [activeSection, setActiveSection] = useState(isMade ? taskConfig[mode].sections.outputSection : 'prompt');
+    const [activeSection, setActiveSection] = useState(isMade ? taskConfig[task].sections.outputSection : 'prompt');
 
     const switchEdit = () => {
         if (!creating) setIsEditable(!isEditable)
@@ -46,10 +47,16 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
 
     const makeLoadingText = () => {
         const baseText = ' your prompt...';
-        switch (mode) {
+        switch (task) {
             case 'optimize': return 'Optimizing' + baseText;
             case 'explain': return 'Explaining' + baseText;
             case 'template': return 'Saving' + baseText;
+        }
+    }
+
+    const hasEnoughCredits = () => {
+        if (user && credits) {
+            return credits.creditsBalance + credits.freeCreditsBalance >= requiredCredits;
         }
     }
 
@@ -63,11 +70,17 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
             // alert('Please enter a prompt');
             return;
         }
+
+        if (!hasEnoughCredits()) {
+            alert('You have no credits left. Please upgrade your plan to continue using the app. Have a good day!');
+            return;
+        }
+
         switchEdit()
         setCreating(true);
 
         const loadingText = makeLoadingText();
-        const emptyCard = { id: 1, answer: loadingText, mode: mode, model: model, prompt: 'creating...' }
+        const emptyCard = { id: 1, answer: loadingText, task: task, model: model, prompt: 'creating...' }
         setCards((preCards) => [emptyCard, ...preCards]);
         await delay(1000);
 
@@ -76,10 +89,10 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
             method: 'POST',
             body: JSON.stringify({
                 prompt: prompt.trim(),
-                mode: mode,
+                task: task,
                 model: model,
-                required_credits: 1,
-                description: mode,
+                required_credits: requiredCredits,
+                description: task,
                 user_id: user.id
             }),
         })
@@ -100,7 +113,7 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
         await delay(1000);
         setCreating(false);
 
-        setContent(activeSection === taskConfig[mode].sections.inputSection ? cardData.prompt : cardData.answer);
+        setContent(activeSection === taskConfig[task].sections.inputSection ? cardData.prompt : cardData.answer);
     }
 
     const updateCredits = (credits) => {
@@ -144,7 +157,7 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
     }
 
     useEffect(() => {
-        setContent(activeSection === taskConfig[mode].sections.inputSection ? prompt : answer);
+        setContent(activeSection === taskConfig[task].sections.inputSection ? prompt : answer);
     }, [activeSection]);
 
     function setCaretPosition(element) {
@@ -173,7 +186,7 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
 
     return (
         <div
-            className={`flex flex-col rounded-xl bg-zinc-800 w-full border-t-2 ${taskConfig[mode].borderColor} ${creatingBorder} ${className}`}
+            className={`flex flex-col rounded-xl bg-zinc-800 w-full border-t-2 ${taskConfig[task].borderColor} ${creatingBorder} ${className}`}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}>
 
@@ -181,29 +194,29 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
             <div className="h-14 flex flex-row justify-between items-center">
 
                 <div className="flex items-center justify-start px-4 gap-2 ">
-                    <ModeDropdown defaultValue={mode} paramSetter={setMode} isEditable={isEditable} />
+                    <TaskDropdown defaultValue={task} paramSetter={setTask} isEditable={isEditable} />
                     <ModelDropdown defaultValue={model} paramSetter={setModel} isEditable={isEditable} numColumns={numColumns} />
                 </div>
                 {
                     !isEditable && content &&
                     <div className="flex items-center justify-end px-4 py-2 gap-2">
                         {
-                            taskConfig[mode].sections.inputSection &&
+                            taskConfig[task].sections.inputSection &&
                             <h2
                                 className={`text-sm font-semibold cursor-pointer
-                                ${activeSection == taskConfig[mode].sections.inputSection ? `text-white ${taskConfig[mode].textColor}` : 'text-zinc-400'} `}
+                                ${activeSection == taskConfig[task].sections.inputSection ? `text-white ${taskConfig[task].textColor}` : 'text-zinc-400'} `}
                                 onClick={() => {
-                                    setActiveSection(taskConfig[mode].sections.inputSection)
+                                    setActiveSection(taskConfig[task].sections.inputSection)
                                 }}
-                            >{taskConfig[mode].sections.inputSection}</h2>
+                            >{taskConfig[task].sections.inputSection}</h2>
                         }
                         <h2
                             className={`text-sm font-semibold text-white cursor-pointer
-            ${activeSection == taskConfig[mode].sections.outputSection ? `text-white ${taskConfig[mode].textColor}` : 'text-zinc-400'}`}
+            ${activeSection == taskConfig[task].sections.outputSection ? `text-white ${taskConfig[task].textColor}` : 'text-zinc-400'}`}
                             onClick={() => {
-                                setActiveSection(taskConfig[mode].sections.outputSection)
+                                setActiveSection(taskConfig[task].sections.outputSection)
                             }}
-                        >{taskConfig[mode].sections.outputSection}</h2>
+                        >{taskConfig[task].sections.outputSection}</h2>
                     </div>
                 }
             </div>
@@ -235,7 +248,7 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
                                 }
                                 {
                                     // Edit button
-                                    (isMade && !isEditable && activeSection == taskConfig[mode].sections.inputSection) && <PencilSquareIcon
+                                    (isMade && !isEditable && activeSection == taskConfig[task].sections.inputSection) && <PencilSquareIcon
                                         className={`prompt-card-footer-icon ${isEditable ? 'hidden' : ''} ${creating ? '' : 'cursor-pointer'}`}
                                         onClick={switchEdit} />
                                 }
@@ -250,7 +263,7 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
                                 {
                                     // Submit/create button
                                     (!isMade || isEditable) &&
-                                    <div className={` rounded-md w-12 flex justify-center ${taskConfig[mode].backgroundColor}`}><PaperAirplaneIcon
+                                    <div className={` rounded-md w-12 flex justify-center ${taskConfig[task].backgroundColor}`}><PaperAirplaneIcon
                                         className={`h-5 text-black dark:text-white ${!creating && content.length > 0 ? 'cursor-pointer' : "hover-none"} `}
                                         onClick={onCreateHandler} /></div>
                                 }
@@ -258,7 +271,7 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
                             :
                             <div className="flex items-center justify-end gap-3 ">
                                 {
-                                    mode != 'explain' ?
+                                    task != 'analyze' ?
                                         <div className="flex items-center justify-start text-gray-400 text-xs">{wordCount} words</div>
                                         :
                                         <div className="flex items-center justify-start text-gray-400 text-xs"></div>

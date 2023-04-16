@@ -56,7 +56,7 @@ export function SubscriptionCard({ subscriptionInfo }) {
 
     return (
         <div className="subscription-card-container" >
-            <div className="subscription-card rounded-2xl min-h-[60vh] grid grid-rows-4">
+            <div className="subscription-card rounded-2xl min-h-[45vh] grid grid-rows-4">
                 <div className='flex flex-col gap-8 row-span-3'>
 
                     <div className="flex items-center justify-between">

@@ -8,20 +8,20 @@ export const config = {
 
 export default async (req, res) => {
   const requestBody = JSON.parse(await req.text());
-  const { prompt, mode, model, user_id } = requestBody;
+  const { prompt, task, model, user_id } = requestBody;
   console.log('Prompt:', prompt);
 
-  const response = dummyResponses[mode];
+  const response = dummyResponses[task];
   const message = response ? response.choices[0].message.content : null;
 
   let cardData = {
-    mode: mode,
+    task: task,
     model: model,
     prompt: prompt,
     user_id: user_id,
   };
 
-  switch (mode) {
+  switch (task) {
     case 'optimize': cardData = { ...cardData, answer: message }; break;
     case 'decompose': cardData = { ...cardData, answer: message }; break;
     case 'template': cardData = { ...cardData, answer: prompt }; break;

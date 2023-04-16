@@ -1,4 +1,4 @@
-export const getCompletionPrompt = ({ model, mode, prompt }) => {
+export const getCompletionPrompt = ({ model, task, prompt }) => {
     const completionPrompts = {
         midjourney: {
             optimize: {
@@ -34,5 +34,5 @@ export const getCompletionPrompt = ({ model, mode, prompt }) => {
             },
         }
     }
-    return completionPrompts[model][mode].systemPrompt
+    return completionPrompts[model][task].systemPrompt
 }

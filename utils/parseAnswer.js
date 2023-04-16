@@ -13,7 +13,7 @@ const cleanText = (text) => {
     const matches = text.match(/{/g);
 
     if (matches > 1) {
-        return new Error('Optimize mode format is incorrect.')
+        return new Error('Optimize task format is incorrect.')
     }
 
     const regex = /{([^}]+)}/g;
@@ -81,8 +81,8 @@ const parseTemplate = (text) => {
     return text
 }
 
-export const parseAnswer = (mode, text) => {
-    switch (mode) {
+export const parseAnswer = (task, text) => {
+    switch (task) {
         case 'optimize':
             return parseOptimize(text)
         case 'explain':

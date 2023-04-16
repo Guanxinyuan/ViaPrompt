@@ -8,21 +8,21 @@ export default async (req, res) => {
     if (req.method === 'POST') {
         try {
             const body = JSON.parse(await req.text())
-            const { userPrompt: prompt, mode, model } = body
-            console.log('in testOpenAI userPrompt', userPrompt, 'mode', mode, 'model', model)
+            const { userPrompt: prompt, task, model } = body
+            console.log('in testOpenAI userPrompt', userPrompt, 'task', task, 'model', model)
 
             // Operate ChatGPT API
-            const result = await operatePromptByCompletion(userPrompt, mode, model)
+            const result = await operatePromptByCompletion(userPrompt, task, model)
             console.log('response in testOpenAI ', response)
 
             let cardData = {
-                mode: mode,
+                task: task,
                 model: model,
                 prompt: userPrompt,
                 user_id: '62cb4f7b-a359-4cf2-a808-ac5edee77d81',
             };
 
-            switch (mode) {
+            switch (task) {
                 case 'optimize': cardData = { ...cardData, answer: result }; break;
                 case 'decompose': cardData = { ...cardData, answer: result }; break;
                 case 'template': cardData = { ...cardData, answer: prompt }; break;

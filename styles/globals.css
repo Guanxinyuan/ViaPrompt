@@ -6,10 +6,10 @@
   fill: black;
 }
 
-/* Dark mode color */
+/* Dark task color */
 @media (color-scheme: dark) {
   .gpt-3-icon path {
-    fill: white; /* Replace with the desired color for dark mode */
+    fill: white; /* Replace with the desired color for dark task */
   }
 }
 
@@ -79,7 +79,7 @@
     @apply dark:bg-zinc-700 dark:text-white;
   }
 
-  .dark-mode-icon {
+  .dark-task-icon {
     @apply absolute inset-0 w-5 h-5 transform rounded-full transition-transform duration-300 ease-in-out overflow-hidden border-2;
   }
 
@@ -306,7 +306,7 @@
     @apply dark:bg-zinc-800 dark:border-zinc-800 dark:text-white;
   }
 
-  .mode-button {
+  .task-button {
     @apply bg-yellow-500 text-white text-sm rounded-md py-1 active:bg-yellow-700;
     @apply font-semibold
     /* @apply mx-4; */;

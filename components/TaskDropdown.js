@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { taskConfig } from '@/config/taskConfig';
 
-export default function ModeDropdown({ defaultValue, paramSetter, isEditable }) {
+export default function TaskDropdown({ defaultValue, paramSetter, isEditable }) {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState(defaultValue);
     const dropdownRef = useRef(null);

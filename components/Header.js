@@ -61,7 +61,7 @@ export default function Navbar({ supabase, session }) {
                     <DarkModeButton colorModeSetter={setColorMode} />
                     {isInitialized && colorMode == 'light' && <p>Dark Mode</p>}
                     {isInitialized && colorMode == 'dark' && <p>Light Mode</p>}
-                    {/* <p>Dark Mode</p> */}
+                    {/* <p>Dark task</p> */}
                 </div>
                 <div className='header-button flex flex-row gap-0.5 justify-center items-center cursor-pointer'>
                     <RocketLaunchIcon className="w-5 h-5" />

@@ -7,8 +7,8 @@ export default function handler(req, res) {
     if (req.method === 'PUT') {
         // Update an existing card
         try {
-            const { cardId, editedPrompt, mode } = JSON.parse(req.body);
-            console.log('card_id', cardId, 'editedPrompt', editedPrompt, 'mode', mode);
+            const { cardId, editedPrompt, task } = JSON.parse(req.body);
+            console.log('card_id', cardId, 'editedPrompt', editedPrompt, 'task', task);
             res.status(200).json({ message: `Update card with ID ${cardId}` });
         } catch (ex) {
             console.error('error occurs', ex.stack);

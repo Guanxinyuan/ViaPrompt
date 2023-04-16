@@ -3,7 +3,7 @@ import { parseAnswer } from "@/utils/parseAnswer"
 export const dummyCards = [
     {
         card_id: 0,
-        mode: 'optimize',
+        task: 'optimize',
         model: 'gpt-4',
         prompt: 'Prompt: Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
         answer: parseAnswer('optimize', JSON.stringify({
@@ -18,7 +18,7 @@ export const dummyCards = [
     },
     {
         card_id: 1,
-        mode: 'explain',
+        task: 'explain',
         model: 'chatgpt',
         prompt: 'Prompt: Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
         answer: parseAnswer('explain', JSON.stringify({
@@ -35,7 +35,7 @@ export const dummyCards = [
     },
     {
         card_id: 2,
-        mode: 'template',
+        task: 'template',
         model: 'stable diffusion',
         prompt: 'Prompt: Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
         answer: parseAnswer('template', "This is a test prompt")

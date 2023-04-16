@@ -1,47 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
 import useColorMode from '@/hooks/useColorMode';
+import { aiModelConfig } from '@/config/aiModelConfig';
 
 export default function ModelDropdown({ defaultValue, paramSetter, isEditable, ...rest }) {
     const { numColumns } = rest;
     const [isOpen, setIsOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState(defaultValue);
-    const [colorMode] = useColorMode();
-    const options = ["chatgpt", "gpt-3", "gpt-4", "midjourney", "stable diffusion", "dalle"]
-
-    const modelInfoDict = {
-        'midjourney': {
-            name: 'Midjourney', description: '', logo: {
-                url: '/logos/mj.png',
-                darkable: true
-            }
-        },
-        'chatgpt': {
-            name: 'ChatGPT', description: '', logo: {
-                url: '/logos/chatgpt.svg',
-            }
-        },
-        'gpt-3': {
-            name: 'GPT-3', description: '', logo: {
-                url: '/logos/gpt-3.svg',
-            }
-        },
-        'gpt-4': {
-            name: 'GPT-4', description: '', logo: {
-                url: '/logos/gpt-4.svg',
-                darkable: true
-            }
-        },
-        'stable diffusion': {
-            name: 'Stable Diffusion', description: '', logo: {
-                url: '/logos/sd.png',
-            }
-        },
-        'dalle': {
-            name: 'Dalle', description: '', logo: {
-                url: '/logos/dalle.png',
-            }
-        },
-    }
     const dropdownRef = useRef(null);
 
     useEffect(() => {
@@ -75,11 +39,11 @@ export default function ModelDropdown({ defaultValue, paramSetter, isEditable, .
             <div
                 className="model-button"
                 onClick={toggleDropdown}>
-                <img src={modelInfoDict[selectedOption].logo.url}
-                    className={`card-header-icon ${modelInfoDict[selectedOption].logo.darkable && "dark:invert"} `} />
+                <img src={aiModelConfig[selectedOption].logo.url}
+                    className={`card-header-icon ${aiModelConfig[selectedOption].logo.darkable && "dark:invert"} `} />
 
                 {numColumns <= 3 && (
-                    <p className="text-sm  font-semibold">{modelInfoDict[selectedOption].name}</p>
+                    <p className="text-sm  font-semibold">{aiModelConfig[selectedOption].name}</p>
                 )}
             </div>
             {
@@ -87,20 +51,18 @@ export default function ModelDropdown({ defaultValue, paramSetter, isEditable, .
                 <div className="option-dropdown-container">
                     <div className={`option-dropdown  w-44 ${isOpen ? 'block' : 'hidden'} `}>
                         <p className='text-xs pb-2 px-2'>Select an AI model your prompt will be used in.</p>
-                        {options.map((option) => (
-                            <div className='model-option-item'
+                        {Object.entries(aiModelConfig).map(([task, config]) => (
+                            <div key={task} className='model-option-item'
                                 onClick={() => {
-                                    selectOption(option)
+                                    selectOption(task)
                                     setIsOpen(false)
                                 }}>
                                 <div className="flex flex-row items-center ml-auto gap-2 px-2 pt-1.5 ">
-                                    <img src={modelInfoDict[option].logo.url}
-                                        className={`card-header-icon ${modelInfoDict[option].logo.darkable && "dark:invert"} `} />
-                                    <p className="text-sm font-medium">{modelInfoDict[option].name}</p>
+                                    <img src={config.logo.url}
+                                        className={`card-header-icon ${config.logo.darkable && "dark:invert"} `} />
+                                    <p className="text-sm font-medium">{config.name}</p>
                                 </div>
-                                <p className='text-sm px-4 py-1'>
-                                    {modelInfoDict[option].description}
-                                </p>
+                                <p className='text-sm px-4 py-1' />
                             </div>
                         ))}
                     </div>

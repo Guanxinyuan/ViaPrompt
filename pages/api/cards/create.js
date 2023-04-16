@@ -16,8 +16,8 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { prompt, mode, model, user_id, required_credits, description } = JSON.parse(await req.text())
-    console.log('in create: prompt', prompt, 'mode', mode, 'model', model, 'user_id', user_id, 'required_credits', required_credits, 'description', description)
+    const { prompt, task, model, user_id, required_credits, description } = JSON.parse(await req.text())
+    console.log('in create: prompt', prompt, 'task', task, 'model', model, 'user_id', user_id, 'required_credits', required_credits, 'description', description)
 
     // 1. Check if the user has enough credits
     const enoughCredits = await hasEnoughCredits(user_id, required_credits);
@@ -27,10 +27,10 @@ export default async function handler(req, res) {
     }
 
     // 2. Operate ChatGPT API
-    // const props = { prompt, mode, model, maxTokens: 500 }
+    // const props = { prompt, task, model, maxTokens: 500 }
     // const result = await operatePromptByCompletion(props)
     const result = await executeMode({
-      model, mode,
+      model, task,
       userInput: prompt,
       maxTokens: 500,
       type: 'completion',
@@ -38,7 +38,7 @@ export default async function handler(req, res) {
 
     const card = {
       created_at: new Date().toISOString(),
-      mode: mode,
+      task: task,
       model: model,
       prompt: prompt,
       user_id: user_id,

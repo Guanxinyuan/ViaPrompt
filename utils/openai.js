@@ -55,11 +55,11 @@ const callAPI = async ({ prompt, maxTokens, type }) => {
   }
 };
 
-export const executeMode = async ({ model, mode, userInput, maxTokens, type }) => {
+export const executeMode = async ({ model, task, userInput, maxTokens, type }) => {
   try {
 
     // Get the task information and prompt generation function
-    const modeInfo = aiTaskConfig[model][mode][type];
+    const modeInfo = aiTaskConfig[model][task][type];
     const generatePromptFunction = modeInfo.generatePrompt;
     const promptInfo = modeInfo.promptInfo;
     const cleanResultFunction = modeInfo.cleanResult;
@@ -81,15 +81,15 @@ export const executeMode = async ({ model, mode, userInput, maxTokens, type }) =
 };
 
 
-// export const operatePromptByChat = async (mode, model, prompt, maxTokens) => {
+// export const operatePromptByChat = async (task, model, prompt, maxTokens) => {
 
-//   // If mode is template, return the prompt
-//   if (mode === 'template') {
+//   // If task is template, return the prompt
+//   if (task === 'template') {
 //     return prompt
 //   }
 
-//   // If mode is not template, call OpenAI API
-//   const { systemMessage, userMessage } = chatMessages[model][mode];
+//   // If task is not template, call OpenAI API
+//   const { systemMessage, userMessage } = chatMessages[model][task];
 //   const formattedUserMessage = `${userMessage}${prompt}`;
 //   const messages = [
 //     { role: 'system', content: systemMessage },
@@ -106,15 +106,15 @@ export const executeMode = async ({ model, mode, userInput, maxTokens, type }) =
 // };
 
 
-// export const operatePromptByCompletion = async ({ mode, model, prompt, maxTokens }) => {
+// export const operatePromptByCompletion = async ({ task, model, prompt, maxTokens }) => {
 
-//   // If mode is template, return the prompt
-//   if (mode === 'template') {
+//   // If task is template, return the prompt
+//   if (task === 'template') {
 //     return prompt
 //   }
 
-//   // If mode is not template, call OpenAI API
-//   const props = { mode, model, prompt };
+//   // If task is not template, call OpenAI API
+//   const props = { task, model, prompt };
 //   const formattedPrompt = getCompletionPrompt(props);
 
 //   try {
