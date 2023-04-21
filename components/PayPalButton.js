@@ -6,16 +6,13 @@ import { useSubscription } from "@/context/SubscriptionContext";
 import { subscriptionInfos } from "@/config/subscriptionConfig";
 
 export default function PayPalButton({ fundingSource, color, planCode, ...rest }) {
-
-    const { status, updatedSubscription } = rest;
-    const router = useRouter();
     const clientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
     const currency = 'USD'
     const user = useUser();
     const { subscription, setSubscription } = useSubscription();
 
     const createSubscription = async (data, actions) => {
-        if (subscription && planCode != subscription.plan_code && planCode != 'palaxy-000' && (subscription.status === 'ACTIVE' || subscription.status === 'SUSPENDED')) {
+        if (subscription && planCode != subscription.plan_code && planCode != 'palaxy-000' && (subscription.status === 'active' || subscription.status === 'suspended')) {
             console.log(`revise subscription: ${subscription.subscription_id} to plan: ${subscriptionInfos[planCode].planId}`)
             // if subscription exists, revise it by changing the plan id
             return actions.subscription.revise(subscription.subscription_id, {
@@ -24,6 +21,7 @@ export default function PayPalButton({ fundingSource, color, planCode, ...rest }
         } else {
             return actions.subscription.create({
                 plan_id: subscriptionInfos[planCode].planId,
+                custom_id: user.id
             });
         }
     }
@@ -56,16 +54,16 @@ export default function PayPalButton({ fundingSource, color, planCode, ...rest }
         const { id, plan_id, start_time, status, create_time, update_time } = subscription;
         const { next_billing_time } = subscription.billing_info;
 
-        await saveSubscriptionData({
-            subscription_id: id,
-            start_time: start_time,
-            next_billing_time: next_billing_time,
-            status: status,
-            update_time: update_time,
-            created_time: create_time,
-            plan_code: planCode,
-            user_id: user.id,
-        });
+        // await saveSubscriptionData({
+        //     subscription_id: id,
+        //     start_time: start_time,
+        //     next_billing_time: next_billing_time,
+        //     status: status,
+        //     update_time: update_time,
+        //     created_time: create_time,
+        //     plan_code: subscriptionInfos[plan_id]?.planCode,
+        //     user_id: user.id,
+        // });
 
     };
 

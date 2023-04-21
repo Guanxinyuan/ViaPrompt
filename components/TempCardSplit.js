@@ -1,6 +1,5 @@
-import { useEffect, useState, memo } from "react";
-import ContentEditable from "react-contenteditable";
-import TaskDropdown from '@/components/TaskDropdown'
+import { useEffect, useState, memo, useCallback, useRef } from "react";
+import TaskDropdown from "@/components/TaskDropdown";
 import ModelDropdown from '@/components/ModelDropdown'
 import { PaperAirplaneIcon, ArrowPathIcon, TrashIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
 import { useUser } from "@supabase/auth-helpers-react";
@@ -22,14 +21,39 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
     const [answer, setAnswer] = useState(isMade ? cardData.answer : '');
 
     const [orignalContent, setOriginalContent] = useState(isMade ? cardData.answer : '');
-    const [content, setContent] = useState(isMade ? cardData.answer : '');
+    const [content, setContent] = useState(isMade ? prompt : '');
 
     const [wordCount, setWordCount] = useState(content.split(' ').length || 0);
     const [createdAt, setCreatedAt] = useState(cardData.created_at ? formatISOString(cardData.created_at, 1) : '');
     const [activeSection, setActiveSection] = useState(isMade ? taskConfig[task].sections.outputSection : 'prompt');
 
+
+    const [sectionVisibility, setSectionVisibility] = useState({
+        inputSectionActive: false,
+        outputSectionActive: true,
+    });
+
+    const toggleSectionVisibility = (section) => {
+        setSectionVisibility((prevState) => {
+            // Check if both sections are currently active or the clicked section is inactive
+            if (
+                (prevState.inputSectionActive && prevState.outputSectionActive) ||
+                !prevState[section]
+            ) {
+                return {
+                    ...prevState,
+                    [section]: !prevState[section],
+                };
+            }
+            // If the above conditions are not met, return the current state without changes
+            return prevState;
+        });
+    };
+
+
     const switchEdit = () => {
         if (!creating) setIsEditable(!isEditable)
+        setSectionVisibility({ inputSectionActive: true, outputSectionActive: false })
     }
 
     const handleMouseEnter = () => {
@@ -64,7 +88,7 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
 
         if (creating) return;
 
-        const prompt = getTextContentFromHtmlString(content)
+        const prompt = content
         if (prompt.trim() === "") {
             // alert('Please enter a prompt');
             return;
@@ -133,22 +157,15 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
     }
 
     const onChangeHandler = (e) => {
-        // Handle rows with only spaces, <br>, or <div><br></div>
-        const cleanedValue = e.target.value.replace(/<br>|<div><br><\/div>/g, '').trim();
+        const cleanedValue = e.target.value.trim();
 
         if (cleanedValue === '') {
             e.target.value = '';
         }
 
         setContent(e.target.value);
-        updateWordCount(getTextContentFromHtmlString(e.target.value));
+        updateWordCount(e.target.value);
     };
-
-    function getTextContentFromHtmlString(htmlString) {
-        const tempElement = document.createElement('div');
-        tempElement.innerHTML = htmlString;
-        return tempElement.textContent || tempElement.innerText || '';
-    }
 
     const onCancelEdit = (e) => {
         switchEdit()
@@ -159,28 +176,36 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
         setContent(activeSection === taskConfig[task].sections.inputSection ? prompt : answer);
     }, [activeSection]);
 
-    function setCaretPosition(element) {
-        const range = document.createRange();
-        const selection = window.getSelection();
-        range.setStart(element, 0);
-        range.collapse(true);
-        selection.removeAllRanges();
-        selection.addRange(range);
-    }
-
-    const onEmptyHandler = (text) => {
-        if (text.trim() === '') {
-            const contentEditableElement = document.querySelector('.prompt-card-body-content');
-            if (contentEditableElement) {
-                setCaretPosition(contentEditableElement);
-            }
-        }
-    }
 
     useEffect(() => {
-        onEmptyHandler(content)
         updateWordCount(content)
     }, [content]);
+
+    const textAreaInput = useRef(null);
+    const textAreaOutput = useRef(null);
+
+    const autoResize = useCallback((textarea, initial = false) => {
+        if (!initial) {
+            textarea.style.height = "auto";
+        }
+        textarea.style.height = textarea.scrollHeight + "px";
+    }, []);
+
+    useEffect(() => {
+        if (textAreaInput.current && sectionVisibility.inputSectionActive) {
+            autoResize(textAreaInput.current, false);
+        }
+        if (textAreaOutput.current && sectionVisibility.outputSectionActive) {
+            autoResize(textAreaOutput.current, false);
+        }
+
+    }, [autoResize, sectionVisibility]);
+
+    const handleInput = useCallback((event) => {
+        autoResize(event.target);
+    }, [autoResize]);
+
+
 
     return (
         <div
@@ -191,7 +216,7 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
             {/* card header */}
             <div className="h-14 flex flex-row justify-between items-center">
                 <div className="flex items-center justify-start px-4 gap-2 ">
-                    {/* <TaskDropdown defaultValue={task} paramSetter={setTask} isEditable={isEditable} /> */}
+                    <TaskDropdown defaultValue={task} paramSetter={setTask} isEditable={isEditable} />
                     <ModelDropdown defaultValue={model} paramSetter={setModel} isEditable={isEditable} numColumns={numColumns} />
                 </div>
                 {
@@ -201,17 +226,17 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
                             taskConfig[task].sections.inputSection &&
                             <h2
                                 className={`text-sm font-semibold cursor-pointer
-                ${activeSection == taskConfig[task].sections.inputSection ? `text-black dark:text-white ${taskConfig[task].textColor}` : 'text-zinc-500 dark:text-zinc-400'} `}
+    ${sectionVisibility.inputSectionActive ? `text-black dark:text-white ${taskConfig[task].textColor}` : 'text-zinc-500 dark:text-zinc-400'} `}
                                 onClick={() => {
-                                    setActiveSection(taskConfig[task].sections.inputSection)
+                                    toggleSectionVisibility("inputSectionActive");
                                 }}
                             >{taskConfig[task].sections.inputSection}</h2>
                         }
                         <h2
                             className={`text-sm font-semibold text-black dark:text-white cursor-pointer
-  ${activeSection == taskConfig[task].sections.outputSection ? `text-black dark:text-white ${taskConfig[task].textColor}` : 'text-zinc-500 dark:text-zinc-400'}`}
+    ${sectionVisibility.outputSectionActive ? `text-black dark:text-white ${taskConfig[task].textColor}` : 'text-zinc-500 dark:text-zinc-400'}`}
                             onClick={() => {
-                                setActiveSection(taskConfig[task].sections.outputSection)
+                                toggleSectionVisibility("outputSectionActive");
                             }}
                         >{taskConfig[task].sections.outputSection}</h2>
                     </div>
@@ -219,18 +244,48 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
             </div>
 
             {/* card content */}
-            <div className="relative overflow-hidden flex-grow overflow-y-auto px-4 py-2">
-                <ContentEditable
-                    html={content}
-                    tagName=""
-                    className={`prompt-card-body-content cursor-text bg-white dark:bg-zinc-800 dark:border-zinc-800 dark:text-white text-sm whitespace-pre-wrap dark:border-zinc-500
-                          ${content?.trim() === '' ? 'empty' : ''}
-                          ${creatingText}`}
-                    placeholder="Write your prompt here..."
-                    onChange={onChangeHandler}
-                    disabled={isMade && !isEditable}
-                />
 
+            <div className="relative  flex-grow  px-4 py-2">
+                <div className="mb-4">
+                    <div className="w-full flex gap-2 items-center p-4">
+                        <span className="text-sm font-medium text-zinc-400 dark:text-white min-w-max">Original prompt:</span>
+                        <input
+                            type="text"
+                            className="w-full text-sm text-zinc-600 dark:text-yellow-500 opacity-70 bg-white dark:bg-zinc-800 rounded focus:outline-none text-ellipsis"
+                            value={prompt}
+                            readOnly
+                        />
+                    </div>
+                </div>
+                <div className="flex gap-6">
+
+                    {
+                        sectionVisibility.inputSectionActive &&
+                        <textarea
+                            ref={textAreaInput}
+                            className="prompt-card-body-content cursor-text bg-white dark:text-white text-sm whitespace-pre-wrap "
+                            placeholder="Write your prompt here..."
+                            onChange={onChangeHandler}
+                            readOnly={isMade && !isEditable}
+                            onInput={handleInput}
+                            value={prompt}
+
+                        ></textarea>
+                    }
+                    {
+                        sectionVisibility.outputSectionActive &&
+                        <textarea
+                            ref={textAreaOutput}
+                            className="prompt-card-body-content cursor-text bg-white dark:text-white text-sm whitespace-pre-wrap"
+                            placeholder="Write your prompt here..."
+                            onChange={onChangeHandler}
+                            readOnly={isMade && !isEditable}
+                            onInput={handleInput}
+                            value={answer}
+
+                        ></textarea>
+                    }
+                </div>
                 {/* card footer */}
                 <div className="h-6 flex flex-row justify-between mt-4">
                     <div className="flex items-center justify-start text-zinc-500 dark:text-zinc-400 text-xs">{createdAt}</div>
@@ -245,7 +300,7 @@ const Card = memo(({ cardData, setCreating, setCards, ...rest }) => {
                                 }
                                 {
                                     // Edit button
-                                    (isMade && !isEditable && activeSection == taskConfig[task].sections.inputSection) && <PencilSquareIcon
+                                    (isMade && !isEditable) && <PencilSquareIcon
                                         className={`prompt-card-footer-icon ${isEditable ? 'hidden' : ''} ${creating ? '' : 'cursor-pointer'}`}
                                         onClick={switchEdit} />
                                 }

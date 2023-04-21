@@ -41,9 +41,9 @@ const ColumnDropdown = ({ defaultValue, paramSetter }) => {
                         {options.map((option) => (
                             <button
                                 key={option}
-                                className={`text-sm font-semibold text-zinc-700 dark:text-zinc-400 rounded-md px-2 py-0.5 border border-zinc-300 dark:border-zinc-800 bg-white dark:bg-zinc-800 ${option === selectedValue
-                                    ? "bg-zinc-400 dark:bg-zinc-700 text-white"
-                                    : ""
+                                className={`text-sm font-semibold rounded-md px-2 border py-0.5 bg-white dark:text-zinc-400 ${option === selectedValue
+                                    ? "bg-zinc-300  dark:bg-zinc-600 dark:border-zinc-600 dark:text-white"
+                                    : "border-zinc-300 dark:border-zinc-800 dark:bg-zinc-800 dark:text-white "
                                     }`}
                                 onClick={() => {
                                     handleChange(option);

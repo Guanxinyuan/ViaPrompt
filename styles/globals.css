@@ -338,8 +338,8 @@
   }
 
   .prompt-card-body-content {
-    @apply w-full h-full resize-none focus:outline-none text-black p-4 rounded-md overflow-y-auto inline-block;
-    @apply dark:bg-zinc-700 dark:text-white dark:border-zinc-700;
+    @apply w-full min-h-min resize-none focus:outline-none text-black p-4 rounded-md h-auto inline-block rounded-2xl;
+    @apply dark:bg-zinc-700 dark:text-white dark:border-zinc-700 dark:bg-opacity-50;
   }
 
   [contenteditable="true"]:empty:before {

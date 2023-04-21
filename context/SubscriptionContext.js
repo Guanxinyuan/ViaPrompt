@@ -1,7 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { useSession } from '@supabase/auth-helpers-react';
-import { supabaseClient } from '@/lib/supabase';
-import { useUser } from '@supabase/auth-helpers-react';
+import { useSupabaseClient, useUser, useSession } from '@supabase/auth-helpers-react';
+
 
 const SubscriptionContext = createContext();
 
@@ -11,14 +10,18 @@ export function useSubscription() {
 
 export function SubscriptionProvider({ children }) {
     const [subscription, setSubscription] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
     const session = useSession();
     const user = useUser();
+    const supabaseClient = useSupabaseClient();
 
     useEffect(() => {
         if (session && user) {
             const fetchSubscription = async () => {
                 const userSubscription = await getSubscriptionByUserId(user.id);
                 setSubscription(userSubscription);
+
+                setIsLoading(false);
             };
             fetchSubscription();
         }
@@ -42,12 +45,12 @@ export function SubscriptionProvider({ children }) {
     //     }
     // };
 
-    const getSubscriptionByUserId = async () => {
+    const getSubscriptionByUserId = async (userId) => {
         try {
             const { data, error } = await supabaseClient
                 .from('subscriptions')
                 .select('*')
-                .eq('user_id', user.id)
+                .eq('user_id', userId)
                 .order('created_at', { ascending: false })
                 .limit(1)
                 .single();
@@ -58,15 +61,16 @@ export function SubscriptionProvider({ children }) {
 
             return data
 
-        } catch (err) {
-            console.error('Error fetching subscription:', err);
-            throw err;
+        } catch (error) {
+            console.error('Error fetching subscription:', error);
+            throw error;
         }
     };
 
     const value = {
         subscription,
         setSubscription,
+        isLoading,
     };
 
     return (
